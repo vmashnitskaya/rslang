@@ -30,7 +30,7 @@ module.exports = (env, options) => {
             port: 9000,
             watchOptions: {
                 aggregateTimeout: 300,
-                poll: 1000, // How often check for changes (in milliseconds)
+                poll: 1000,
             },
         },
         module: {
