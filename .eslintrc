@@ -1,0 +1,18 @@
+{
+    "root": true,
+    "extends": [
+        "airbnb",
+        "plugin:prettier/recommended",
+        "prettier/react"
+    ],
+    "env": {
+        "browser": true,
+        "jest": true
+    },
+    "rules": {
+        "no-underscore-dangle": "off",
+        "prettier/prettier": [
+            "error"
+        ]
+    }
+}
