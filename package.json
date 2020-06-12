@@ -4,9 +4,17 @@
     "description": "RSlang project",
     "main": "index.js",
     "scripts": {
+        "lint": "eslint --ext .js,.jsx .",
+        "lint:fix": "npm run lint -- --fix",
         "dev": "webpack-dev-server --open --mode development",
         "prod": "webpack --mode production",
         "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm lint",
+            "pre-push": "npm lint"
+        }
     },
     "repository": {
         "type": "git",
@@ -28,6 +36,9 @@
         "@babel/preset-env": "^7.10.2",
         "@babel/preset-react": "^7.10.1",
         "@babel/runtime": "^7.10.2",
+        "@material-ui/core": "^4.10.2",
+        "@material-ui/icons": "^4.9.1",
+        "@material-ui/styles": "^4.10.0",
         "@types/react": "^16.9.36",
         "@types/react-dom": "^16.9.8",
         "babel-eslint": "^10.1.0",
@@ -47,6 +58,7 @@
         "eslint-plugin-react-hooks": "^2.5.0",
         "file-loader": "^6.0.0",
         "html-webpack-plugin": "^4.3.0",
+        "husky": "^4.2.5",
         "mini-css-extract-plugin": "^0.9.0",
         "optimize-css-assets-webpack-plugin": "^5.0.3",
         "prettier": "^2.0.5",

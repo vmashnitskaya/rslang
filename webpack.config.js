@@ -24,8 +24,14 @@ module.exports = (env, options) => {
             contentBase: path.join(__dirname, 'public'),
             watchContentBase: true,
             hot: true,
+            liveReload: true,
             compress: true,
+            inline: true,
             port: 9000,
+            watchOptions: {
+                aggregateTimeout: 300,
+                poll: 1000, // How often check for changes (in milliseconds)
+            },
         },
         module: {
             strictExportPresence: true,
