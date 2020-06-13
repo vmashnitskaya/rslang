@@ -1,17 +1,17 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import AcUnitSharpIcon from '@material-ui/icons/AcUnitSharp';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import { Provider } from 'react-redux';
+import store from '../rootReducer';
 import theme from '../theme';
+import Router from './router/index';
 
 const App = () => {
     return (
-        <MuiThemeProvider theme={theme}>
-            <Button variant="contained" color="primary">
-                Test button!
-                <AcUnitSharpIcon />
-            </Button>
-        </MuiThemeProvider>
+        <Provider store={store}>
+            <MuiThemeProvider theme={theme}>
+                <Router />
+            </MuiThemeProvider>
+        </Provider>
     );
 };
 

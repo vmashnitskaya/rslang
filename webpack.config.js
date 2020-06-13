@@ -32,6 +32,7 @@ module.exports = (env, options) => {
                 aggregateTimeout: 300,
                 poll: 1000,
             },
+            historyApiFallback: true,
         },
         module: {
             strictExportPresence: true,
