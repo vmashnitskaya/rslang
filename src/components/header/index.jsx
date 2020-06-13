@@ -1,27 +1,36 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import { pagePropType } from '../router/pages';
 
 const Header = ({ pages }) => {
     const location = useLocation();
     return (
-        <header>
+        <AppBar position="fixed">
+            <Toolbar>
+                <Typography variant="h6">RS Lang</Typography>
+            </Toolbar>
             <nav>
                 <ul>
                     {pages.map((e) => {
                         const current = e.url === location.pathname;
                         return (
                             <li key={`li_${e.url}`}>
-                                <Link style={{ color: current ? 'black' : 'blue' }} to={e.url}>
-                                    {e.title}
-                                </Link>
+                                <Button>
+                                    <Link style={{ color: current ? 'black' : 'blue' }} to={e.url}>
+                                        {e.title}
+                                    </Link>
+                                </Button>
                             </li>
                         );
                     })}
                 </ul>
             </nav>
-        </header>
+        </AppBar>
     );
 };
 
