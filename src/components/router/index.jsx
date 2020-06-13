@@ -1,28 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-// import { connect } from 'react-redux';
-// components
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import PageWrapper from './pageWrapper';
 import Header from '../header/index';
 import LoginPage from '../loginPage/index';
+import PageNotFound from './pageNotFound';
 import pages from './pages';
 
-const Router = () => {
-    // eslint-disable-next-line no-unused-vars
-    const [hasToken, setHasToken] = useState('token');
-
+const Router = ({ token }) => {
     return (
         <BrowserRouter>
             <main>
-                <Header pages={pages} />
-                {hasToken ? (
-                    <Switch>
-                        {pages.map((e) => (
-                            <Route key={e.url} exact={e.root} path={e.url}>
-                                <PageWrapper page={e} />
-                            </Route>
-                        ))}
-                    </Switch>
+                {token ? (
+                    <>
+                        <Header pages={pages} />
+                        <Switch>
+                            {pages.map((e) => (
+                                <Route key={e.url} exact path={e.url}>
+                                    <PageWrapper page={e} />
+                                </Route>
+                            ))}
+                            <Route path="/" component={PageNotFound} />
+                        </Switch>
+                    </>
                 ) : (
                     <Switch>
                         <Route path="/" component={LoginPage} />
@@ -33,10 +34,16 @@ const Router = () => {
     );
 };
 
-// const mapStateToProps = (state) => ({});
+Router.defaultProps = {
+    token: null,
+};
 
-// const mapDispatchToProps = {};
+Router.propTypes = {
+    token: PropTypes.string,
+};
 
-// export default connect(mapStateToProps, mapDispatchToProps)(index);
+const mapStateToProps = (state) => ({
+    token: state.navigation.token,
+});
 
-export default Router;
+export default connect(mapStateToProps)(Router);

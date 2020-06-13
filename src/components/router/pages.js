@@ -8,7 +8,6 @@ const pages = [
         component: MainPage,
         title: 'Main Page',
         url: '/',
-        root: true,
     },
     {
         component: AboutProject,
@@ -26,7 +25,6 @@ export const pagePropType = PropTypes.exact({
     component: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
-    root: PropTypes.bool,
 });
 
 export default pages;
