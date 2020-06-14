@@ -23,6 +23,7 @@ const Header = ({ pages }) => {
                                 <Button>
                                     <Link
                                         style={{ color: current ? '#cfcfcf' : 'white' }}
+                                        className="header__link"
                                         to={e.url}
                                     >
                                         {e.title}
