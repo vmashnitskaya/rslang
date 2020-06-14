@@ -20,7 +20,7 @@ const Member = ({ member }) => {
             <div className="memberCard__mainText">Location: {location}</div>
             <div className="memberCard__mainText">Contacts:</div>
             <div className="memberLinks">
-                <Link href={`malito:${links.email}`} target="_blank" rel="noreferrer">
+                <Link href={`mailto:${links.email}`} target="_blank" rel="noreferrer">
                     <EmailIcon fontSize="small" />
                     E-mail
                 </Link>
