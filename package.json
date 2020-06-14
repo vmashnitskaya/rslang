@@ -30,14 +30,15 @@
         "@material-ui/icons": "^4.9.1",
         "@material-ui/styles": "^4.10.0",
         "core-js": "^3.6.5",
+        "nuka-carousel": "^4.7.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-redux": "^7.2.0",
         "react-router-dom": "^5.2.0",
         "redux": "^4.0.5",
+        "redux-devtools-extension": "^2.13.8",
         "redux-thunk": "^2.3.0",
-        "regenerator-runtime": "^0.13.5",
-        "redux-devtools-extension": "^2.13.8"
+        "regenerator-runtime": "^0.13.5"
     },
     "devDependencies": {
         "sass": "^1.26.8",
