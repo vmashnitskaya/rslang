@@ -11,10 +11,7 @@ const Member = ({ member }) => {
     return (
         <Box className="memberCard">
             <h1>{name}</h1>
-            <div>
-                image
-                {/* <Avatar src={image} alt={name} /> */}
-            </div>
+            <div>image</div>
             <div className="memberCard__mainText">Team position: {position}</div>
             <div className="memberCard__mainText">Age: {age}</div>
             <div className="memberCard__mainText">Location: {location}</div>
@@ -38,9 +35,9 @@ const Member = ({ member }) => {
             <div>
                 Completed tasks:
                 <ul>
-                    {tasks.map((el) => {
-                        return <li>{el}</li>;
-                    })}
+                    {tasks.map((el) => (
+                        <li>{el}</li>
+                    ))}
                 </ul>
             </div>
         </Box>

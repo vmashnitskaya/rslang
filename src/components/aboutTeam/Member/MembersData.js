@@ -1,4 +1,4 @@
-const MembersData = {
+const membersData = {
     ramanenka: {
         name: 'Andrew Ramanenka',
         age: '25',
@@ -58,4 +58,4 @@ const MembersData = {
     },
 };
 
-export default MembersData;
+export default membersData;
