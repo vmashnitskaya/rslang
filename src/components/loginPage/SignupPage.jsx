@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Typography, Box } from '@material-ui/core';
 import Form from './Form';
-import authorization from './authorization';
+import authorization from './authorizationApi';
 import Message from './Message';
 
 const SignupPage = () => {

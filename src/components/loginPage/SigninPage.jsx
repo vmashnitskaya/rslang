@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Typography, Box } from '@material-ui/core';
 import Form from './Form';
-import authorization from './authorization';
+import authorization from './authorizationApi';
 import Message from './Message';
+import action from '../router/storage/actions';
 
 const SigninPage = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [infoMessage, setInfoMessage] = useState('');
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const data = JSON.parse(localStorage.getItem('authData'));
+        if (data && data.token) {
+            dispatch(action.token.set(data.token));
+            dispatch(action.userId.set(data.userId));
+        }
+    });
 
     const onSignIn = async (email, password) => {
         const user = {
@@ -18,6 +28,9 @@ const SigninPage = () => {
             const loginInfo = await authorization.loginUser(user);
             if (typeof loginInfo === 'object') {
                 setInfoMessage('User signed in');
+                dispatch(action.token.set(loginInfo.token));
+                dispatch(action.userId.set(loginInfo.userId));
+                localStorage.setItem('authData', JSON.stringify({ ...loginInfo }));
             } else {
                 setInfoMessage('');
                 setErrorMessage('Incorrect e-mail or password');

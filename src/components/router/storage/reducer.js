@@ -1,21 +1,30 @@
 import { combineReducers } from 'redux';
 import types from './types';
 
-function token(state = null, action) {
+const initAuthState = {
+    userId: null,
+    token: null,
+};
+
+function auth(state = initAuthState, action) {
     const { type, payload } = action;
 
     switch (type) {
         case types.SET_TOKEN:
-            return payload;
+            return { ...state, token: payload };
         case types.CLEAR_TOKEN:
-            return null;
+            return { ...state, token: null };
+        case types.SET_USER_ID:
+            return { ...state, token: payload };
+        case types.CLEAR_USER_ID:
+            return { ...state, token: null };
         default:
             return state;
     }
 }
 
 const reducer = combineReducers({
-    token,
+    auth,
 });
 
 export default reducer;
