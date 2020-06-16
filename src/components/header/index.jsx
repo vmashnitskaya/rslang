@@ -12,7 +12,7 @@ const Header = () => {
             <Toolbar>
                 <Typography variant="h6">RS Lang</Typography>
             </Toolbar>
-            <nav>
+            <nav className="header__nav">
                 <ul className="header__links">
                     <li>
                         <IconButton aria-label="account of current user" color="inherit">

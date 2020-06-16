@@ -4,7 +4,14 @@ header.header {
     justify-content: space-between;
 }
 
+.header__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .header__links {
     display: flex;
     list-style: none;
+    margin: 0 24px;
 }
