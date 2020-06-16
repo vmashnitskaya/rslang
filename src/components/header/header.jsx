@@ -6,23 +6,21 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import './header.scss';
 
-const Header = () => {
-    return (
-        <AppBar position="fixed" className="header">
-            <Toolbar>
-                <Typography variant="h6">RS Lang</Typography>
-            </Toolbar>
-            <nav className="header__nav">
-                <ul className="header__links">
-                    <li>
-                        <IconButton aria-label="account of current user" color="inherit">
-                            <AccountCircle />
-                        </IconButton>
-                    </li>
-                </ul>
-            </nav>
-        </AppBar>
-    );
-};
+const Header = () => (
+    <AppBar position="fixed" className="header">
+        <Toolbar>
+            <Typography variant="h6">RS Lang</Typography>
+        </Toolbar>
+        <nav className="header__nav">
+            <ul className="header__links">
+                <li>
+                    <IconButton aria-label="account of current user" color="inherit">
+                        <AccountCircle />
+                    </IconButton>
+                </li>
+            </ul>
+        </nav>
+    </AppBar>
+);
 
 export default Header;
