@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Paper from '@material-ui/core/Paper';
 import { Link, Route, Switch, Redirect, useLocation } from 'react-router-dom';
-import TabTable from './TabTable';
+import WordsTable from './WordsTable';
+import './Vocabulary.scss';
 
 const Vocabulary = () => {
     const links = useMemo(
@@ -24,19 +26,21 @@ const Vocabulary = () => {
     );
 
     const { pathname } = useLocation();
-    const value = useMemo(() => links.findIndex((link) => pathname === link.pathname), [
-        pathname,
-        links,
-    ]);
 
     return (
-        <section>
-            <Tabs value={value} centered>
-                {links.map((link, index) => {
+        <Paper className="vocabulary-container" component="section">
+            <Tabs
+                value={pathname === '/vocabulary' ? '/vocabulary/learned' : pathname}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="fullWidth"
+            >
+                {links.map((link) => {
                     return (
                         <Tab
+                            className="tab"
                             key={link.pathname}
-                            value={index}
+                            value={link.pathname}
                             label={link.label}
                             component={Link}
                             to={link.pathname}
@@ -47,19 +51,19 @@ const Vocabulary = () => {
             <Switch>
                 <Redirect exact from="/vocabulary" to="/vocabulary/learned" />
                 <Route exact path="/vocabulary/learned">
-                    <TabTable words="learned" />
+                    <WordsTable type="learned" />
                 </Route>
                 <Route exact path="/vocabulary/difficult">
-                    <TabTable words="difficult" />
+                    <WordsTable type="difficult" />
                 </Route>
                 <Route exact path="/vocabulary/deleted">
-                    <TabTable words="deleted" />
+                    <WordsTable type="deleted" />
                 </Route>
                 <Route>
                     <Redirect to="/404" />
                 </Route>
             </Switch>
-        </section>
+        </Paper>
     );
 };
 
