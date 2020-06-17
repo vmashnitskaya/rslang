@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Typography, Box } from '@material-ui/core';
 import Form from './Form';
-import authorization from './authorizationApi';
 import Message from './Message';
 import action from '../router/storage/actions';
+import { getLogInMessage, getLogInError } from '../router/storage/selectors';
 
 const SigninPage = () => {
-    const [errorMessage, setErrorMessage] = useState('');
-    const [infoMessage, setInfoMessage] = useState('');
+    const errorMessage = useSelector(getLogInError);
+    const infoMessage = useSelector(getLogInMessage);
     const dispatch = useDispatch();
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem('authData'));
@@ -24,23 +24,10 @@ const SigninPage = () => {
             email: `${email}`,
             password: `${password}`,
         };
-        try {
-            const loginInfo = await authorization.loginUser(user);
-            if (typeof loginInfo === 'object') {
-                setInfoMessage('User signed in');
-                dispatch(action.token.set(loginInfo.token));
-                dispatch(action.userId.set(loginInfo.userId));
-                localStorage.setItem('authData', JSON.stringify({ ...loginInfo }));
-            } else {
-                setInfoMessage('');
-                setErrorMessage('Incorrect e-mail or password');
-            }
-        } catch (e) {
-            setErrorMessage('Something went wrong, please try again later.');
-        }
+        dispatch(action.user.logIn(user));
     };
     const onFormError = (text) => {
-        setErrorMessage(text);
+        dispatch(action.user.logInError(text));
     };
     return (
         <div className="signin-page">

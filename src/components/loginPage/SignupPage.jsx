@@ -1,38 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Typography, Box } from '@material-ui/core';
 import Form from './Form';
-import authorization from './authorizationApi';
 import Message from './Message';
+import { getCreateUserSuccess, getErrorMessage } from '../router/storage/selectors';
+import action from '../router/storage/actions';
 
 const SignupPage = () => {
-    const [errorMessage, setErrorMessage] = useState('');
-    const [infoMessage, setInfoMessage] = useState('');
+    const infoMessage = useSelector(getCreateUserSuccess);
+    const errorMessage = useSelector(getErrorMessage);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         document.querySelector('form').reset();
     }, [infoMessage]);
 
-    const onSignUp = async (email, password) => {
+    const onSignUp = (email, password) => {
         const user = {
             email: `${email}`,
             password: `${password}`,
         };
-        try {
-            const loginInfo = await authorization.createUser(user);
-            if (typeof loginInfo === 'object') {
-                setInfoMessage(
-                    `User with e-mail ${loginInfo.email} was succesfully created. Please sign in.`
-                );
-            } else {
-                setErrorMessage('Incorrect e-mail or password');
-            }
-        } catch (e) {
-            setErrorMessage('Something went wrong, please try again later.');
-        }
-    };
-    const onFormError = (text) => {
-        setErrorMessage(text);
+        dispatch(action.user.create(user));
     };
     return (
         <div className="signin-page">
@@ -56,7 +45,7 @@ const SignupPage = () => {
                 submitClassName="submit"
                 submitText="Sign up"
                 onSubmit={onSignUp}
-                onError={onFormError}
+                onError={(error) => dispatch(action.user.createError(error))}
             />
             {infoMessage && <Message className="info" text={infoMessage} />}
             {errorMessage && <Message className="error" text={errorMessage} />}

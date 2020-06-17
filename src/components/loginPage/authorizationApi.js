@@ -11,7 +11,7 @@ const createUser = async (user) => {
     if (rawResponse.status === 200) {
         content = await rawResponse.json();
     } else if (rawResponse.status === 422) {
-        content = 'Incorrect e-mail or password';
+        throw new Error('Incorrect e-mail or password');
     } else {
         throw new Error('');
     }
@@ -31,12 +31,9 @@ const loginUser = async (user) => {
     if (rawResponse.status === 200) {
         content = await rawResponse.json();
     } else {
-        content = 'Incorrect e-mail or password';
+        throw new Error('Incorrect e-mail or password');
     }
     return content;
 };
 
-export default {
-    createUser,
-    loginUser,
-};
+export { createUser, loginUser };

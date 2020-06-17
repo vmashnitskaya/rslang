@@ -1,19 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import navActions from '../router/storage/actions';
-import App from './App';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import SignupPage from './SignupPage';
+import SigninPage from './SigninPage';
 import './loginPage.scss';
 
-function LoginPage() {
+const App = () => {
     return (
-        <React.StrictMode>
-            <App className="app" />
-        </React.StrictMode>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/">
+                    <SigninPage className="app" />
+                </Route>
+                <Route exact path="/sign-up">
+                    <SignupPage />
+                </Route>
+                <Route>Page not found</Route>
+            </Switch>
+        </BrowserRouter>
     );
-}
-
-const mapDispatchToProps = {
-    setToken: navActions.token.set,
 };
 
-export default connect(null, mapDispatchToProps)(LoginPage);
+export default App;
