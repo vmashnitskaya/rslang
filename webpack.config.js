@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -11,7 +12,13 @@ module.exports = (env, options) => {
     const config = {
         mode: isProduction ? 'production' : 'development',
         devtool: isProduction ? 'none' : 'source-map',
-        entry: ['./src/index.jsx'],
+        entry: isProduction
+            ? './src/index.jsx'
+            : [
+                  'webpack-dev-server/client?http://localhost:9000/',
+                  'webpack/hot/dev-server',
+                  './src/index.jsx',
+              ],
         output: {
             filename: 'script.js',
             path: path.join(__dirname, '/dist'),
@@ -24,9 +31,8 @@ module.exports = (env, options) => {
             contentBase: path.join(__dirname, 'public'),
             watchContentBase: true,
             hot: true,
-            liveReload: true,
+            injectClient: false,
             compress: true,
-            inline: true,
             port: 9000,
             watchOptions: {
                 aggregateTimeout: 300,
@@ -84,6 +90,8 @@ module.exports = (env, options) => {
                 template: 'public/index.html',
             }),
             new CopyPlugin({ patterns: [{ from: 'public' }] }),
+            !isProduction && new webpack.HotModuleReplacementPlugin(),
+            !isProduction && new webpack.NoEmitOnErrorsPlugin(),
         ],
         optimization: {
             minimize: isProduction,
