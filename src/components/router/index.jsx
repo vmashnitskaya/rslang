@@ -8,28 +8,32 @@ import LoginPage from '../loginPage/index';
 import PageNotFound from './pageNotFound';
 import pages from './pages';
 
+const routes = pages.map((p) => ({ title: p.title, url: p.url, img: p.img }));
+
 const Router = ({ token }) => {
     return (
         <BrowserRouter>
-            <main>
-                {token ? (
-                    <>
-                        <Header pages={pages} />
+            {token ? (
+                <>
+                    <Header pages={pages} />
+                    <main>
                         <Switch>
                             {pages.map((e) => (
                                 <Route key={e.url} exact path={e.url}>
-                                    <PageWrapper page={e} />
+                                    <PageWrapper page={e} routes={routes} />
                                 </Route>
                             ))}
                             <Route path="/" component={PageNotFound} />
                         </Switch>
-                    </>
-                ) : (
+                    </main>
+                </>
+            ) : (
+                <main>
                     <Switch>
                         <Route path="/" component={LoginPage} />
                     </Switch>
-                )}
-            </main>
+                </main>
+            )}
         </BrowserRouter>
     );
 };
