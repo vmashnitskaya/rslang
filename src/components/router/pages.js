@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import MainPage from '../mainPage/index';
 import AboutProject from '../aboutProject/index';
 import AboutTeam from '../aboutTeam/index';
+import SpeakItGame from '../speakIt';
 
 const pages = [
     {
@@ -21,6 +22,13 @@ const pages = [
         title: 'About Team',
         url: '/aboutteam',
         img: '/assets/images/scared.jpg',
+    },
+    {
+        component: SpeakItGame,
+        title: 'SpeakIt',
+        url: '/speakit',
+        img: '/assets/images/scared.jpg',
+        exact: true,
     },
 ];
 

@@ -32,12 +32,7 @@ module.exports = (env, options) => {
             watchContentBase: true,
             hot: true,
             injectClient: false,
-            compress: true,
             port: 9000,
-            watchOptions: {
-                aggregateTimeout: 300,
-                poll: 1000,
-            },
             historyApiFallback: true,
         },
         module: {
@@ -89,9 +84,6 @@ module.exports = (env, options) => {
             new HtmlWebpackPlugin({
                 template: 'src/index.html',
             }),
-            new CopyPlugin({
-                patterns: [{ from: 'public', to: path.resolve(__dirname, 'dist') }],
-            }),
         ],
         optimization: {
             minimize: isProduction,
@@ -102,6 +94,12 @@ module.exports = (env, options) => {
     if (!isProduction) {
         config.plugins.push(new webpack.HotModuleReplacementPlugin());
         config.plugins.push(new webpack.NoEmitOnErrorsPlugin());
+    } else {
+        config.plugins.push(
+            new CopyPlugin({
+                patterns: [{ from: 'public', to: path.resolve(__dirname, 'dist') }],
+            })
+        );
     }
 
     return config;
