@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import CardMedia from '@material-ui/core/CardMedia';
 import Carousel from 'nuka-carousel';
-import useStyles from './components/data';
+import useStyles from './data';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
 export default function AboutProject() {
@@ -116,13 +116,12 @@ export default function AboutProject() {
                     <h1>Что пользователи говорят о RSLang</h1>
                 </Typography>
             </Grid>
-            <Grid container spacing={0.2} className={classes.komment}>
+            <Grid container spacing={0.2}>
                 <Grid item xs={12}>
                     <Carousel
                         style={{ className: classes.slide }}
                         width="100%"
-                        height="120%"
-                        slideWidth={0.4}
+                        slideWidth={0.5}
                         slidesToShow={2}
                         slidesToScroll={1}
                         wrapAround
