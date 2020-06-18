@@ -1,5 +1,3 @@
-import React from 'react';
+import AboutTeam from './AboutTeam';
 
-export default function AboutTeam() {
-    return <section>About team</section>;
-}
+export default AboutTeam;
