@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container } from '@material-ui/core';
 import Carousel from 'nuka-carousel';
-import Member from './member/Member';
-import MembersData from './member/MembersData';
+import Member from './Member/Member';
+import MembersData from './Member/MembersData';
 
 const membersArray = Object.keys(MembersData);
 
