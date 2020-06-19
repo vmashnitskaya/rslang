@@ -26,6 +26,7 @@ const styles = makeStyles(() => ({
 const Sidebar = ({ pages }) => {
     const location = useLocation();
     const classes = styles();
+    const [isOpen, setNewPositionOfSidebar] = useState(false);
     return (
         <Drawer
             variant="persistent"
