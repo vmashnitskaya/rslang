@@ -40,7 +40,8 @@ const Sidebar = ({ pages, isOpen, setNewPositionOfSidebar }) => {
                 <IconButton
                     onClick={() => {
                         setNewPositionOfSidebar(false);
-                    }}>
+                    }}
+                >
                     <ChevronLeftIcon />
                 </IconButton>
             </div>
