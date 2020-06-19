@@ -57,6 +57,9 @@ const Sidebar = ({ pages, isOpen, setNewPositionOfSidebar }) => {
                             }}
                             to={link.url}
                             key={link.title}
+                            onClick={() => {
+                                setNewPositionOfSidebar(false);
+                            }}
                         >
                             <ListItem button>
                                 <ListItemText primary={link.title} />
