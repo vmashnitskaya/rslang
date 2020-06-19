@@ -37,12 +37,11 @@ const Sidebar = ({ pages, isOpen, setNewPositionOfSidebar }) => {
             open={isOpen}
         >
             <div>
-                <IconButton>
-                    <ChevronLeftIcon
-                        onClick={() => {
-                            setNewPositionOfSidebar(false);
-                        }}
-                    />
+                <IconButton
+                    onClick={() => {
+                        setNewPositionOfSidebar(false);
+                    }}>
+                    <ChevronLeftIcon />
                 </IconButton>
             </div>
             <Divider />
