@@ -19,7 +19,9 @@ const Header = ({ pages }) => {
                     <IconButton
                         edge="start"
                         color="inherit"
-                        // onClick={handleDrawerOpen}
+                        onClick={() => {
+                            setNewPositionOfSidebar(true);
+                        }}
                     >
                         <MenuIcon />
                     </IconButton>
