@@ -23,7 +23,7 @@ const styles = makeStyles(() => ({
     },
 }));
 
-const Sidebar = ({ pages, isOpen }) => {
+const Sidebar = ({ pages, isOpen, closeSidebar }) => {
     const location = useLocation();
     const classes = styles();
     return (
@@ -67,6 +67,8 @@ const Sidebar = ({ pages, isOpen }) => {
 
 Sidebar.propTypes = {
     pages: PropTypes.arrayOf(pagePropType).isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    closeSidebar: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
