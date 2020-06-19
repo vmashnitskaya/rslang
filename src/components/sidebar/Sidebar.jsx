@@ -23,7 +23,7 @@ const styles = makeStyles(() => ({
     },
 }));
 
-const Sidebar = ({ pages, isOpen, closeSidebar }) => {
+const Sidebar = ({ pages, isOpen, setNewPositionOfSidebar }) => {
     const location = useLocation();
     const classes = styles();
     return (
@@ -38,7 +38,11 @@ const Sidebar = ({ pages, isOpen, closeSidebar }) => {
         >
             <div>
                 <IconButton>
-                    <ChevronLeftIcon />
+                    <ChevronLeftIcon
+                        onClick={() => {
+                            setNewPositionOfSidebar(false);
+                        }}
+                    />
                 </IconButton>
             </div>
             <Divider />
@@ -68,7 +72,7 @@ const Sidebar = ({ pages, isOpen, closeSidebar }) => {
 Sidebar.propTypes = {
     pages: PropTypes.arrayOf(pagePropType).isRequired,
     isOpen: PropTypes.bool.isRequired,
-    closeSidebar: PropTypes.func.isRequired,
+    setNewPositionOfSidebar: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
