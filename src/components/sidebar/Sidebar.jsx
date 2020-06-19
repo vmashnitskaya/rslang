@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
@@ -23,10 +23,9 @@ const styles = makeStyles(() => ({
     },
 }));
 
-const Sidebar = ({ pages }) => {
+const Sidebar = ({ pages, isOpen }) => {
     const location = useLocation();
     const classes = styles();
-    const [isOpen, setNewPositionOfSidebar] = useState(false);
     return (
         <Drawer
             variant="persistent"

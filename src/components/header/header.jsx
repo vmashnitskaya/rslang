@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -11,14 +11,10 @@ import { pagePropType } from '../router/pages';
 import './header.scss';
 
 const Header = ({ pages }) => {
-    // const [open, setOpen] = React.useState(false);
-    // const [setOpen] = React.useState(false);
-    // const handleDrawerOpen = () => {
-    //     setOpen(true);
-    // };
-    // const handleDrawerClose = () => {
-    //     setOpen(false);
-    // };
+    const [isOpen, setNewPositionOfSidebar] = useState(true);
+    const closeSidebar = () => {
+        setNewPositionOfSidebar = false;
+    }
     return (
         <div>
             <AppBar position="fixed" className="header">
