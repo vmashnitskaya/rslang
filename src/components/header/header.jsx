@@ -12,9 +12,6 @@ import './header.scss';
 
 const Header = ({ pages }) => {
     const [isOpen, setNewPositionOfSidebar] = useState(true);
-    const closeSidebar = () => {
-        setNewPositionOfSidebar(false);
-    };
     return (
         <div>
             <AppBar position="fixed" className="header">
@@ -38,7 +35,11 @@ const Header = ({ pages }) => {
                     </ul>
                 </nav>
             </AppBar>
-            <Sidebar pages={pages} isOpen={isOpen} closeSidebar={closeSidebar} />
+            <Sidebar
+                pages={pages}
+                isOpen={isOpen}
+                setNewPositionOfSidebar={setNewPositionOfSidebar}
+            />
         </div>
     );
 };
