@@ -1,0 +1,35 @@
+.card {
+    display: flex;
+    width: 180px;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 1.2rem;
+    margin-top: 10px;
+    cursor: pointer;
+    &__sound {
+        display: inline-block;
+        transform: translateY(25%);
+        width: 35px;
+        height: 35px;
+        filter: invert(58%) sepia(9%) saturate(1432%) hue-rotate(47deg) brightness(90%) contrast(95%);
+    }
+    .card__description {
+        width: 165px;
+        padding: 0;
+        p {
+            width: 100%;
+            margin: 0;
+            text-align: center;
+            &.card__description-word {
+                font-weight: 700;
+                letter-spacing: 0.5px;
+            }
+        }
+    }
+    &.selected {
+        background-color: darken($color: black, $amount: 5);
+    }
+    &.guessed {
+        background-color: lighten($color: black, $amount: 10);
+    }
+}
