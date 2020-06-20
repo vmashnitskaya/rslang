@@ -2,6 +2,7 @@ div.audition {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     &__question {
         width: 150px;
         height: 150px;
@@ -9,5 +10,18 @@ div.audition {
             url('./assets/sound.svg') center no-repeat,
             rgba(0, 0, 0, 0.5);
         border-radius: 50%;
+        cursor: pointer;
+    }
+    &__answer {
+        margin: 30px 0;
+        height: 50px;
+        font-size: 2.5rem;
+    }
+    &__variants {
+        display: flex;
+        margin-bottom: 15px;
+    }
+    &__variant {
+        margin-right: 10px;
     }
 }
