@@ -28,7 +28,6 @@ const pages = [
         title: 'SpeakIt',
         url: '/speakit',
         img: '/assets/images/start-image.jpg',
-        exact: true,
     },
 ];
 

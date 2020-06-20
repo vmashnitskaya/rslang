@@ -1,53 +1,96 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import PopUp from './PopUp';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Chip from '@material-ui/core/Chip';
 import ResultCard from './ResultCard';
+import './ResultsPopUp.scss';
 
 const ResultsPopUp = ({ open, cards, guessedCards, onClose, onNewGame }) => {
     return (
-        <PopUp open={open}>
-            <div className="results">
-                <div className="results-title">Successfull:</div>
-                <div className="results-list successfull-results">
-                    {cards
-                        .filter((card) => guessedCards.includes(card.word))
-                        .map(({ word, translation, transcription, audio }) => (
-                            <ResultCard
-                                key={word}
-                                word={word}
-                                translation={translation}
-                                transcription={transcription}
-                                audio={audio}
-                            />
-                        ))}
-                </div>
-                <div className="results-title">Errors:</div>
-                <div className="results-list error-results">
-                    {cards
-                        .filter((card) => !guessedCards.includes(card.word))
-                        .map(({ word, translation, transcription, audio }) => (
-                            <ResultCard
-                                key={word}
-                                word={word}
-                                translation={translation}
-                                transcription={transcription}
-                                audio={audio}
-                            />
-                        ))}
-                </div>
-                <div className="results-actions">
-                    {guessedCards.length !== 10 && (
-                        <Button className="resume-button" onClick={onClose} size="medium">
-                            Resume game
-                        </Button>
-                    )}
-                    <Button className="new-game" onClick={onNewGame} size="medium">
-                        New game
-                    </Button>
-                </div>
-            </div>
-        </PopUp>
+        <Dialog open={open} onClose={onClose}>
+            <DialogTitle>Results</DialogTitle>
+            <DialogContent>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="left" colSpan={5}>
+                                Success
+                                <Chip
+                                    label={
+                                        cards.filter((card) => guessedCards.includes(card.word))
+                                            .length
+                                    }
+                                    color="primary"
+                                    variant="outlined"
+                                    className="counter"
+                                />
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {cards
+                            .filter((card) => guessedCards.includes(card.word))
+                            .map(({ word, translation, audio }) => (
+                                <ResultCard
+                                    key={word}
+                                    word={word}
+                                    translation={translation}
+                                    audio={audio}
+                                />
+                            ))}
+                    </TableBody>
+                </Table>
+
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="left" colSpan={5}>
+                                Error
+                                <Chip
+                                    label={
+                                        cards.filter((card) => !guessedCards.includes(card.word))
+                                            .length
+                                    }
+                                    color="primary"
+                                    variant="outlined"
+                                    className="counter"
+                                />
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {cards
+                            .filter((card) => !guessedCards.includes(card.word))
+                            .map(({ word, translation, transcription, audio }) => (
+                                <ResultCard
+                                    key={word}
+                                    word={word}
+                                    translation={translation}
+                                    transcription={transcription}
+                                    audio={audio}
+                                />
+                            ))}
+                    </TableBody>
+                </Table>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose} color="primary">
+                    Resume game
+                </Button>
+                <Button onClick={onNewGame} color="primary" autoFocus>
+                    New gane
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

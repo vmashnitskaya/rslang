@@ -2,17 +2,10 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import './Card.scss';
-import { makeStyles } from '@material-ui/core';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        border: `1px solid ${theme.palette.primary.main}`,
-    },
-}));
+import Paper from '@material-ui/core/Paper';
 
 const Card = ({ card, isSelected, onCardSelected, isGuessed }) => {
-    const classes = useStyles();
     const audioRef = useRef();
     const handleClick = () => {
         audioRef.current.play();
@@ -20,8 +13,8 @@ const Card = ({ card, isSelected, onCardSelected, isGuessed }) => {
     };
 
     return (
-        <div
-            className={clsx('card', isSelected && 'selected', isGuessed && 'guessed', classes.root)}
+        <Paper
+            className={clsx('card', isSelected && 'selected', isGuessed && 'guessed')}
             onClick={handleClick}
         >
             <VolumeUpIcon color="primary" />
@@ -32,7 +25,7 @@ const Card = ({ card, isSelected, onCardSelected, isGuessed }) => {
                     <track kind="captions" />
                 </audio>
             </div>
-        </div>
+        </Paper>
     );
 };
 

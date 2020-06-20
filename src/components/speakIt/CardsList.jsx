@@ -27,15 +27,15 @@ const CardsList = ({ cards, selectedCard, gameStarted, onCardSelected, guessedWo
 CardsList.propTypes = {
     cards: PropTypes.arrayOf(
         PropTypes.shape({
-            word: PropTypes.string.isRequired,
-            transcription: PropTypes.string.isRequired,
-            audio: PropTypes.string.isRequired,
+            word: PropTypes.string,
+            transcription: PropTypes.string,
+            audio: PropTypes.string,
         })
     ).isRequired,
     selectedCard: PropTypes.shape({
-        word: PropTypes.string.isRequired,
-        transcription: PropTypes.string.isRequired,
-        audio: PropTypes.string.isRequired,
+        word: PropTypes.string,
+        transcription: PropTypes.string,
+        audio: PropTypes.string,
     }),
     gameStarted: PropTypes.bool.isRequired,
     guessedWords: PropTypes.arrayOf(PropTypes.string).isRequired,

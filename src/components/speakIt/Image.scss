@@ -1,0 +1,18 @@
+.image {
+    margin: 10px auto;
+    img {
+        display: inline-block;
+        max-width: 400px;
+        max-height: 270px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .image {
+        margin: 10px auto;
+        img {
+            display: inline-block;
+            width: 290px;
+        }
+    }
+}
