@@ -6,8 +6,8 @@ const getUserStatistics = async ({ userId, token }) => {
                 method: 'GET',
                 withCredentials: true,
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
                 },
             }
         );
