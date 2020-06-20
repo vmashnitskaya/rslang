@@ -1,16 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { connect, useSelector } from 'react-redux';
 import PageWrapper from './pageWrapper';
 import Header from '../header/index';
-import LoginPage from '../loginPage/index';
+import LoginPage from '../loginPage/LoginPage';
 import PageNotFound from './pageNotFound';
 import pages from './pages';
+import { getToken } from './storage/selectors';
 
-const routes = pages.map((p) => ({ title: p.title, url: p.url, img: p.img }));
-
-const Router = ({ token }) => {
+const Router = () => {
+    const token = useSelector(getToken);
+    const routes = pages.map((p) => ({ title: p.title, url: p.url, img: p.img }));
     return (
         <BrowserRouter>
             {token ? (
@@ -36,14 +36,6 @@ const Router = ({ token }) => {
             )}
         </BrowserRouter>
     );
-};
-
-Router.defaultProps = {
-    token: null,
-};
-
-Router.propTypes = {
-    token: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
