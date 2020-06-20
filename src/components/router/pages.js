@@ -27,7 +27,7 @@ const pages = [
         component: SpeakItGame,
         title: 'SpeakIt',
         url: '/speakit',
-        img: '/assets/images/scared.jpg',
+        img: '/assets/images/start-image.jpg',
         exact: true,
     },
 ];
