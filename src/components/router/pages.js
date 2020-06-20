@@ -4,6 +4,7 @@ import AboutProject from '../aboutProject/index';
 import AboutTeam from '../aboutTeam/index';
 import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
+import Audition from '../audition';
 
 const pages = [
     {
@@ -39,6 +40,12 @@ const pages = [
         url: '/speakit',
         img: '/assets/images/start-image.jpg',
         exact: true,
+    },
+    {
+        component: Audition,
+        title: 'Audition',
+        url: '/audition',
+        img: '',
     },
 ];
 
