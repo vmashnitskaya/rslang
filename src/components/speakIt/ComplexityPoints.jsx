@@ -23,6 +23,7 @@ const ComplexityPoints = ({ complexityArray, onComplexityChange }) => {
         >
             {complexityArray.map((complexity) => (
                 <FormControlLabel
+                    key={complexity}
                     value={complexity}
                     className="point"
                     control={<Radio color="primary" />}

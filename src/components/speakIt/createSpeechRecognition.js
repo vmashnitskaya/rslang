@@ -19,7 +19,6 @@ const createSpeechRecognition = (cardsWords) => {
     const onEnd = () => {
         if (isStarted) recognition.start();
     };
-
     return {
         start: (onResult) => {
             _onResult = onResult;

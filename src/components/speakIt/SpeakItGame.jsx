@@ -65,24 +65,22 @@ const SpeakItGame = () => {
         if (speechRecognition) {
             if (speechRecognition.isStarted()) {
                 speechRecognition.abort();
-            } else {
+            } else if (!speechRecognition.isStarted()) {
                 speechRecognition.start(handleSpeechText);
             }
         }
     };
 
-    const handleGamePause = useCallback(() => {
+    const handleGamePause = () => {
         setGameStarted(false);
         setSelectedCard(null);
         const speechRecognition = speechRecognitionRef.current;
         if (speechRecognition) {
             if (speechRecognition.isStarted()) {
                 speechRecognition.abort();
-            } else {
-                speechRecognition.start(handleSpeechText);
             }
         }
-    }, [handleSpeechText]);
+    };
 
     const handlePopUpOpened = useCallback(() => {
         setIsPopUpOpened(true);
@@ -154,8 +152,8 @@ const SpeakItGame = () => {
                 {gameStarted ? (
                     <Button
                         className="stop"
+                        variant="contained"
                         color="primary"
-                        variant="outlined"
                         onClick={handleGamePause}
                         size="small"
                     >
@@ -165,7 +163,7 @@ const SpeakItGame = () => {
                     <Button
                         className="speak"
                         color="primary"
-                        variant="outlined"
+                        variant="contained"
                         onClick={handleStartGame}
                         size="small"
                     >
@@ -175,8 +173,8 @@ const SpeakItGame = () => {
 
                 <Button
                     className="finish"
+                    variant="contained"
                     color="primary"
-                    variant="outlined"
                     onClick={handlePopUpOpened}
                     size="small"
                 >
