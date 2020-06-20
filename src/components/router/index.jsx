@@ -10,27 +10,30 @@ import { getToken } from './storage/selectors';
 
 const Router = () => {
     const token = useSelector(getToken);
+    const routes = pages.map((p) => ({ title: p.title, url: p.url, img: p.img }));
     return (
         <BrowserRouter>
-            <main>
-                {token ? (
-                    <>
-                        <Header pages={pages} />
+            {token ? (
+                <>
+                    <Header pages={pages} />
+                    <main>
                         <Switch>
                             {pages.map((e) => (
                                 <Route key={e.url} exact path={e.url}>
-                                    <PageWrapper page={e} />
+                                    <PageWrapper page={e} routes={routes} />
                                 </Route>
                             ))}
                             <Route path="/" component={PageNotFound} />
                         </Switch>
-                    </>
-                ) : (
+                    </main>
+                </>
+            ) : (
+                <main>
                     <Switch>
                         <Route path="/" component={LoginPage} />
                     </Switch>
-                )}
-            </main>
+                </main>
+            )}
         </BrowserRouter>
     );
 };
