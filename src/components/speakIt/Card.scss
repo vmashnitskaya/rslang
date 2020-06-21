@@ -27,9 +27,9 @@
         }
     }
     &.selected {
-        background-color: darken($color: black, $amount: 5);
+        filter: brightness(80%);
     }
     &.guessed {
-        background-color: lighten($color: black, $amount: 10);
+        filter: brightness(80%);
     }
 }

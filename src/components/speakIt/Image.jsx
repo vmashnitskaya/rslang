@@ -11,12 +11,13 @@ const Image = ({ image, word }) => {
 };
 
 Image.propTypes = {
-    image: PropTypes.string.isRequired,
+    image: PropTypes.string,
     word: PropTypes.string,
 };
 
 Image.defaultProps = {
     word: '',
+    image: '',
 };
 
 export default Image;

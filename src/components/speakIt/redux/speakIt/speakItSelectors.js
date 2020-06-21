@@ -1,0 +1,17 @@
+const getCards = (state) => state.speakIt.cards;
+const getComplexity = (state) => state.speakIt.complexity;
+const getSelectedCard = (state) => state.speakIt.selectedCard;
+const getGameStarted = (state) => state.speakIt.gameStarted;
+const getSpeechText = (state) => state.speakIt.speechText;
+const getGuessedWords = (state) => state.speakIt.guessedWords;
+const getIsPopUpOpened = (state) => state.speakIt.isPopUpOpened;
+
+export default {
+    getCards,
+    getComplexity,
+    getSelectedCard,
+    getGameStarted,
+    getSpeechText,
+    getGuessedWords,
+    getIsPopUpOpened,
+};

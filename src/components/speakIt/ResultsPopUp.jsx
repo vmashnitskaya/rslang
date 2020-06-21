@@ -14,7 +14,7 @@ import Chip from '@material-ui/core/Chip';
 import ResultCard from './ResultCard';
 import './ResultsPopUp.scss';
 
-const ResultsPopUp = ({ open, cards, guessedCards, onClose, onNewGame }) => {
+const ResultsPopUp = ({ open, cards, guessedWords, onClose, onNewGame }) => {
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Results</DialogTitle>
@@ -26,7 +26,7 @@ const ResultsPopUp = ({ open, cards, guessedCards, onClose, onNewGame }) => {
                                 Success
                                 <Chip
                                     label={
-                                        cards.filter((card) => guessedCards.includes(card.word))
+                                        cards.filter((card) => guessedWords.includes(card.word))
                                             .length
                                     }
                                     color="primary"
@@ -38,7 +38,7 @@ const ResultsPopUp = ({ open, cards, guessedCards, onClose, onNewGame }) => {
                     </TableHead>
                     <TableBody>
                         {cards
-                            .filter((card) => guessedCards.includes(card.word))
+                            .filter((card) => guessedWords.includes(card.word))
                             .map(({ word, translation, audio }) => (
                                 <ResultCard
                                     key={word}
@@ -57,7 +57,7 @@ const ResultsPopUp = ({ open, cards, guessedCards, onClose, onNewGame }) => {
                                 Error
                                 <Chip
                                     label={
-                                        cards.filter((card) => !guessedCards.includes(card.word))
+                                        cards.filter((card) => !guessedWords.includes(card.word))
                                             .length
                                     }
                                     color="primary"
@@ -69,7 +69,7 @@ const ResultsPopUp = ({ open, cards, guessedCards, onClose, onNewGame }) => {
                     </TableHead>
                     <TableBody>
                         {cards
-                            .filter((card) => !guessedCards.includes(card.word))
+                            .filter((card) => !guessedWords.includes(card.word))
                             .map(({ word, translation, transcription, audio }) => (
                                 <ResultCard
                                     key={word}
@@ -97,7 +97,7 @@ const ResultsPopUp = ({ open, cards, guessedCards, onClose, onNewGame }) => {
 ResultsPopUp.propTypes = {
     open: PropTypes.bool.isRequired,
     cards: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-    guessedCards: PropTypes.arrayOf(PropTypes.string).isRequired,
+    guessedWords: PropTypes.arrayOf(PropTypes.string).isRequired,
     onClose: PropTypes.func.isRequired,
     onNewGame: PropTypes.func.isRequired,
 };

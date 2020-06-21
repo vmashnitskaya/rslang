@@ -5,7 +5,7 @@ import './CardList.scss';
 
 const CardsList = ({ cards, selectedCard, gameStarted, onCardSelected, guessedWords }) => {
     const handeCardSelected = (card) => {
-        if (gameStarted) onCardSelected(card);
+        if (!gameStarted) onCardSelected(card);
     };
     return (
         <div className="cards">

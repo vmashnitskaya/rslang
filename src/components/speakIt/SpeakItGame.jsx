@@ -1,37 +1,65 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux';
 import ComplexityPoints from './ComplexityPoints';
 import CardsList from './CardsList';
 import Image from './Image';
 import Translation from './Translation';
 import SpeechRecognitionText from './SpeechRecognitionText';
 import Loading from './Loading';
-import api from './api';
 import createSpeechRecognition from './createSpeechRecognition';
 import ResultsPopUp from './ResultsPopUp';
 import startImage from '../../../public/assets/images/start-image.jpg';
 import './SpeakItGame.scss';
+import wordsActions from './redux/wordsActions';
+import wordsSelectors from './redux/wordsSelectors';
+import speakItActions from './redux/speakIt/speakItActions';
+import speakItSelectors from './redux/speakIt/speakItSelectors';
 
-const SpeakItGame = () => {
+const SpeakItGame = ({
+    words,
+    loading,
+    error,
+    fetchWords,
+    complexity,
+    cards,
+    selectedCard,
+    gameStarted,
+    speechText,
+    guessedWords,
+    isPopUpOpened,
+    setCards,
+    setComplexity,
+    setGameStarted,
+    setGuessedWords,
+    setPopUpOpened,
+    setSelectedCard,
+    setSpeechText,
+    addGuessedWord,
+}) => {
     const speechRecognitionRef = useRef();
-    const [complexity, setComplexity] = useState(0);
-    const [cards, setCards] = useState([]);
-    const [selectedCard, setSelectedCard] = useState();
-    const [loading, setLoading] = useState(false);
-    const [gameStarted, setGameStarted] = useState(false);
-    const [speechText, setSpeechText] = useState();
-    const [guessedWords, setGuessedWords] = useState([]);
-    const [isPopUpOpened, setIsPopUpOpened] = useState(false);
 
-    const loadCards = useCallback((complexityNumber) => {
+    const loadCards = useCallback(async (complexityNumber) => {
         const page = Math.round(Math.random() * 29);
-        setLoading(true);
-        api.getCards(page, complexityNumber).then((cardsObjects) => {
-            setCards(cardsObjects.sort(() => Math.random() - 0.5));
-            setSelectedCard(null);
-            setLoading(false);
-        });
+        await fetchWords(page, complexityNumber);
     }, []);
+
+    useEffect(() => {
+        setCards(
+            words
+                .slice(0, 10)
+                .map(({ word, audio, wordTranslate, image, transcription }) => ({
+                    word: word.toLowerCase(),
+                    audio,
+                    translation: wordTranslate,
+                    image,
+                    transcription,
+                }))
+                .sort(() => Math.random() - 0.5)
+        );
+        setSelectedCard(null);
+    }, [words]);
 
     const handleComplexityChange = (newComplexity) => {
         setComplexity(newComplexity);
@@ -46,21 +74,19 @@ const SpeakItGame = () => {
             setSpeechText(text);
             const guessedCard = cards.find(({ word }) => word === text);
             if (guessedCard) {
-                setGuessedWords((prevState) => {
-                    if (prevState.includes(guessedCard.word)) {
-                        return prevState;
-                    }
-                    setSelectedCard(guessedCard);
-                    return [...prevState, guessedCard.word];
-                });
+                if (!guessedWords.includes(guessedCard.word)) {
+                    addGuessedWord(guessedCard.word);
+                }
+                setSelectedCard(guessedCard);
             }
         },
-        [cards]
+        [cards, guessedWords]
     );
 
     const handleStartGame = () => {
         setGameStarted(true);
         setSelectedCard(null);
+        setSpeechText('');
         const speechRecognition = speechRecognitionRef.current;
         if (speechRecognition) {
             if (speechRecognition.isStarted()) {
@@ -73,7 +99,6 @@ const SpeakItGame = () => {
 
     const handleGamePause = () => {
         setGameStarted(false);
-        setSelectedCard(null);
         const speechRecognition = speechRecognitionRef.current;
         if (speechRecognition) {
             if (speechRecognition.isStarted()) {
@@ -83,12 +108,12 @@ const SpeakItGame = () => {
     };
 
     const handlePopUpOpened = useCallback(() => {
-        setIsPopUpOpened(true);
+        setPopUpOpened(true);
         handleGamePause();
     }, [handleGamePause]);
 
     const handlePopUpClose = () => {
-        setIsPopUpOpened(false);
+        setPopUpOpened(false);
     };
 
     const handleNewGame = () => {
@@ -118,6 +143,24 @@ const SpeakItGame = () => {
         }
     }, [guessedWords, handlePopUpOpened]);
 
+    const handleStateChange = () => {
+        if (loading) {
+            return <Loading />;
+        }
+        if (error) {
+            return <div>error</div>;
+        }
+        return (
+            <CardsList
+                cards={cards}
+                selectedCard={selectedCard}
+                gameStarted={gameStarted}
+                guessedWords={guessedWords}
+                onCardSelected={handleCardSelected}
+            />
+        );
+    };
+
     return (
         <div className="game-page">
             <ComplexityPoints
@@ -136,17 +179,7 @@ const SpeakItGame = () => {
                 <Translation translation={selectedCard ? selectedCard.translation : undefined} />
             )}
 
-            {loading ? (
-                <Loading />
-            ) : (
-                <CardsList
-                    cards={cards}
-                    selectedCard={selectedCard}
-                    gameStarted={gameStarted}
-                    guessedWords={guessedWords}
-                    onCardSelected={handleCardSelected}
-                />
-            )}
+            {handleStateChange()}
 
             <div className="buttons">
                 {gameStarted ? (
@@ -184,7 +217,7 @@ const SpeakItGame = () => {
             <ResultsPopUp
                 open={isPopUpOpened}
                 cards={cards}
-                guessedCards={guessedWords}
+                guessedWords={guessedWords}
                 onClose={handlePopUpClose}
                 onNewGame={handleNewGame}
             />
@@ -192,4 +225,88 @@ const SpeakItGame = () => {
     );
 };
 
-export default SpeakItGame;
+const mapDispatchToProps = (dispatch) => ({
+    fetchWords: (page, group) => {
+        dispatch(wordsActions.fetchWords(page, group));
+    },
+    setCards: (cards) => {
+        dispatch(speakItActions.setCards(cards));
+    },
+    setComplexity: (complexity) => {
+        dispatch(speakItActions.setComplexity(complexity));
+    },
+    setGameStarted: (isGameStarted) => {
+        dispatch(speakItActions.setGameStarted(isGameStarted));
+    },
+    setGuessedWords: (guessedWords) => {
+        dispatch(speakItActions.setGuessedWords(guessedWords));
+    },
+    setPopUpOpened: (isPopUpOpened) => {
+        dispatch(speakItActions.setPopUpOpened(isPopUpOpened));
+    },
+    setSelectedCard: (card) => {
+        dispatch(speakItActions.setSelectedCard(card));
+    },
+    setSpeechText: (text) => {
+        dispatch(speakItActions.setSpeechText(text));
+    },
+    addGuessedWord: (guessedWord) => {
+        dispatch(speakItActions.addGuessedWord(guessedWord));
+    },
+});
+
+const mapStateToProps = (state) => ({
+    words: wordsSelectors.getWords(state),
+    loading: wordsSelectors.getLoading(state),
+    error: wordsSelectors.getError(state),
+    cards: speakItSelectors.getCards(state),
+    complexity: speakItSelectors.getComplexity(state),
+    selectedCard: speakItSelectors.getSelectedCard(state),
+    gameStarted: speakItSelectors.getGameStarted(state),
+    speechText: speakItSelectors.getSpeechText(state),
+    guessedWords: speakItSelectors.getGuessedWords(state),
+    isPopUpOpened: speakItSelectors.getIsPopUpOpened(state),
+});
+
+SpeakItGame.propTypes = {
+    words: PropTypes.arrayOf(
+        PropTypes.objectOf(PropTypes.PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+    ).isRequired,
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.string,
+    fetchWords: PropTypes.func.isRequired,
+    complexity: PropTypes.number.isRequired,
+    cards: PropTypes.arrayOf(
+        PropTypes.shape({
+            word: PropTypes.string,
+            id: PropTypes.string,
+            audio: PropTypes.string,
+            image: PropTypes.string,
+            transcription: PropTypes.string,
+            wordTranslate: PropTypes.string,
+        })
+    ),
+    selectedCard: PropTypes.objectOf(PropTypes.string),
+    gameStarted: PropTypes.bool.isRequired,
+    speechText: PropTypes.string,
+    guessedWords: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+    isPopUpOpened: PropTypes.bool.isRequired,
+    setCards: PropTypes.func.isRequired,
+    setComplexity: PropTypes.func.isRequired,
+    setGameStarted: PropTypes.func.isRequired,
+    setGuessedWords: PropTypes.func.isRequired,
+    setPopUpOpened: PropTypes.func.isRequired,
+    setSelectedCard: PropTypes.func.isRequired,
+    setSpeechText: PropTypes.func.isRequired,
+    addGuessedWord: PropTypes.func.isRequired,
+};
+
+SpeakItGame.defaultProps = {
+    error: null,
+    guessedWords: [],
+    selectedCard: {},
+    speechText: '',
+    cards: [],
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SpeakItGame);

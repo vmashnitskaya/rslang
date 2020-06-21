@@ -1,0 +1,12 @@
+const speakItTypes = {
+    SET_CARDS: 'speakIt/SET_CARDS',
+    SET_COMPLEXITY: 'speakIt/SET_COMPLEXITY',
+    SET_SELECTED_CARD: 'speakIt/SET_SELECTED_CARD',
+    SET_GAME_STARTED: 'speakIt/SET_GAME_STARTED',
+    SET_SPEECH_TEXT: 'speakIt/SET_SPEECH_TEXT',
+    SET_GUESSED_WORDS: 'speakIt/SET_GUESSED_WORDS',
+    ADD_GUESSED_WORD: 'speakIt/ADD_GUESSED_WORD',
+    SET_IS_POPUP_OPENED: 'speakIt/SET_IS_POP_OPENED',
+};
+
+export default speakItTypes;
