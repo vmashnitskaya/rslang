@@ -6,11 +6,10 @@ import getAggregatedWords from '../apiGetters/getAggregatedWords';
 const useAggregatedWords = (params) => {
     const userId = useSelector(getUserId);
     const token = useSelector(getToken);
-    const { group, filter, wordsPerPage, onlyUserWords } = params;
+    const { group, filter, wordsPerPage } = params;
     const [groupState] = useState(group);
     const [filterState] = useState(filter);
     const [wordsPerPageState] = useState(wordsPerPage);
-    const [onlyUserWordsState] = useState(onlyUserWords);
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
@@ -25,7 +24,6 @@ const useAggregatedWords = (params) => {
                     group: groupState,
                     filter: filterState,
                     wordsPerPage: wordsPerPageState,
-                    onlyUserWords: onlyUserWordsState,
                 });
                 setData(content);
                 setLoading(false);
@@ -35,7 +33,7 @@ const useAggregatedWords = (params) => {
             }
         };
         fetchData();
-    }, [userId, token, groupState, filterState, wordsPerPageState, onlyUserWordsState]);
+    }, [userId, token, groupState, filterState, wordsPerPageState]);
 
     return { data, error, loading };
 };
