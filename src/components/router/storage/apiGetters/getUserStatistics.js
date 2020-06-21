@@ -9,7 +9,7 @@ const getUserStatistics = async ({ userId, token }) => {
                 Accept: 'application/json',
             },
         }
-    ); 
+    );
     let content = '';
     if (rawResponse.status === 200) {
         content = await rawResponse.json();
