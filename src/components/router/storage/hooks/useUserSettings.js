@@ -13,10 +13,14 @@ const useUserSettings = () => {
     useEffect(() => {
         const fetchSettings = async () => {
             setLoading(true);
-            const { data, error: fetchError } = await getUserSettings({ token, userId });
-            setSettings(data);
-            setLoading(false);
-            setError(fetchError);
+            try {
+                const content = await getUserSettings({ token, userId });
+                setSettings(content);
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+                setError(err.message || `Error loading user settings`);
+            }
         };
         fetchSettings();
     }, [userId]);
