@@ -12,10 +12,10 @@ import createSpeechRecognition from './createSpeechRecognition';
 import ResultsPopUp from './ResultsPopUp';
 import startImage from '../../../public/assets/images/start-image.jpg';
 import './SpeakItGame.scss';
-import wordsActions from './redux/wordsActions';
-import wordsSelectors from './redux/wordsSelectors';
-import speakItActions from './redux/speakIt/speakItActions';
-import speakItSelectors from './redux/speakIt/speakItSelectors';
+import wordsActions from '../router/storage/getWordsRedux/wordsActions';
+import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
+import speakItActions from './redux/speakItActions';
+import speakItSelectors from './redux/speakItSelectors';
 
 const SpeakItGame = ({
     words,
