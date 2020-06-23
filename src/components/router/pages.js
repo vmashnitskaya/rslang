@@ -5,6 +5,7 @@ import AboutTeam from '../aboutTeam/index';
 import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
 import MainGame from '../mainGame/index';
+import EnglishPuzzle from '../english-puzzle';
 
 const pages = [
     {
@@ -47,6 +48,12 @@ const pages = [
         url: '/speakit',
         img: '/assets/images/start-image.jpg',
         exact: true,
+    },
+    {
+        component: EnglishPuzzle,
+        title: 'English-Puzzle',
+        url: '/englishpuzzle',
+        img: '/assets/images/start-image.jpg',
     },
 ];
 
