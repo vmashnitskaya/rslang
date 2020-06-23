@@ -8,6 +8,29 @@ $contrast-color: lighten(
 );
 $base-duration: 500ms;
 
+.start-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    padding-top: 200px;
+    h1 {
+        font-size: 40px;
+    }
+    p {
+        font-size: 20px;
+        margin: 0;
+    }
+    .start-page__button {
+        font-size: 20px;
+        margin-top: 15px;
+        text-align: center;
+        padding: 2px 8px;
+    }
+}
+
 .ep-page {
     width: 1200px;
     height: 100%;
