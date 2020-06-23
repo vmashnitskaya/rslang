@@ -3,7 +3,7 @@ import types from './types';
 
 const initAuthState = {
     userId: null,
-    token: null,
+    token: 'token',
     createSuccess: null,
     createError: null,
     logInMessage: null,

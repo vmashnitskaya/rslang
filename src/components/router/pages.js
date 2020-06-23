@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import MainPage from '../mainPage/index';
 import AboutProject from '../aboutProject/index';
 import AboutTeam from '../aboutTeam/index';
+import EnglishPuzzle from '../english-puzzle';
 
 const pages = [
     {
@@ -21,6 +22,12 @@ const pages = [
         title: 'About Team',
         url: '/aboutteam',
         img: '/assets/images/scared.jpg',
+    },
+    {
+        component: EnglishPuzzle,
+        title: 'English-Puzzle',
+        url: '/englishpuzzle',
+        img: '/assets/images/start-image.jpg',
     },
 ];
 
