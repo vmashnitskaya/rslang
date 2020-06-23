@@ -9,6 +9,7 @@ import Translation from './Translation';
 import GameBoxLineStatic from './GameBoxLineStatic';
 import Hints from './Hints';
 import Loader from './Loader';
+import StartPage from './StartPage';
 import './EnglishPuzzleGame.scss';
 
 const maxLevel = 5;
@@ -51,6 +52,7 @@ const EnglishPuzzleGame = () => {
     const [currentShuffled, setCurrentShuffled] = useState({});
     const [currentOriginalArray, setCurrentOriginalArray] = useState([]);
     const [soundLink, setSoundLink] = useState('');
+    const [isGameStarted, setIsGameStarted] = useState(false);
 
     const [differenceIndexes, setDifferenceIndexes] = useState(undefined);
 
@@ -261,7 +263,13 @@ const EnglishPuzzleGame = () => {
         }));
     };
 
-    return (
+    const handleGameStarted = () => {
+        setIsGameStarted(!isGameStarted);
+    };
+
+    return !isGameStarted ? (
+        <StartPage onClick={handleGameStarted} />
+    ) : (
         <div className="ep-page">
             <div className="header">
                 <div className="header__drop-downs">

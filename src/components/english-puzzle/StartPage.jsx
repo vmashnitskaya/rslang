@@ -1,18 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
 
-const StartPage = () => {
+const StartPage = ({ onClick }) => {
     return (
         <div className="start-page">
-            <h1>EnglishPuzzle</h1>
+            <h1>English-Puzzle</h1>
             <p>Click on words, collect phrases.</p>
-            <p>Words can be drag-n-dropped.</p>
             <p>Select hints in menu.</p>
-            <Link to="/game" className="start-page__button">
+            <Button
+                variant="contained"
+                className="start-page__button"
+                onClick={onClick}
+                color="primary"
+            >
                 Start
-            </Link>
+            </Button>
         </div>
     );
+};
+
+StartPage.propTypes = {
+    onClick: PropTypes.func.isRequired,
 };
 
 export default StartPage;
