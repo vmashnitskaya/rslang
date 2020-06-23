@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
+import './StartPage.scss';
 
 const StartPage = ({ onStart }) => (
     <div className="start-page">
@@ -10,7 +11,12 @@ const StartPage = ({ onStart }) => (
             <br />
             Click on the start game button and speak the words into the microphone.
         </p>
-        <Button className="start-page__button" onClick={onStart}>
+        <Button
+            variant="contained"
+            color="primary"
+            className="start-page__button"
+            onClick={onStart}
+        >
             Start
         </Button>
     </div>

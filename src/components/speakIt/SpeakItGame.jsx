@@ -10,6 +10,7 @@ import SpeechRecognitionText from './SpeechRecognitionText';
 import Loading from './Loading';
 import createSpeechRecognition from './createSpeechRecognition';
 import ResultsPopUp from './ResultsPopUp';
+import StartPage from './StartPage';
 import startImage from '../../../public/assets/images/start-image.jpg';
 import './SpeakItGame.scss';
 import wordsActions from '../router/storage/getWordsRedux/wordsActions';
@@ -37,6 +38,8 @@ const SpeakItGame = ({
     setSelectedCard,
     setSpeechText,
     addGuessedWord,
+    isGameStarted,
+    setIsGameStarted,
 }) => {
     const speechRecognitionRef = useRef();
 
@@ -161,7 +164,13 @@ const SpeakItGame = ({
         );
     };
 
-    return (
+    const gandleGameStarted = () => {
+        setIsGameStarted(!isGameStarted);
+    };
+
+    return !isGameStarted ? (
+        <StartPage onStart={gandleGameStarted} />
+    ) : (
         <div className="game-page">
             <ComplexityPoints
                 currentComplexity={complexity}
@@ -253,6 +262,9 @@ const mapDispatchToProps = (dispatch) => ({
     addGuessedWord: (guessedWord) => {
         dispatch(speakItActions.addGuessedWord(guessedWord));
     },
+    setIsGameStarted: (isGameStarted) => {
+        dispatch(speakItActions.setIsGameStarted(isGameStarted));
+    },
 });
 
 const mapStateToProps = (state) => ({
@@ -266,6 +278,7 @@ const mapStateToProps = (state) => ({
     speechText: speakItSelectors.getSpeechText(state),
     guessedWords: speakItSelectors.getGuessedWords(state),
     isPopUpOpened: speakItSelectors.getIsPopUpOpened(state),
+    isGameStarted: speakItSelectors.getIsGameStarted(state),
 });
 
 SpeakItGame.propTypes = {
@@ -299,6 +312,8 @@ SpeakItGame.propTypes = {
     setSelectedCard: PropTypes.func.isRequired,
     setSpeechText: PropTypes.func.isRequired,
     addGuessedWord: PropTypes.func.isRequired,
+    isGameStarted: PropTypes.bool.isRequired,
+    setIsGameStarted: PropTypes.func.isRequired,
 };
 
 SpeakItGame.defaultProps = {

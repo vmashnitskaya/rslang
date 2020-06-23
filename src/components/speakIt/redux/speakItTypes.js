@@ -7,6 +7,7 @@ const speakItTypes = {
     SET_GUESSED_WORDS: 'speakIt/SET_GUESSED_WORDS',
     ADD_GUESSED_WORD: 'speakIt/ADD_GUESSED_WORD',
     SET_IS_POPUP_OPENED: 'speakIt/SET_IS_POP_OPENED',
+    SET_IS_GAME_STARTED: 'SET_IS_GAME_STARTED',
 };
 
 export default speakItTypes;

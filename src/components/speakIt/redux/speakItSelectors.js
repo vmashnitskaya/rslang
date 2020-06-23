@@ -5,6 +5,7 @@ const getGameStarted = (state) => state.speakIt.gameStarted;
 const getSpeechText = (state) => state.speakIt.speechText;
 const getGuessedWords = (state) => state.speakIt.guessedWords;
 const getIsPopUpOpened = (state) => state.speakIt.isPopUpOpened;
+const getIsGameStarted = (state) => state.speakIt.isGameStarted;
 
 export default {
     getCards,
@@ -14,4 +15,5 @@ export default {
     getSpeechText,
     getGuessedWords,
     getIsPopUpOpened,
+    getIsGameStarted,
 };

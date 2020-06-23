@@ -9,6 +9,7 @@ const speakItReducer = (
         speechText: '',
         guessedWords: [],
         isPopUpOpened: false,
+        isGameStarted: false,
     },
     action
 ) => {
@@ -55,6 +56,11 @@ const speakItReducer = (
             return {
                 ...state,
                 isPopUpOpened: payload,
+            };
+        case speakItTypes.SET_IS_GAME_STARTED:
+            return {
+                ...state,
+                isGameStarted: payload,
             };
         default:
             return state;
