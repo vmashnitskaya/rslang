@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
+import { Tabs, Tab, Paper } from '@material-ui/core';
 import { Link, Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import WordsTable from './WordsTable';
 import './Vocabulary.scss';
