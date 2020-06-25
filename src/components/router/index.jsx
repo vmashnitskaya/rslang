@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import PageWrapper from './pageWrapper';
 import Header from '../header/index';
