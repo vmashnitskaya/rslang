@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
+import clsx from 'clsx';
 import './MainCard.scss';
 
 const ShowImage = ({ isShowImage, image }) => {
@@ -116,23 +117,26 @@ const MainCard = ({ wordObj, settings }) => {
     const styleV1 = isShowImage && (isShowAnswer || isShowDifficult || isShowDelete);
     const styleV2 = isShowImage || isShowAnswer || isShowDifficult || isShowDelete;
 
-    let cardStyle;
-    let cardContainerStyle;
-    if (styleV1) {
-        cardStyle = 'card card_v1';
-        cardContainerStyle = 'card__container card__container_v1';
-    } else if (styleV2) {
-        cardStyle = 'card card_v2';
-        cardContainerStyle = 'card__container card__container_v2';
-    } else {
-        cardStyle = 'card card_v3';
-        cardContainerStyle = 'card__container card__container_v3';
-    }
     return (
         <div className="card__wrapper">
-            <Card className={cardStyle}>
+            <Card
+                className={clsx({
+                    card: true,
+                    card_v1: styleV1,
+                    card_v2: (!styleV1 && styleV2) || (styleV1 && !styleV2),
+                    card_v3: !styleV1 && !styleV2,
+                })}
+            >
                 <ShowImage isShowImage={isShowImage} image={image} />
-                <CardContent className={cardContainerStyle}>
+
+                <CardContent
+                    className={clsx({
+                        card__container: true,
+                        card__container_v1: styleV1,
+                        card__container_v2: (!styleV1 && styleV2) || (styleV1 && !styleV2),
+                        card__container_v3: !styleV1 && !styleV2,
+                    })}
+                >
                     <ShowTranslate
                         isShowTranslate={isShowTranslate}
                         wordTranslate={wordTranslate}
@@ -166,6 +170,7 @@ const MainCard = ({ wordObj, settings }) => {
                         Next Card
                     </Button>
                 </CardContent>
+
                 <CardActions disableSpacing className="card__buttons">
                     <ShowAnswer isShowAnswer={isShowAnswer} />
                     <ShowDifficult isShowDifficult={isShowDifficult} />
