@@ -1,24 +1,26 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { connect, useSelector } from 'react-redux';
 import PageWrapper from './pageWrapper';
 import Header from '../header/index';
-import LoginPage from '../loginPage/index';
+import LoginPage from '../loginPage/LoginPage';
 import PageNotFound from './pageNotFound';
 import pages from './pages';
+import { getToken } from './storage/selectors';
 
-const Router = ({ token }) => {
+const Router = () => {
+    const token = useSelector(getToken);
+    const routes = pages.map((p) => ({ title: p.title, url: p.url, img: p.img }));
     return (
-        <BrowserRouter basename="/">
-            <main>
-                {token ? (
-                    <>
-                        <Header pages={pages} />
+        <BrowserRouter>
+            {token ? (
+                <>
+                    <Header pages={pages} />
+                    <main>
                         <Switch>
                             {pages.map((e) => (
                                 <Route key={e.url} exact={e.exact} path={e.url}>
-                                    <PageWrapper page={e} />
+                                    <PageWrapper page={e} routes={routes} />
                                 </Route>
                             ))}
                             <Route exact path="/404" component={PageNotFound} />
@@ -26,23 +28,17 @@ const Router = ({ token }) => {
                                 <Redirect to="/404" />
                             </Route>
                         </Switch>
-                    </>
-                ) : (
+                    </main>
+                </>
+            ) : (
+                <main>
                     <Switch>
                         <Route path="/" component={LoginPage} />
                     </Switch>
-                )}
-            </main>
+                </main>
+            )}
         </BrowserRouter>
     );
-};
-
-Router.defaultProps = {
-    token: null,
-};
-
-Router.propTypes = {
-    token: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({

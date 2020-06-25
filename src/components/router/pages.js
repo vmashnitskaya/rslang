@@ -10,12 +10,14 @@ const pages = [
         title: 'Main Page',
         url: '/',
         exact: true,
+        img: '',
     },
     {
         component: AboutProject,
         title: 'About Project',
         url: '/aboutproject',
         exact: true,
+        img: '/assets/images/angry.jpg',
     },
     {
         component: AboutTeam,
@@ -28,6 +30,7 @@ const pages = [
         title: 'Vocabulary',
         url: '/vocabulary',
         exact: false,
+        img: '/assets/images/scared.jpg',
     },
 ];
 
@@ -36,6 +39,7 @@ export const pagePropType = PropTypes.exact({
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     exact: PropTypes.bool.isRequired,
+    img: PropTypes.string.isRequired,
 });
 
 export default pages;

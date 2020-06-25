@@ -89,17 +89,22 @@ module.exports = (env, options) => {
                 filename: 'style.css',
             }),
             new HtmlWebpackPlugin({
-                template: 'public/index.html',
+                template: 'src/index.html',
             }),
-            new CopyPlugin({ patterns: [{ from: 'public' }] }),
-            !isProduction && new webpack.HotModuleReplacementPlugin(),
-            !isProduction && new webpack.NoEmitOnErrorsPlugin(),
+            new CopyPlugin({
+                patterns: [{ from: 'public', to: path.resolve(__dirname, 'dist') }],
+            }),
         ],
         optimization: {
             minimize: isProduction,
             minimizer: [new OptimizeCSSAssetsPlugin({})],
         },
     };
+
+    if (!isProduction) {
+        config.plugins.push(new webpack.HotModuleReplacementPlugin());
+        config.plugins.push(new webpack.NoEmitOnErrorsPlugin());
+    }
 
     return config;
 };
