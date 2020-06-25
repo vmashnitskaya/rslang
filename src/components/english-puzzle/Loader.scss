@@ -1,5 +1,11 @@
 .loader-wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 1200px;
+    height: 405px;
+    .error-message {
+        margin-top: 15px;
+    }
 }
