@@ -13,10 +13,14 @@ const useUserWord = () => {
     useEffect(() => {
         const fetchWord = async () => {
             setLoading(true);
-            const { data, error: fetchError } = await getUserWords({ token, userId });
-            setWords(data);
-            setLoading(false);
-            setError(fetchError);
+            try {
+                const content = await getUserWords({ token, userId });
+                setWords(content);
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+                setError(err.message || `Error loading user words`);
+            }
         };
         fetchWord();
     }, [userId]);
