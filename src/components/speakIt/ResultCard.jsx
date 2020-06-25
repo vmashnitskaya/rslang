@@ -12,20 +12,22 @@ const ResultCard = ({ word, translation, audio }) => {
         audioRef.current.play();
     };
     return (
-        <TableRow className="result-row" onClick={handleClick}>
-            <TableCell align="left">
-                <VolumeUpIcon color="primary" className="sound" />
-            </TableCell>
-            <TableCell align="left" colSpan={2}>
-                {word}
-            </TableCell>
-            <TableCell align="left" colSpan={2}>
-                {translation}
-            </TableCell>
-            <audio src={audio} ref={audioRef}>
-                <track kind="captions" />
-            </audio>
-        </TableRow>
+        <>
+            <TableRow className="result-row" onClick={handleClick}>
+                <TableCell align="left">
+                    <VolumeUpIcon color="primary" className="sound" />
+                    <audio src={audio} ref={audioRef}>
+                        <track kind="captions" />
+                    </audio>
+                </TableCell>
+                <TableCell align="left" colSpan={2}>
+                    {word}
+                </TableCell>
+                <TableCell align="left" colSpan={2}>
+                    {translation}
+                </TableCell>
+            </TableRow>
+        </>
     );
 };
 

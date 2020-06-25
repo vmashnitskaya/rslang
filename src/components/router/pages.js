@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import MainPage from '../mainPage/index';
 import AboutProject from '../aboutProject/index';
 import AboutTeam from '../aboutTeam/index';
-import SpeakItGame from '../speakIt';
+import SpeakItGame from '../speakIt/index';
 
 const pages = [
     {

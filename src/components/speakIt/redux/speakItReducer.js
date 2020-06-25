@@ -1,18 +1,17 @@
 import speakItTypes from './speakItTypes';
 
-const speakItReducer = (
-    state = {
-        cards: [],
-        complexity: 0,
-        selectedCard: {},
-        gameStarted: false,
-        speechText: '',
-        guessedWords: [],
-        isPopUpOpened: false,
-        isGameStarted: false,
-    },
-    action
-) => {
+const initialState = {
+    cards: [],
+    complexity: 0,
+    selectedCard: {},
+    gameStarted: false,
+    speechText: '',
+    guessedWords: [],
+    isPopUpOpened: false,
+    isGameStarted: false,
+};
+
+const speakItReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {

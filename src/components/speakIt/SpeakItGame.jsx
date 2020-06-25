@@ -146,24 +146,6 @@ const SpeakItGame = ({
         }
     }, [guessedWords, handlePopUpOpened]);
 
-    const handleStateChange = () => {
-        if (loading) {
-            return <Loading />;
-        }
-        if (error) {
-            return <div>error</div>;
-        }
-        return (
-            <CardsList
-                cards={cards}
-                selectedCard={selectedCard}
-                gameStarted={gameStarted}
-                guessedWords={guessedWords}
-                onCardSelected={handleCardSelected}
-            />
-        );
-    };
-
     const gandleGameStarted = () => {
         setIsGameStarted(!isGameStarted);
     };
@@ -188,7 +170,17 @@ const SpeakItGame = ({
                 <Translation translation={selectedCard ? selectedCard.translation : undefined} />
             )}
 
-            {handleStateChange()}
+            {loading || error ? (
+                <Loading error={error} />
+            ) : (
+                <CardsList
+                    cards={cards}
+                    selectedCard={selectedCard}
+                    gameStarted={gameStarted}
+                    guessedWords={guessedWords}
+                    onCardSelected={handleCardSelected}
+                />
+            )}
 
             <div className="buttons">
                 {gameStarted ? (

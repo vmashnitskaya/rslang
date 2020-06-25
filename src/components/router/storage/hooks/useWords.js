@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import getWords from '../apiGetters/getWords';
 
 const useWords = (group, page) => {
-    const [words, setWords] = useState(null);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(null);
+    const [words, setWords] = useState([]);
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchSettings = async () => {

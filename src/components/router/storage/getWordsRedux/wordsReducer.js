@@ -1,15 +1,14 @@
 import wordsTypes from './wordsTypes';
 
-const wordsReducer = (
-    state = {
-        page: null,
-        group: null,
-        loading: false,
-        words: [],
-        error: null,
-    },
-    action
-) => {
+const initialState = {
+    page: null,
+    group: null,
+    loading: false,
+    words: [],
+    error: null,
+};
+
+const wordsReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {

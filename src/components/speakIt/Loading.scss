@@ -1,6 +1,11 @@
 .loader-wrapper {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 138.5px;
+    .error-message {
+        margin-top: 15px;
+        font-size: 18px;
+    }
 }

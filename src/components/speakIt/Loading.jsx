@@ -1,26 +1,27 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
 import './Loading.scss';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        '& > * + *': {
-            marginLeft: theme.spacing(2),
-        },
-    },
-}));
-
-const Loading = () => {
-    const classes = useStyles();
+const Loading = ({ error }) => {
     return (
         <div className="loader-wrapper">
-            <div className={classes.root}>
-                <CircularProgress color="primary" />
-            </div>
+            <CircularProgress color="primary" />
+            {error && (
+                <div className="error-message">
+                    Sorry for inconvenience, please try again later.
+                </div>
+            )}
         </div>
     );
+};
+
+Loading.propTypes = {
+    error: PropTypes.bool,
+};
+
+Loading.defaultProps = {
+    error: false,
 };
 
 export default Loading;
