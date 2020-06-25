@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PuzzleComponentSpan from './PuzzleComponentSpan';
+import './GameGuessArea.scss';
 
 const GameGuessArea = ({ shuffled, length, onClick }) => {
     const handleClick = (event) => {

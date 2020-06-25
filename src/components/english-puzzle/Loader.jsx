@@ -1,9 +1,13 @@
 import React from 'react';
 
-const Loader = () => (
-    <div className="loader-wrapper">
-        <div className="loader">Loading...</div>
-    </div>
-);
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const Loader = () => {
+    return (
+        <div className="loader-wrapper">
+            <CircularProgress color="primary" />
+        </div>
+    );
+};
 
 export default Loader;

@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import './StartPage.scss';
 
 const StartPage = ({ onClick }) => {
     return (

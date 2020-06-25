@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import PuzzleComponentSpan from './PuzzleComponentSpan';
+import './GameBoxWord.scss';
 
 const GameBoxWord = ({ className, text, index, style, onClick, firstWord, lastWord }) => {
     const handleClick = () => {
