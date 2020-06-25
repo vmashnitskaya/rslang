@@ -8,6 +8,84 @@ import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import './MainCard.scss';
 
+const ShowImage = ({ isShowImage, image }) => {
+    if (isShowImage) {
+        return <CardMedia component="img" alt="img" image={image} />;
+    }
+    return null;
+};
+
+const ShowTranslate = ({ isShowTranslate, wordTranslate }) => {
+    if (isShowTranslate) {
+        return <div className="card__translate">{wordTranslate}</div>;
+    }
+    return null;
+};
+
+const ShowTranscription = ({ isShowTranscription, transcription }) => {
+    if (isShowTranscription) {
+        return <div className="card__wordTranscription">{transcription}</div>;
+    }
+    return null;
+};
+
+const ShowTextMeaning = ({ isShowTextMeaning, textMeaning, textMeaningTranslate }) => {
+    if (isShowTextMeaning) {
+        return (
+            <>
+                <div className="card__textMeaning">{textMeaning}</div>
+                <div className="card__textMeaningTranslate">{textMeaningTranslate}</div>
+            </>
+        );
+    }
+    return null;
+};
+
+const ShowTextExample = ({ isShowTextExample, textExample, textExampleTranslate }) => {
+    if (isShowTextExample) {
+        return (
+            <>
+                <div className="card__textExample">{textExample}</div>
+                <div className="card__textMeaningTranslate">{textExampleTranslate}</div>
+            </>
+        );
+    }
+    return null;
+};
+
+const ShowAnswer = ({ isShowAnswer }) => {
+    if (isShowAnswer) {
+        return (
+            <Button variant="contained" color="secondary">
+                Answer
+            </Button>
+        );
+    }
+    return null;
+};
+
+const ShowDifficult = ({ isShowDifficult }) => {
+    if (isShowDifficult) {
+        return (
+            <Button variant="contained" color="primary">
+                Difficult
+            </Button>
+        );
+    }
+    return null;
+};
+
+const ShowDelete = ({ isShowDelete }) => {
+    if (isShowDelete) {
+        return (
+            <Button variant="contained" color="primary">
+                Delete
+            </Button>
+        );
+    }
+    return null;
+};
+
 const MainCard = ({ wordObj, settings }) => {
     const {
         id,
@@ -35,45 +113,6 @@ const MainCard = ({ wordObj, settings }) => {
         isShowDelete,
     } = settings;
 
-    const showImage = isShowImage ? (
-        <CardMedia component="img" alt={wordTranslate} image={image} />
-    ) : null;
-
-    const showTranslate = isShowTranslate ? (
-        <div className="card__translate">{wordTranslate}</div>
-    ) : null;
-    const showTextMeaning = isShowTextMeaning ? (
-        <div className="card__textMeaning">{textMeaning}</div>
-    ) : null;
-    const showTextExample = isShowTextExample ? (
-        <div className="card__textExample">{textExample}</div>
-    ) : null;
-    const showTranscription = isShowTranscription ? (
-        <div className="card__wordTranscription">{transcription}</div>
-    ) : null;
-    const showTextMeaningTranslate = showTextMeaning ? (
-        <div className="card__textMeaningTranslate">{textMeaningTranslate}</div>
-    ) : null;
-    const showTextExampleTranslate = showTextExample ? (
-        <div className="card__textMeaningTranslate">{textExampleTranslate}</div>
-    ) : null;
-
-    const showAnswer = isShowAnswer ? (
-        <Button variant="contained" color="secondary">
-            Answer
-        </Button>
-    ) : null;
-    const showDifficult = isShowDifficult ? (
-        <Button variant="contained" color="primary">
-            Difficult
-        </Button>
-    ) : null;
-    const showDelete = isShowDelete ? (
-        <Button variant="contained" color="primary">
-            Delete
-        </Button>
-    ) : null;
-
     const styleV1 = isShowImage && (isShowAnswer || isShowDifficult || isShowDelete);
     const styleV2 = isShowImage || isShowAnswer || isShowDifficult || isShowDelete;
 
@@ -92,17 +131,34 @@ const MainCard = ({ wordObj, settings }) => {
     return (
         <div className="card__wrapper">
             <Card className={cardStyle}>
-                {showImage}
+                <ShowImage isShowImage={isShowImage} image={image} />
                 <CardContent className={cardContainerStyle}>
-                    {showTranslate}
-                    {showTranscription}
-                    {showTextMeaning}
-                    {showTextMeaningTranslate}
-                    {showTextExample}
-                    {showTextExampleTranslate}
+                    <ShowTranslate
+                        isShowTranslate={isShowTranslate}
+                        wordTranslate={wordTranslate}
+                    />
+
+                    <ShowTranscription
+                        isShowTranscription={isShowTranscription}
+                        transcription={transcription}
+                    />
+
+                    <ShowTextMeaning
+                        isShowTextMeaning={isShowTextMeaning}
+                        textMeaning={textMeaning}
+                        textMeaningTranslate={textMeaningTranslate}
+                    />
+
+                    <ShowTextExample
+                        isShowTextExample={isShowTextExample}
+                        textExample={textExample}
+                        textExampleTranslate={textExampleTranslate}
+                    />
+
                     <CardMedia component="audio" src={audio} />
                     <CardMedia component="audio" src={audioMeaning} />
                     <CardMedia component="audio" src={audioExample} />
+
                     <div className="card__input">
                         <Input autoFocus key={id} value={word} />
                     </div>
@@ -111,9 +167,9 @@ const MainCard = ({ wordObj, settings }) => {
                     </Button>
                 </CardContent>
                 <CardActions disableSpacing className="card__buttons">
-                    {showAnswer}
-                    {showDifficult}
-                    {showDelete}
+                    <ShowAnswer isShowAnswer={isShowAnswer} />
+                    <ShowDifficult isShowDifficult={isShowDifficult} />
+                    <ShowDelete isShowDelete={isShowDelete} />
                 </CardActions>
             </Card>
         </div>
@@ -147,4 +203,66 @@ MainCard.propTypes = {
     }).isRequired,
 };
 
+ShowImage.propTypes = {
+    image: PropTypes.string.isRequired,
+    isShowImage: PropTypes.bool,
+};
+ShowImage.defaultProps = {
+    isShowImage: false,
+};
+
+ShowTranslate.propTypes = {
+    wordTranslate: PropTypes.string.isRequired,
+    isShowTranslate: PropTypes.bool,
+};
+ShowTranslate.defaultProps = {
+    isShowTranslate: false,
+};
+
+ShowTranscription.propTypes = {
+    transcription: PropTypes.string.isRequired,
+    isShowTranscription: PropTypes.bool,
+};
+ShowTranscription.defaultProps = {
+    isShowTranscription: false,
+};
+
+ShowTextMeaning.propTypes = {
+    textMeaning: PropTypes.string.isRequired,
+    textMeaningTranslate: PropTypes.string.isRequired,
+    isShowTextMeaning: PropTypes.bool,
+};
+ShowTextMeaning.defaultProps = {
+    isShowTextMeaning: false,
+};
+
+ShowTextExample.propTypes = {
+    textExample: PropTypes.string.isRequired,
+    textExampleTranslate: PropTypes.string.isRequired,
+    isShowTextExample: PropTypes.bool,
+};
+ShowTextExample.defaultProps = {
+    isShowTextExample: false,
+};
+
+ShowAnswer.propTypes = {
+    isShowAnswer: PropTypes.bool,
+};
+ShowAnswer.defaultProps = {
+    isShowAnswer: false,
+};
+
+ShowDifficult.propTypes = {
+    isShowDifficult: PropTypes.bool,
+};
+ShowDifficult.defaultProps = {
+    isShowDifficult: false,
+};
+
+ShowDelete.propTypes = {
+    isShowDelete: PropTypes.bool,
+};
+ShowDelete.defaultProps = {
+    isShowDelete: false,
+};
 export default MainCard;
