@@ -19,11 +19,14 @@ const Router = () => {
                     <main>
                         <Switch>
                             {pages.map((e) => (
-                                <Route key={e.url} exact path={e.url}>
+                                <Route key={e.url} exact={e.exact} path={e.url}>
                                     <PageWrapper page={e} routes={routes} />
                                 </Route>
                             ))}
-                            <Route path="/" component={PageNotFound} />
+                            <Route exact path="/404" component={PageNotFound} />
+                            <Route>
+                                <Redirect to="/404" />
+                            </Route>
                         </Switch>
                     </main>
                 </>
