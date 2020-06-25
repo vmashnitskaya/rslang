@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GameBoxWord from './GameBoxWord';
+import './GameBoxLine.scss';
 
 const GameBoxLine = ({
     guessedArray,
@@ -49,12 +50,14 @@ GameBoxLine.propTypes = {
     onWordClick: PropTypes.func.isRequired,
     readyForReview: PropTypes.bool.isRequired,
     differenceIndexes: PropTypes.arrayOf(PropTypes.number),
-    firstWord: PropTypes.string.isRequired,
-    lastWord: PropTypes.string.isRequired,
+    firstWord: PropTypes.string,
+    lastWord: PropTypes.string,
 };
 
 GameBoxLine.defaultProps = {
     differenceIndexes: [],
+    firstWord: '',
+    lastWord: '',
 };
 
 export default GameBoxLine;

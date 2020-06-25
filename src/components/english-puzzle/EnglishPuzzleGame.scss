@@ -6,30 +6,8 @@ $contrast-color: lighten(
     $color: #b79884,
     $amount: 10,
 );
+$base-color: #eceff1;
 $base-duration: 500ms;
-
-.start-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 100%;
-    padding-top: 200px;
-    h1 {
-        font-size: 40px;
-    }
-    p {
-        font-size: 20px;
-        margin: 0;
-    }
-    .start-page__button {
-        font-size: 20px;
-        margin-top: 15px;
-        text-align: center;
-        padding: 2px 8px;
-    }
-}
 
 .ep-page {
     width: 1200px;
@@ -43,7 +21,7 @@ $base-duration: 500ms;
             .dropdown {
                 option {
                     &.passed {
-                        background-color: $contrast-color;
+                        background-color: $base-color;
                     }
                 }
             }
@@ -55,176 +33,12 @@ $base-duration: 500ms;
             align-items: center;
             justify-content: space-between;
             margin-left: -170px;
-            input[type="checkbox"] {
-                display: none;
-                &:hover {
-                    background-color: lighten($color: $contrast-color, $amount: 10);
-                }
-                &:not(:checked) {
-                    background-color: lighten($color: $contrast-color, $amount: 10);
-                }
-            }
-            label {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 35px;
-                height: 35px;
-                border: 1px solid black;
-                border-radius: 2px;
-                user-select: none;
-                cursor: pointer;
-                &:hover {
-                    background-color: darken($color: #eceff1, $amount: 10);
-                }
-            }
-            input[type="checkbox"]:checked + label {
-                background-color: darken($color: #eceff1, $amount: 10);
-                &:hover {
-                    background-color: darken($color: #eceff1, $amount: 15);
-                }
-            }
         }
     }
     .game {
-        &__translation {
-            text-align: center;
-            height: 60px;
-            margin-top: -20px;
-            .sound-wrapper {
-                height: 30px;
-                .sound {
-                    font-size: 2rem;
-                    border: none;
-                    outline: none;
-                    cursor: pointer;
-                    &.hidden {
-                        display: none;
-                    }
-                    &.active {
-                        color: darken($color: #eceff1, $amount: 15);
-                    }
-                }
-            }
-            .translation {
-                font-size: 18px;
-                &.hidden {
-                    display: none;
-                }
-            }
-        }
         &__box {
             width: 1200px;
             height: 350px;
-            &-line {
-                display: flex;
-                height: 35px;
-            }
-            &-word {
-                border: 1px solid black;
-                padding-top: 8px;
-                text-align: center;
-                font-size: 12px;
-                cursor: pointer;
-                user-select: none;
-                position: relative;
-                span {
-                    background-color: $contrast-color;
-                }
-                .text {
-                    display: block;
-                    font-size: 18px;
-                    text-align: center;
-                    position: relative;
-                    background: transparent !important;
-                }
-                .r {
-                    width: 1em;
-                    height: 1em;
-                    position: absolute;
-                    top: 0.8em;
-                    right: -0.6em;
-                    -webkit-border-radius: 4em;
-                    -moz-border-radius: 4em;
-                    border-radius: 4em;
-                    border: none;
-                    border-right: 1px solid black;
-                }
-                .l {
-                    width: 0.5em;
-                    height: 1em;
-                    position: absolute;
-                    top: 0.8em;
-                    left: -0.1em;
-                    -webkit-border-radius: 4em;
-                    -moz-border-radius: 4em;
-                    border-radius: 4em;
-                    border-bottom-left-radius: 0;
-                    border-top-left-radius: 0;
-                    background-color: $contrast-color;
-                    border: none;
-                    border-right: 1px solid black;
-                }
-
-                &.coloredRed {
-                    color: red;
-                }
-                &.coloredGreen {
-                    color: green;
-                }
-            }
-        }
-        &__guess-area {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            height: 35px;
-            background-color: transparent;
-            .guessed-word {
-                background-color: $contrast-color;
-                border: 1px solid black;
-                padding-top: 8px;
-                font-size: 12px;
-                text-align: center;
-                cursor: pointer;
-                user-select: none;
-                position: relative;
-                span {
-                    background-color: $contrast-color;
-                }
-                .text {
-                    display: block;
-                    font-size: 18px;
-                    text-align: center;
-                    position: relative;
-                    background: transparent !important;
-                }
-                .r {
-                    width: 1em;
-                    height: 1em;
-                    position: absolute;
-                    top: 0.8em;
-                    right: -0.6em;
-                    -webkit-border-radius: 4em;
-                    -moz-border-radius: 4em;
-                    border-radius: 4em;
-                    border-right: 1px solid black;
-                }
-                .l {
-                    width: 0.5em;
-                    height: 1em;
-                    position: absolute;
-                    top: 0.8em;
-                    left: -0.1em;
-                    -webkit-border-radius: 4em;
-                    -moz-border-radius: 4em;
-                    border-radius: 4em;
-                    background-color: $main-color;
-                    border-bottom-left-radius: 0;
-                    border-top-left-radius: 0;
-                    border-right: 1px solid black;
-                }
-            }
         }
         &__buttons {
             display: flex;

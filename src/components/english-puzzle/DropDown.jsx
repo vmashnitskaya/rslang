@@ -39,7 +39,7 @@ const DropDown = ({ className, name, label, value, level, options, onChange, pas
                             value={option.value}
                             className={clsx(
                                 className === 'page' &&
-                                    passed &&
+                                    passed[level] &&
                                     passed[level].includes(option.value) &&
                                     'passed',
                                 className === 'level' &&

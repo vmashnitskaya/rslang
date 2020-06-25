@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import TranslateIcon from '@material-ui/icons/Translate';
+import './Checkbox.scss';
 
 const Checkbox = ({ className, id, checked, onChange }) => {
     return (
         <>
             <input id={id} type="checkbox" checked={checked} onChange={onChange} />
-            <label htmlFor={id} className={className}>
+            <label htmlFor={id} className={`checkbox-label ${className}`}>
                 {id === 'auto' && <MusicNoteIcon />}
                 {id === 'volume' && <VolumeUpIcon />}
                 {id === 'translate' && <TranslateIcon />}

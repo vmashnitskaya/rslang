@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import clcx from 'clsx';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import './Translation.scss';
 
 const Translation = ({ text, audio, options, correctResultEnabledOptions }) => {
     const audioRef = useRef();
@@ -29,13 +30,10 @@ const Translation = ({ text, audio, options, correctResultEnabledOptions }) => {
             <div className="sound-wrapper">
                 <VolumeUpIcon
                     className={clcx(
-                        'material-icons',
                         'sound',
-                        audioPlaying && 'active',
-                        (options.soundEnabled && options.autoSoundEnabled) ||
-                            correctResultEnabledOptions ||
-                            'hidden'
+                        options.soundEnabled || correctResultEnabledOptions || 'hidden'
                     )}
+                    color={audioPlaying ? 'primary' : undefined}
                     role="button"
                     tabIndex={0}
                     onClick={handleClick}
@@ -50,7 +48,7 @@ const Translation = ({ text, audio, options, correctResultEnabledOptions }) => {
                     options.translationShown || correctResultEnabledOptions || 'hidden'
                 )}
             >
-                {text}
+                {text.length && text[0].toUpperCase() + text.slice(1)}
             </div>
         </div>
     );
