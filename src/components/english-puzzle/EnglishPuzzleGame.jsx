@@ -332,8 +332,9 @@ const EnglishPuzzleGame = ({
                     options={options}
                 />
             </div>
+
             {loading || error || data.length === 0 ? (
-                <Loader />
+                <Loader error={error} />
             ) : (
                 <div className="main game">
                     <Translation
