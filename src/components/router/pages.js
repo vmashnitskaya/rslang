@@ -3,12 +3,14 @@ import MainPage from '../mainPage/index';
 import AboutProject from '../aboutProject/index';
 import AboutTeam from '../aboutTeam/index';
 import Sprint from '../sprint/Sprint';
+import Vocabulary from '../vocabulary';
 
 const pages = [
     {
         component: MainPage,
         title: 'Main Page',
         url: '/',
+        exact: true,
         img: '',
         exact: true,
     },
@@ -16,6 +18,7 @@ const pages = [
         component: AboutProject,
         title: 'About Project',
         url: '/aboutproject',
+        exact: true,
         img: '/assets/images/angry.jpg',
         exact: true,
     },
@@ -23,6 +26,13 @@ const pages = [
         component: AboutTeam,
         title: 'About Team',
         url: '/aboutteam',
+        exact: true,
+    },
+    {
+        component: Vocabulary,
+        title: 'Vocabulary',
+        url: '/vocabulary',
+        exact: false,
         img: '/assets/images/scared.jpg',
         exact: true,
     },
@@ -39,6 +49,7 @@ export const pagePropType = PropTypes.exact({
     component: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
+    exact: PropTypes.bool.isRequired,
     img: PropTypes.string.isRequired,
     exact: PropTypes.bool.isRequired,
 });

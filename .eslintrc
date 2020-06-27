@@ -11,6 +11,7 @@
     },
     "rules": {
         "no-underscore-dangle": "off",
+        "no-shadow": "off",
         "prettier/prettier": [
             "error"
         ]

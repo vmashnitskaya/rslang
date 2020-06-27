@@ -13,10 +13,14 @@ const useUserStatistics = () => {
     useEffect(() => {
         const fetchStatistics = async () => {
             setLoading(true);
-            const { data, error: fetchError } = await getUserStatistics({ token, userId });
-            setStatistics(data);
-            setLoading(false);
-            setError(fetchError);
+            try {
+                const content = await getUserStatistics({ token, userId });
+                setStatistics(content);
+                setLoading(false);
+            } catch (err) {
+                setLoading(false);
+                setError(err.message || `Error loading user statistic`);
+            }
         };
         fetchStatistics();
     }, [userId]);

@@ -8,7 +8,8 @@
         "lint:fix": "npm run lint -- --fix",
         "dev": "webpack-dev-server --open --mode development",
         "prod": "webpack --mode production",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "deploy": "git push origin --delete deploy && git subtree push --prefix dist origin deploy"
     },
     "husky": {
         "hooks": {
@@ -29,6 +30,7 @@
         "@material-ui/core": "^4.10.2",
         "@material-ui/icons": "^4.9.1",
         "@material-ui/styles": "^4.10.0",
+        "clsx": "^1.1.1",
         "core-js": "^3.6.5",
         "nuka-carousel": "^4.7.0",
         "prop-types": "^15.7.2",
