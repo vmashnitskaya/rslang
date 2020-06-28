@@ -1,0 +1,113 @@
+@mixin flex($wrap: nowrap, $direction: row, $justify: center, $align: center) {
+    display: flex;
+    flex-wrap: $wrap;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.card {
+    padding: 0.5rem;
+    img {
+        width: 200px;
+        height: 200px;
+    }
+    &__wrapper {
+        @include flex();
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        padding-top: 4rem;
+    }
+    &_v1 {
+        @include flex(wrap);
+        width: 50%;
+    }
+    &_v2 {
+        @include flex(wrap, row, space-around);
+        width: 45%;
+    }
+    &_v3 {
+        @include flex();
+        width: 45%;
+    }
+    &__container {
+        @include flex(nowrap, column);
+        word-break: break-all;
+        div {
+            margin-bottom: 1rem;
+        }
+        &_v1 {
+            width: 40%;
+        }
+        &_v2 {
+            width: 50%;
+        }
+        &_v3 {
+            width: 100%;
+        }
+    }
+    &__word {
+        @include flex();
+    }
+    &__input {
+        margin-left: 1rem;
+    }
+    &__buttons {
+        @include flex(nowrap, row, space-between, flex-start);
+        button {
+            margin-bottom: 1rem;
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+@media (max-width: 1199px) {
+    .card {
+        &_v1 {
+            width: 70%;
+        }
+        &_v2 {
+            width: 50%;
+        }
+    }
+}
+@media (max-width: 959px) {
+    .card {
+        &_v1 {
+            width: 70%;
+        }
+        &_v2 {
+            width: 60%;
+        }
+        &__container {
+            &_v2 {
+                width: 100%;
+            }
+        }
+        &__buttons {
+            @include flex(nowrap, row);
+        }
+    }
+}
+@media (max-width: 599px) {
+    .card {
+        &_v1 {
+            width: 100%;
+        }
+        &_v2 {
+            width: 100%;
+        }
+        &_v3 {
+            width: 100%;
+        }
+        &__container {
+            &_v1 {
+                width: 100%;
+            }
+        }
+    }
+}
