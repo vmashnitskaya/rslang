@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardActions, CardContent, CardMedia, Paper } from '@material-ui/core';
+import { Card, CardActions, CardContent, CardMedia, Paper, Divider } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux';
 import InputField from './InputField';
 import Sound from './Sound';
 import Translation from './Translation';
 import Transcription from './Transcription';
 import TextMeaning from './TextMeaning';
 import TextExample from './TextExample';
+import mainGameActions from './redux/mainGameActions';
+import mainGameSelectors from './redux/mainGameSelectors';
 import './MainCard.scss';
 
 const useStyles = makeStyles({
@@ -23,16 +26,29 @@ const useStyles = makeStyles({
     header: {
         display: 'flex',
         justifyContent: 'space-between',
+        marginTop: '10px',
     },
 });
 
-const MainCard = ({ wordObj, settings }) => {
+const MainCard = ({
+    wordObj,
+    settings,
+    newWord,
+    wordStatus,
+    setIncorrectWordProvided,
+    setCorrectWordProvided,
+    setInitialState,
+    isAutoSoundEnabled,
+    setAutoSoundEnabled,
+    handleNewWord,
+}) => {
     const {
-        id,
         word,
         image,
         audio,
         textMeaning,
+        audioMeaning,
+        audioExample,
         textExample,
         transcription,
         wordTranslate,
@@ -40,18 +56,43 @@ const MainCard = ({ wordObj, settings }) => {
         textExampleTranslate,
     } = wordObj;
 
-    console.log(id);
-    console.log(wordObj);
-
     const { optional } = settings;
 
     const classes = useStyles();
+
+    const [isSoundEnabled, setIsSoundEnabled] = useState(false);
+
+    useEffect(() => {
+        setInitialState('true');
+    }, []);
+
+    const handleGuessedWordProvided = (guessedWord) => {
+        if (word === guessedWord) {
+            setCorrectWordProvided(guessedWord);
+            if (isAutoSoundEnabled) {
+                setIsSoundEnabled(true);
+            }
+        } else {
+            setIncorrectWordProvided(guessedWord);
+        }
+    };
+    const handleAutoSoundEnabled = () => {
+        setAutoSoundEnabled(!isAutoSoundEnabled);
+    };
+
+    const handleSoundPerformed = () => {
+        setIsSoundEnabled(false);
+        handleNewWord();
+        setInitialState('true');
+    };
 
     return (
         <div className="card__wrapper">
             <Paper>
                 <Card className={classes.root}>
                     <CardContent>
+                        {newWord && <div className="new-word">new word</div>}
+                        <Divider />
                         <div className={classes.header}>
                             {optional.isShowTranslate && (
                                 <Translation wordTranslate={wordTranslate} />
@@ -60,13 +101,30 @@ const MainCard = ({ wordObj, settings }) => {
                             {optional.isShowTranscription && (
                                 <Transcription transcription={transcription} />
                             )}
-                            <Sound audion={audio} />
+                            <Sound
+                                audio={audio}
+                                audioExample={audioExample}
+                                audioMeaning={audioMeaning}
+                                handleAutoSoundEnabled={handleAutoSoundEnabled}
+                                isAutoSoundEnabled={isAutoSoundEnabled}
+                                isAudioEnabled={optional.isShowTranslate}
+                                isAudioExampleEnabled={optional.isShowTextMeaning}
+                                isAudioMeaningEnabled={optional.isShowTextExample}
+                                isSoundEnabled={isSoundEnabled}
+                                handleSoundPerformed={handleSoundPerformed}
+                            />
                         </div>
                         {optional.isShowImage && (
                             <CardMedia className={classes.media} title="image" image={image} />
                         )}
 
-                        <InputField word={word} />
+                        <InputField
+                            word={word}
+                            onGuessedWordProvided={handleGuessedWordProvided}
+                            isPlaceHolderShown={Boolean(wordStatus.incorrectWord)}
+                            isCorrectPlaceholderShown={Boolean(wordStatus.correctWord)}
+                            wordStatus={wordStatus}
+                        />
 
                         {optional.isShowTextMeaning && (
                             <TextMeaning
@@ -107,6 +165,26 @@ const MainCard = ({ wordObj, settings }) => {
     );
 };
 
+const mapDispatchToProps = (dispatch) => ({
+    setAutoSoundEnabled: (isAutoSoundEnabled) => {
+        dispatch(mainGameActions.setAutoSoundEnabled(isAutoSoundEnabled));
+    },
+    setCorrectWordProvided: (isCorrectWordProvided) => {
+        dispatch(mainGameActions.setCorrectWordProvided(isCorrectWordProvided));
+    },
+    setIncorrectWordProvided: (isIncorrectWordProvided) => {
+        dispatch(mainGameActions.setIncorrectWordProvided(isIncorrectWordProvided));
+    },
+    setInitialState: (initialState) => {
+        dispatch(mainGameActions.setInitialState(initialState));
+    },
+});
+
+const mapStateToProps = (state) => ({
+    isAutoSoundEnabled: mainGameSelectors.getIsAutoSoundEnabled(state),
+    wordStatus: mainGameSelectors.getWordStatus(state),
+});
+
 MainCard.propTypes = {
     wordObj: PropTypes.shape({
         id: PropTypes.string,
@@ -135,6 +213,18 @@ MainCard.propTypes = {
             isShowDelete: PropTypes.bool,
         }),
     }).isRequired,
+    newWord: PropTypes.bool.isRequired,
+    setCorrectWordProvided: PropTypes.func.isRequired,
+    isAutoSoundEnabled: PropTypes.bool.isRequired,
+    setAutoSoundEnabled: PropTypes.func.isRequired,
+    setIncorrectWordProvided: PropTypes.func.isRequired,
+    wordStatus: PropTypes.shape({
+        initial: PropTypes.string,
+        correctWord: PropTypes.string,
+        incorrectWord: PropTypes.string,
+    }).isRequired,
+    setInitialState: PropTypes.func.isRequired,
+    handleNewWord: PropTypes.func.isRequired,
 };
 
 MainCard.defaultProps = {
@@ -154,4 +244,4 @@ MainCard.defaultProps = {
     },
 };
 
-export default MainCard;
+export default connect(mapStateToProps, mapDispatchToProps)(MainCard);

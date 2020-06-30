@@ -1,0 +1,20 @@
+span.correct-answer-hidden {
+    position: absolute;
+    left: 18px;
+    top: 15px;
+    font-size: 24px;
+    display: none;
+    &.show {
+        display: inline;
+    }
+    .green-status {
+        color: green;
+    }
+    .red-status {
+        color: red;
+    }
+    .correct-answer {
+        color: green;
+        text-decoration: underline;
+    }
+}

@@ -25,6 +25,8 @@ const MainGame = ({
     fetchSettings,
     userId,
     token,
+    currentWordNumber,
+    setCurrentWordNumber,
 }) => {
     useEffect(() => {
         fetchSettings(userId, token);
@@ -36,12 +38,24 @@ const MainGame = ({
 
     useEffect(() => {
         setMainWords(words);
+        setCurrentWordNumber(0);
     }, [words]);
+
+    const handleNewWord = () => {
+        if (settings.wordsPerDay > currentWordNumber) {
+            setCurrentWordNumber(currentWordNumber + 1);
+        }
+    };
 
     return loading || error || settingsError || settingsLoading || mainWords.length === 0 ? (
         <Loading error={error} settingsError={settingsError} />
     ) : (
-        <MainCard settings={settings} wordObj={mainWords.length ? mainWords[0] : []} />
+        <MainCard
+            settings={settings}
+            wordObj={mainWords.length !== 0 && mainWords[currentWordNumber]}
+            newWord
+            handleNewWord={handleNewWord}
+        />
     );
 };
 
@@ -55,6 +69,9 @@ const mapDispatchToProps = (dispatch) => ({
     setMainWords: (words) => {
         dispatch(mainGameActions.setMainWords(words));
     },
+    setCurrentWordNumber: (number) => {
+        dispatch(mainGameActions.setCurrentWordNumber(number));
+    },
 });
 
 const mapStateToProps = (state) => ({
@@ -67,6 +84,7 @@ const mapStateToProps = (state) => ({
     settingsLoading: settingsSelectors.getLoading(state),
     userId: getUserId(state),
     token: getToken(state),
+    currentWordNumber: mainGameSelectors.getCurrentWordNumber(state),
 });
 
 MainGame.propTypes = {
@@ -96,6 +114,8 @@ MainGame.propTypes = {
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     fetchSettings: PropTypes.func.isRequired,
+    currentWordNumber: PropTypes.number.isRequired,
+    setCurrentWordNumber: PropTypes.func.isRequired,
 };
 
 MainGame.defaultProps = {
