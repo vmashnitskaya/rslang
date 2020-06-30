@@ -31,6 +31,7 @@ module.exports = (env, options) => {
             contentBase: path.join(__dirname, 'public'),
             watchContentBase: true,
             hot: true,
+            hotOnly: true,
             injectClient: false,
             port: 9000,
             historyApiFallback: true,

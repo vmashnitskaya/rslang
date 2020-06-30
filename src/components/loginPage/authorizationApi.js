@@ -12,8 +12,10 @@ const createUser = async (user) => {
         content = await rawResponse.json();
     } else if (rawResponse.status === 422) {
         throw new Error('Incorrect e-mail or password');
+    } else if (rawResponse.status === 417) {
+        throw new Error('User already exists');
     } else {
-        throw new Error('');
+        throw new Error('Unexpected error');
     }
     return content;
 };

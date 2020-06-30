@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import PageWrapper from './pageWrapper';
 import Header from '../header/index';
@@ -19,11 +19,14 @@ const Router = () => {
                     <main>
                         <Switch>
                             {pages.map((e) => (
-                                <Route key={e.url} exact path={e.url}>
+                                <Route key={e.url} exact={e.exact} path={e.url}>
                                     <PageWrapper page={e} routes={routes} />
                                 </Route>
                             ))}
-                            <Route path="/" component={PageNotFound} />
+                            <Route exact path="/404" component={PageNotFound} />
+                            <Route>
+                                <Redirect to="/404" />
+                            </Route>
                         </Switch>
                     </main>
                 </>

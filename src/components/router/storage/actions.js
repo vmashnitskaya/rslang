@@ -21,7 +21,7 @@ const user = {
                     )
                 )
             )
-            .catch((error) => dispatch(user.createError(error)));
+            .catch((error) => dispatch(user.createError(error.message || `Unexpected`)));
     },
     createSuccess: (message) => ({ type: types.CREATE_USER_SUCCESS, payload: message }),
     createError: (payload) => ({ type: types.CREATE_USER_ERROR, payload }),
