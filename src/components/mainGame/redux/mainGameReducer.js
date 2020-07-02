@@ -9,6 +9,8 @@ const initialState = {
         correctWord: '',
         incorrectWord: '',
     },
+    isTranslationEnabled: true,
+    learnedWordsNumber: 0,
 };
 
 const mainGameReducer = (state = initialState, action) => {
@@ -24,6 +26,11 @@ const mainGameReducer = (state = initialState, action) => {
             return {
                 ...state,
                 currentWordNumber: payload,
+            };
+        case mainGameTypes.INCREASE_CURRENT_WORD_NUMBER:
+            return {
+                ...state,
+                currentWordNumber: state.currentWordNumber + 1,
             };
         case mainGameTypes.SET_AUTO_SOUND_ENABLED:
             return {
@@ -44,6 +51,16 @@ const mainGameReducer = (state = initialState, action) => {
             return {
                 ...state,
                 wordStatus: { initial: payload, incorrectWord: '', correctWord: '' },
+            };
+        case mainGameTypes.SET_IS_TRANSLATION_ENABLED:
+            return {
+                ...state,
+                isTranslationEnabled: payload,
+            };
+        case mainGameTypes.SET_LEARNED_WORDS_NUMBER:
+            return {
+                ...state,
+                learnedWordsNumber: payload,
             };
         default:
             return state;

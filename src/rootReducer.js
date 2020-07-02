@@ -7,6 +7,8 @@ import vocabulary from './components/vocabulary/redux/vocabularyReducer';
 import settings from './components/router/storage/getSettingsRedux/settingsReducer';
 import words from './components/router/storage/getWordsRedux/wordsReducer';
 import mainGame from './components/mainGame/redux/mainGameReducer';
+import statistics from './components/router/storage/getPutStatisticsRedux/statisticsReducer';
+import aggregatedWords from './components/router/storage/getAggregatedWordsRedux/aggregatedWordsReducer';
 
 const reducer = combineReducers({
     navigation,
@@ -14,6 +16,8 @@ const reducer = combineReducers({
     settings,
     words,
     mainGame,
+    statistics,
+    aggregatedWords,
 });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));

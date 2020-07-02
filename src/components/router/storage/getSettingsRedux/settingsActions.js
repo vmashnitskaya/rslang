@@ -15,11 +15,19 @@ const fetchSettingsFailed = (error) => ({
     payload: error,
 });
 
+const setDafaultSettings = () => ({
+    type: settingsTypes.SET_DEFAULT_SETTINGS,
+});
+
 const fetchSettings = (userId, token) => async (dispatch) => {
     try {
         dispatch(fetchSettingsPending());
         const settings = await settingsApi.getUserSettings(userId, token);
-        dispatch(fetchSettingsSuccess(userId, token, settings));
+        if (settings) {
+            dispatch(fetchSettingsSuccess(userId, token, settings));
+        } else {
+            dispatch(setDafaultSettings());
+        }
     } catch (e) {
         dispatch(fetchSettingsFailed(e.message));
     }

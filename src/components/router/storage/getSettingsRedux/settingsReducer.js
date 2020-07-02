@@ -23,7 +23,7 @@ const settingsReducer = (state = initialState, action) => {
 
     switch (type) {
         case settingsTypes.FETCH_SETTINGS_PENDING:
-            return { ...state, error: false, words: [], loading: true };
+            return { ...state, error: false, loading: true };
         case settingsTypes.FETCH_SETTINGS_SUCCESS:
             return {
                 ...state,
@@ -36,6 +36,8 @@ const settingsReducer = (state = initialState, action) => {
                 loading: false,
                 error: payload,
             };
+        case settingsTypes.SET_DEFAULT_SETTINGS:
+            return state;
         default:
             return state;
     }

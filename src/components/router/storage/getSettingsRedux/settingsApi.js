@@ -14,9 +14,9 @@ const getUserSettings = async (userId, token) => {
     if (rawResponse.status === 200) {
         content = await rawResponse.json();
     } else if (rawResponse.status === 401) {
-        throw new Error(`Access token is missing or invalid`);
+        return undefined;
     } else if (rawResponse.status === 404) {
-        throw new Error(`Settings not found`);
+        return undefined;
     }
     return content;
 };

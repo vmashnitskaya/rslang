@@ -1,6 +1,6 @@
 import './styles.scss';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,16 +11,29 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import statisticsSelectors from '../router/storage/getPutStatisticsRedux/statisticsSelectors';
+import { getToken, getUserId } from '../router/storage/selectors';
+
+import Loading from './Loading';
+
 const useStyles = makeStyles({
     media: {
         height: 140,
     },
 });
 
-export default function MainPage({ routes }) {
+const MainPage = ({ routes, userId, token, fetchStatistics, loading, error }) => {
     const classes = useStyles();
 
-    return (
+    useEffect(() => {
+        fetchStatistics(userId, token);
+    }, [fetchStatistics]);
+
+    return loading || error ? (
+        <Loading error={error} />
+    ) : (
         <section className="main_page">
             {routes
                 .filter((i) => i.url !== '/')
@@ -46,7 +59,21 @@ export default function MainPage({ routes }) {
                 })}
         </section>
     );
-}
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    fetchStatistics: (userId, token) => {
+        dispatch(statisticsActions.fetchStatistics(userId, token));
+    },
+});
+
+const mapStateToProps = (state) => ({
+    statistics: statisticsSelectors.getStatistics(state),
+    loading: statisticsSelectors.getLoading(state),
+    error: statisticsSelectors.getError(state),
+    userId: getUserId(state),
+    token: getToken(state),
+});
 
 MainPage.propTypes = {
     routes: PropTypes.arrayOf(
@@ -56,4 +83,11 @@ MainPage.propTypes = {
             img: PropTypes.string.isRequired,
         })
     ).isRequired,
+    userId: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    fetchStatistics: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.bool.isRequired,
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

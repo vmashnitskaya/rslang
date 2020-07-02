@@ -8,6 +8,7 @@ const useStyles = makeStyles({
         fontSize: 16,
         lineHeight: '20px',
         marginTop: '10px',
+        fontStyle: 'italic',
     },
     translation: {
         fontSize: 14,
@@ -16,12 +17,20 @@ const useStyles = makeStyles({
     },
 });
 
-const TextExample = ({ textExample, textExampleTranslate, showTranslation }) => {
+const TextExample = ({
+    word,
+    textExample,
+    textExampleTranslate,
+    showTranslation,
+    showFullSentence,
+}) => {
     const classes = useStyles();
+    const regExp = new RegExp(`${word}`, 'i');
     return (
         <>
             <Typography className={classes.title} component="p">
-                {textExample}
+                {!showFullSentence && textExample.replace(regExp, ' ... ')}
+                {showFullSentence && textExample}
             </Typography>
             {showTranslation && (
                 <Typography className={classes.translation} component="p">
@@ -33,9 +42,11 @@ const TextExample = ({ textExample, textExampleTranslate, showTranslation }) => 
 };
 
 TextExample.propTypes = {
+    word: PropTypes.string.isRequired,
     textExample: PropTypes.string.isRequired,
     textExampleTranslate: PropTypes.string.isRequired,
     showTranslation: PropTypes.bool.isRequired,
+    showFullSentence: PropTypes.bool.isRequired,
 };
 
 export default TextExample;

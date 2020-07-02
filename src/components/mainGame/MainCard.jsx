@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardActions, CardContent, CardMedia, Paper, Divider } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
+import TranslateIcon from '@material-ui/icons/Translate';
+import LinearProgressWithLabel from './LinearProgressWithLabel';
 import InputField from './InputField';
 import Sound from './Sound';
 import Translation from './Translation';
@@ -17,16 +19,20 @@ import './MainCard.scss';
 const useStyles = makeStyles({
     root: {
         maxWidth: 450,
+        minWidth: 310,
     },
     media: {
         height: 0,
         paddingTop: '56.25%',
-        marginBottom: '15px',
+        marginBottom: '10px',
     },
     header: {
         display: 'flex',
         justifyContent: 'space-between',
         marginTop: '10px',
+    },
+    chart: {
+        width: '100%',
     },
 });
 
@@ -41,6 +47,9 @@ const MainCard = ({
     isAutoSoundEnabled,
     setAutoSoundEnabled,
     handleNewWord,
+    isTranslationEnabled,
+    setIsTranslationEnabled,
+    statistics,
 }) => {
     const {
         word,
@@ -56,7 +65,7 @@ const MainCard = ({
         textExampleTranslate,
     } = wordObj;
 
-    const { optional } = settings;
+    const { wordsPerDay, optional } = settings;
 
     const classes = useStyles();
 
@@ -80,14 +89,34 @@ const MainCard = ({
         setAutoSoundEnabled(!isAutoSoundEnabled);
     };
 
-    const handleSoundPerformed = () => {
+    const handleSoundPerformed = useCallback(() => {
         setIsSoundEnabled(false);
         handleNewWord();
         setInitialState('true');
+    }, [handleNewWord, setInitialState]);
+
+    const handleTranslationDisabled = () => {
+        setIsTranslationEnabled(!isTranslationEnabled);
     };
 
+    const handleAnswerShow = () => {
+        handleGuessedWordProvided(word);
+    };
     return (
         <div className="card__wrapper">
+            <div className={classes.root}>
+                <LinearProgressWithLabel
+                    className={classes.chart}
+                    learned={
+                        statistics.optional[new Date().toISOString().slice(0, 10).replace(/-/g, '')]
+                            ? statistics.optional[
+                                  new Date().toISOString().slice(0, 10).replace(/-/g, '')
+                              ]
+                            : 0
+                    }
+                    toLearn={wordsPerDay}
+                />
+            </div>
             <Paper>
                 <Card className={classes.root}>
                     <CardContent>
@@ -107,11 +136,16 @@ const MainCard = ({
                                 audioMeaning={audioMeaning}
                                 handleAutoSoundEnabled={handleAutoSoundEnabled}
                                 isAutoSoundEnabled={isAutoSoundEnabled}
-                                isAudioEnabled={optional.isShowTranslate}
                                 isAudioExampleEnabled={optional.isShowTextMeaning}
                                 isAudioMeaningEnabled={optional.isShowTextExample}
                                 isSoundEnabled={isSoundEnabled}
                                 handleSoundPerformed={handleSoundPerformed}
+                            />
+                            <TranslateIcon
+                                className="translate-icon"
+                                color={isTranslationEnabled ? 'primary' : undefined}
+                                fontSize="large"
+                                onClick={handleTranslationDisabled}
                             />
                         </div>
                         {optional.isShowImage && (
@@ -121,31 +155,39 @@ const MainCard = ({
                         <InputField
                             word={word}
                             onGuessedWordProvided={handleGuessedWordProvided}
-                            isPlaceHolderShown={Boolean(wordStatus.incorrectWord)}
+                            isIncorrectPlaceHolderShown={Boolean(wordStatus.incorrectWord)}
                             isCorrectPlaceholderShown={Boolean(wordStatus.correctWord)}
                             wordStatus={wordStatus}
                         />
 
                         {optional.isShowTextMeaning && (
                             <TextMeaning
+                                word={word}
                                 textMeaning={textMeaning}
                                 textMeaningTranslate={textMeaningTranslate}
-                                showTranslation={false}
+                                showFullSentence={Boolean(wordStatus.correctWord)}
+                                showTranslation={
+                                    Boolean(wordStatus.correctWord) && isTranslationEnabled
+                                }
                             />
                         )}
 
                         {optional.isShowTextExample && (
                             <TextExample
+                                word={word}
                                 textExample={textExample}
                                 textExampleTranslate={textExampleTranslate}
-                                showTranslation={false}
+                                showFullSentence={Boolean(wordStatus.correctWord)}
+                                showTranslation={
+                                    Boolean(wordStatus.correctWord) && isTranslationEnabled
+                                }
                             />
                         )}
                     </CardContent>
                     <CardActions className="card__buttons">
                         {optional.isShowAnswer && (
-                            <Button variant="contained" color="primary">
-                                Answer
+                            <Button variant="contained" color="primary" onClick={handleAnswerShow}>
+                                I don&apos;t know
                             </Button>
                         )}
                         {optional.isShowDifficult && (
@@ -178,11 +220,15 @@ const mapDispatchToProps = (dispatch) => ({
     setInitialState: (initialState) => {
         dispatch(mainGameActions.setInitialState(initialState));
     },
+    setIsTranslationEnabled: (isTranslationEnabled) => {
+        dispatch(mainGameActions.setIsTranslationEnabled(isTranslationEnabled));
+    },
 });
 
 const mapStateToProps = (state) => ({
     isAutoSoundEnabled: mainGameSelectors.getIsAutoSoundEnabled(state),
     wordStatus: mainGameSelectors.getWordStatus(state),
+    isTranslationEnabled: mainGameSelectors.getIsTranslationEnabled(state),
 });
 
 MainCard.propTypes = {
@@ -225,6 +271,12 @@ MainCard.propTypes = {
     }).isRequired,
     setInitialState: PropTypes.func.isRequired,
     handleNewWord: PropTypes.func.isRequired,
+    setIsTranslationEnabled: PropTypes.func.isRequired,
+    isTranslationEnabled: PropTypes.bool.isRequired,
+    statistics: PropTypes.shape({
+        learnedWords: PropTypes.number,
+        optional: PropTypes.number,
+    }).isRequired,
 };
 
 MainCard.defaultProps = {

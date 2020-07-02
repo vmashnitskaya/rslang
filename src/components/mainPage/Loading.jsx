@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import './Loading.scss';
 
-const Loading = ({ error, settingsError }) => {
+const Loading = ({ error }) => {
     return (
         <div className="loading-wrapper">
             <CircularProgress color="primary" />
-            {(error || settingsError) && (
+            {error && (
                 <div className="error-message">
                     Sorry for inconvenience, please try again later.
                 </div>
@@ -18,7 +18,6 @@ const Loading = ({ error, settingsError }) => {
 
 Loading.propTypes = {
     error: PropTypes.bool.isRequired,
-    settingsError: PropTypes.bool.isRequired,
 };
 
 export default Loading;

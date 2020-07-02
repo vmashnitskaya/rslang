@@ -4,7 +4,7 @@ import types from './types';
 const initAuthState = {
     userId: '5ee497332e6f8100172962d5',
     token:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZTQ5NzMzMmU2ZjgxMDAxNzI5NjJkNSIsImlhdCI6MTU5MzQ1MDAxMiwiZXhwIjoxNTkzNDY0NDEyfQ.vBFYwLBvc9QmptBdlngT6NvgCmJfF6EP9B9hfIHA9iE',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZTQ5NzMzMmU2ZjgxMDAxNzI5NjJkNSIsImlhdCI6MTU5MzcxMDYwNCwiZXhwIjoxNTkzNzI1MDA0fQ.7-hJYZGIxFdFE4Nj8cz0mfawk3tZX6d1PKk1NObjpY8',
     createSuccess: null,
     createError: null,
     logInMessage: null,

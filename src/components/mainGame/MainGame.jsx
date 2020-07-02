@@ -1,22 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MainCard from './MainCard';
 import Loading from './Loading';
-import wordsActions from '../router/storage/getWordsRedux/wordsActions';
-import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
+import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
+import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 import settingsActions from '../router/storage/getSettingsRedux/settingsActions';
 import settingsSelectors from '../router/storage/getSettingsRedux/settingsSelectors';
+import statisticsSelectors from '../router/storage/getPutStatisticsRedux/statisticsSelectors';
 import mainGameActions from './redux/mainGameActions';
 import mainGameSelectors from './redux/mainGameSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
 import './MainGame.scss';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 
 const MainGame = ({
-    words,
+    aggregatedWords,
     loading,
     error,
-    fetchWords,
+    fetchAggregatedWords,
     mainWords,
     setMainWords,
     settings,
@@ -27,25 +29,29 @@ const MainGame = ({
     token,
     currentWordNumber,
     setCurrentWordNumber,
+    increaseCurrentWordNumber,
+    statistics,
+    updateStatics,
 }) => {
     useEffect(() => {
         fetchSettings(userId, token);
     }, [fetchSettings]);
 
     useEffect(() => {
-        fetchWords(0, 0);
-    }, [settings, fetchWords]);
+        fetchAggregatedWords(userId, token, settings.wordsPerDay);
+    }, [settings, fetchAggregatedWords]);
 
     useEffect(() => {
-        setMainWords(words);
+        setMainWords(aggregatedWords);
         setCurrentWordNumber(0);
-    }, [words]);
+    }, [aggregatedWords]);
 
-    const handleNewWord = () => {
+    const handleNewWord = useCallback(() => {
         if (settings.wordsPerDay > currentWordNumber) {
-            setCurrentWordNumber(currentWordNumber + 1);
+            increaseCurrentWordNumber();
+            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
         }
-    };
+    }, [settings.wordsPerDay, currentWordNumber, increaseCurrentWordNumber, updateStatics]);
 
     return loading || error || settingsError || settingsLoading || mainWords.length === 0 ? (
         <Loading error={error} settingsError={settingsError} />
@@ -55,13 +61,14 @@ const MainGame = ({
             wordObj={mainWords.length !== 0 && mainWords[currentWordNumber]}
             newWord
             handleNewWord={handleNewWord}
+            statistics={statistics}
         />
     );
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchWords: (page, group) => {
-        dispatch(wordsActions.fetchWords(page, group));
+    fetchAggregatedWords: (userId, token, wordsPerDay) => {
+        dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay));
     },
     fetchSettings: (userId, token) => {
         dispatch(settingsActions.fetchSettings(userId, token));
@@ -72,12 +79,18 @@ const mapDispatchToProps = (dispatch) => ({
     setCurrentWordNumber: (number) => {
         dispatch(mainGameActions.setCurrentWordNumber(number));
     },
+    increaseCurrentWordNumber: () => {
+        dispatch(mainGameActions.increaseCurrentWordNumber());
+    },
+    updateStatics: (date) => {
+        dispatch(statisticsActions.updateStatics(date));
+    },
 });
 
 const mapStateToProps = (state) => ({
-    words: wordsSelectors.getWords(state),
-    loading: wordsSelectors.getLoading(state),
-    error: wordsSelectors.getError(state),
+    aggregatedWords: aggregatedWordsSelectors.getAggregatedWords(state),
+    loading: aggregatedWordsSelectors.getLoading(state),
+    error: aggregatedWordsSelectors.getError(state),
     settings: settingsSelectors.getSettings(state),
     mainWords: mainGameSelectors.getMainWords(state),
     settingsError: settingsSelectors.getError(state),
@@ -85,15 +98,16 @@ const mapStateToProps = (state) => ({
     userId: getUserId(state),
     token: getToken(state),
     currentWordNumber: mainGameSelectors.getCurrentWordNumber(state),
+    statistics: statisticsSelectors.getStatistics(state),
 });
 
 MainGame.propTypes = {
-    words: PropTypes.arrayOf(
+    aggregatedWords: PropTypes.arrayOf(
         PropTypes.objectOf(PropTypes.PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
     ).isRequired,
     loading: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
-    fetchWords: PropTypes.func.isRequired,
+    fetchAggregatedWords: PropTypes.func.isRequired,
     mainWords: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string,
@@ -116,6 +130,12 @@ MainGame.propTypes = {
     fetchSettings: PropTypes.func.isRequired,
     currentWordNumber: PropTypes.number.isRequired,
     setCurrentWordNumber: PropTypes.func.isRequired,
+    increaseCurrentWordNumber: PropTypes.func.isRequired,
+    statistics: PropTypes.shape({
+        learnedWords: PropTypes.number,
+        optional: PropTypes.number,
+    }).isRequired,
+    updateStatics: PropTypes.func.isRequired,
 };
 
 MainGame.defaultProps = {

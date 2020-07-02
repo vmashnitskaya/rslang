@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
@@ -17,7 +17,6 @@ const Sound = ({
     audioMeaning,
     handleAutoSoundEnabled,
     isAutoSoundEnabled,
-    isAudioEnabled,
     isAudioExampleEnabled,
     isAudioMeaningEnabled,
     isSoundEnabled,
@@ -28,29 +27,31 @@ const Sound = ({
     const audioMeaningRef = useRef();
     const audioExampleRef = useRef();
 
-    const playSound = (ref) => {
-        return new Promise((resolve) => {
-            if (isAudioEnabled) {
+    const playSound = useCallback(
+        (ref) =>
+            new Promise((resolve) => {
                 ref.current.play();
                 ref.current.addEventListener('ended', resolve, { once: true });
-            }
-        });
-    };
+            }),
+        [isSoundEnabled]
+    );
 
     useEffect(() => {
         (async () => {
-            if (isAudioEnabled && isSoundEnabled) {
+            if (isSoundEnabled) {
                 await playSound(audioRef);
-            }
-            if (isAudioExampleEnabled && isSoundEnabled) {
-                await playSound(audioExampleRef);
             }
             if (isAudioMeaningEnabled && isSoundEnabled) {
                 await playSound(audioMeaningRef);
             }
-            handleSoundPerformed();
+            if (isAudioExampleEnabled && isSoundEnabled) {
+                await playSound(audioExampleRef);
+            }
+            if (isSoundEnabled) {
+                handleSoundPerformed();
+            }
         })();
-    }, [isSoundEnabled]);
+    }, [isSoundEnabled, handleSoundPerformed, playSound]);
 
     return (
         <>
@@ -88,7 +89,6 @@ Sound.propTypes = {
     audioMeaning: PropTypes.string.isRequired,
     isAutoSoundEnabled: PropTypes.bool.isRequired,
     handleAutoSoundEnabled: PropTypes.func.isRequired,
-    isAudioEnabled: PropTypes.bool.isRequired,
     isAudioExampleEnabled: PropTypes.bool.isRequired,
     isAudioMeaningEnabled: PropTypes.bool.isRequired,
     isSoundEnabled: PropTypes.bool.isRequired,

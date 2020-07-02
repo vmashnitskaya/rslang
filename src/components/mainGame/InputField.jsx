@@ -11,12 +11,13 @@ import './InputField.scss';
 const useStyles = makeStyles(() => ({
     root: {
         padding: 5,
-        marginBottom: 15,
+        marginBottom: 0,
         fontSize: 24,
     },
     inputRoot: {
         fontSize: 24,
-        marginTop: 1,
+        marginTop: 0,
+        textAlign: 'center',
     },
     input: {
         paddingTop: 10,
@@ -26,7 +27,7 @@ const useStyles = makeStyles(() => ({
 const InputField = ({
     word,
     onGuessedWordProvided,
-    isPlaceHolderShown,
+    isIncorrectPlaceHolderShown,
     wordStatus,
     setInitialState,
     isCorrectPlaceholderShown,
@@ -35,12 +36,12 @@ const InputField = ({
     const [isIncorrectStatusShown, setIsIncorrectStatusShown] = useState(false);
     const [isCorrectStatusShown, setIsCorrectStatusShown] = useState(false);
     const classes = useStyles();
-    const wordWidth = word.length ? word.length * 17 : 200;
+    const wordWidth = word.length ? word.length * 18 : 200;
 
     useEffect(() => {
         setIsIncorrectStatusShown(false);
         setIsCorrectStatusShown(false);
-    }, []);
+    }, [word]);
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -54,10 +55,10 @@ const InputField = ({
     };
 
     useEffect(() => {
-        if (isPlaceHolderShown) {
+        if (isIncorrectPlaceHolderShown) {
             setIsIncorrectStatusShown(true);
         }
-    }, [isPlaceHolderShown]);
+    }, [isIncorrectPlaceHolderShown]);
 
     useEffect(() => {
         if (isCorrectPlaceholderShown) {
@@ -93,7 +94,7 @@ const InputField = ({
                 name="guessedWord"
                 autoComplete="false"
                 variant="filled"
-                placeholder={isPlaceHolderShown && word}
+                placeholder={isIncorrectPlaceHolderShown && word}
                 InputProps={{ classes: { root: classes.inputRoot, input: classes.input } }}
                 onChange={handleInputChanged}
                 disabled={isCorrectStatusShown}
@@ -122,7 +123,12 @@ const InputField = ({
                     })}
                 {isCorrectStatusShown && word && <span className="correct-answer">{word}</span>}
             </span>
-            <IconButton variant="contained" color="primary" type="submit">
+            <IconButton
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={isCorrectStatusShown}
+            >
                 <ArrowForwardIosIcon fontSize="large" />
             </IconButton>
         </form>
@@ -132,7 +138,7 @@ const InputField = ({
 InputField.propTypes = {
     word: PropTypes.string.isRequired,
     onGuessedWordProvided: PropTypes.func.isRequired,
-    isPlaceHolderShown: PropTypes.bool.isRequired,
+    isIncorrectPlaceHolderShown: PropTypes.bool.isRequired,
     wordStatus: PropTypes.objectOf(PropTypes.string).isRequired,
     setInitialState: PropTypes.func.isRequired,
     isCorrectPlaceholderShown: PropTypes.bool.isRequired,

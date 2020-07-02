@@ -2,6 +2,7 @@ const settingsTypes = {
     FETCH_SETTINGS_PENDING: 'settings/FETCH_SETTINGS_PENDING',
     FETCH_SETTINGS_SUCCESS: 'settings/FETCH_SETTINGS_SUCCESS',
     FETCH_SETTINGS_FAILED: 'settings/FETCH_SETTINGS_FAILED',
+    SET_DEFAULT_SETTINGS: 'settings/SET_DEFAULT_SETTINGS',
 };
 
 export default settingsTypes;
