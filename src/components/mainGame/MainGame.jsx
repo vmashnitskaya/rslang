@@ -1,8 +1,17 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Button,
+} from '@material-ui/core';
 import MainCard from './MainCard';
 import Loading from './Loading';
+
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 import settingsActions from '../router/storage/getSettingsRedux/settingsActions';
@@ -11,8 +20,8 @@ import statisticsSelectors from '../router/storage/getPutStatisticsRedux/statist
 import mainGameActions from './redux/mainGameActions';
 import mainGameSelectors from './redux/mainGameSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
-import './MainGame.scss';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import './MainGame.scss';
 
 const MainGame = ({
     aggregatedWords,
@@ -33,12 +42,15 @@ const MainGame = ({
     statistics,
     updateStatics,
 }) => {
+    const [isPopUpOpened, setIsPopUpOpened] = useState(false);
+    const [isNewWordWillBeShown, setIsNewWordWillBeShown] = useState(false);
     useEffect(() => {
         fetchSettings(userId, token);
     }, [fetchSettings]);
 
     useEffect(() => {
-        fetchAggregatedWords(userId, token, settings.wordsPerDay);
+        setMainWords([]);
+        fetchAggregatedWords(userId, token, settings.wordsPerDay + 1);
     }, [settings, fetchAggregatedWords]);
 
     useEffect(() => {
@@ -46,23 +58,68 @@ const MainGame = ({
         setCurrentWordNumber(0);
     }, [aggregatedWords]);
 
-    const handleNewWord = useCallback(() => {
-        if (settings.wordsPerDay > currentWordNumber) {
-            increaseCurrentWordNumber();
-            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
+    const handleNewWord = useCallback(async () => {
+        console.log(currentWordNumber);
+        console.log(mainWords.length);
+        if (currentWordNumber >= mainWords.length - 1 && mainWords.length) {
+            await fetchAggregatedWords(userId, token, settings.wordsPerDay);
         }
-    }, [settings.wordsPerDay, currentWordNumber, increaseCurrentWordNumber, updateStatics]);
+        if (
+            statistics.optional[new Date().toISOString().slice(0, 10).replace(/-/g, '')] ===
+            settings.wordsPerDay - 1
+        ) {
+            setIsPopUpOpened(true);
+            setIsNewWordWillBeShown(true);
+        } else {
+            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
+            increaseCurrentWordNumber();
+        }
+    }, [settings.wordsPerDay, currentWordNumber, increaseCurrentWordNumber]);
+
+    const handleClose = () => {
+        setIsPopUpOpened(false);
+    };
+    useEffect(() => {
+        if (!isPopUpOpened && isNewWordWillBeShown) {
+            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
+            increaseCurrentWordNumber();
+            setIsNewWordWillBeShown(false);
+        }
+    }, [isPopUpOpened, isNewWordWillBeShown]);
 
     return loading || error || settingsError || settingsLoading || mainWords.length === 0 ? (
         <Loading error={error} settingsError={settingsError} />
     ) : (
-        <MainCard
-            settings={settings}
-            wordObj={mainWords.length !== 0 && mainWords[currentWordNumber]}
-            newWord
-            handleNewWord={handleNewWord}
-            statistics={statistics}
-        />
+        <>
+            <MainCard
+                settings={settings}
+                wordObj={mainWords.length !== 0 && mainWords[currentWordNumber]}
+                newWord
+                handleNewWord={handleNewWord}
+                statistics={statistics}
+            />
+            <Dialog
+                open={isPopUpOpened}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle>Hooray!</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        You have achieved you goal and learned {settings.wordsPerDay} words.
+                        <p className="quote">
+                            &ldquo;It always seems impossible until it&apos;s done.&ldquo;
+                        </p>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary" autoFocus>
+                        Continue learning
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
     );
 };
 

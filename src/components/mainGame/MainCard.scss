@@ -12,6 +12,16 @@
 .translate-icon {
     cursor: pointer;
 }
+.header {
+    @include flex($justify: space-between);
+}
+.translation,
+.transcription {
+    margin-right: 10px;
+}
+.action-buttons {
+    margin-top: -10px;
+}
 .card {
     padding: 0.5rem;
     img {

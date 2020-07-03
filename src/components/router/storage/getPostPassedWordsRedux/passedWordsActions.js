@@ -19,7 +19,7 @@ const setDefaultPassed = () => ({
     type: passedWordsTypes.SET_DEFAULT_PASSED,
 });
 
-const fetchSettings = (userId, token) => async (dispatch) => {
+const fetchPassed = (userId, token) => async (dispatch) => {
     try {
         dispatch(fetchPassedPending());
         const passed = await passedWordsApi.getUserPassedWords(userId, token);
@@ -33,4 +33,4 @@ const fetchSettings = (userId, token) => async (dispatch) => {
     }
 };
 
-export default { fetchSettings };
+export default { fetchPassed };

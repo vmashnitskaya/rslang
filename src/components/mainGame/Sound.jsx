@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
 import MusicOffIcon from '@material-ui/icons/MusicOff';
+import { Tooltip, Zoom } from '@material-ui/core';
 import './Sound.scss';
 
 const useStyles = makeStyles(() => ({
@@ -38,6 +39,10 @@ const Sound = ({
 
     useEffect(() => {
         (async () => {
+            console.log(audioRef);
+            console.log(audioMeaningRef);
+            console.log(audioExampleRef);
+            console.log(`isSoundEnabled ${isSoundEnabled}`);
             if (isSoundEnabled) {
                 await playSound(audioRef);
             }
@@ -56,19 +61,23 @@ const Sound = ({
     return (
         <>
             {isAutoSoundEnabled ? (
-                <MusicNoteIcon
-                    className={classes.root}
-                    color="primary"
-                    onClick={handleAutoSoundEnabled}
-                    fontSize="large"
-                />
+                <Tooltip title="Autosound" placement="bottom" TransitionComponent={Zoom}>
+                    <MusicNoteIcon
+                        className={classes.root}
+                        color="primary"
+                        onClick={handleAutoSoundEnabled}
+                        fontSize="large"
+                    />
+                </Tooltip>
             ) : (
-                <MusicOffIcon
-                    className={classes.root}
-                    color="primary"
-                    onClick={handleAutoSoundEnabled}
-                    fontSize="large"
-                />
+                <Tooltip title="Autosound" placement="bottom" TransitionComponent={Zoom}>
+                    <MusicOffIcon
+                        className={classes.root}
+                        color="primary"
+                        onClick={handleAutoSoundEnabled}
+                        fontSize="large"
+                    />
+                </Tooltip>
             )}
             <audio ref={audioRef} src={audio} type="audio/mpeg">
                 <track kind="captions" />

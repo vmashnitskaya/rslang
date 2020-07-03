@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, IconButton } from '@material-ui/core';
 import { connect } from 'react-redux';
+import CheckIcon from '@material-ui/icons/Check';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import clsx from 'clsx';
 import mainGameActions from './redux/mainGameActions';
@@ -31,16 +32,24 @@ const InputField = ({
     wordStatus,
     setInitialState,
     isCorrectPlaceholderShown,
+    handleNewWord,
 }) => {
     const [guessedWord, setGuessedWord] = useState('');
     const [isIncorrectStatusShown, setIsIncorrectStatusShown] = useState(false);
     const [isCorrectStatusShown, setIsCorrectStatusShown] = useState(false);
+    const inputRef = useRef();
     const classes = useStyles();
     const wordWidth = word.length ? word.length * 18 : 200;
 
     useEffect(() => {
         setIsIncorrectStatusShown(false);
         setIsCorrectStatusShown(false);
+
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+        });
     }, [word]);
 
     const onSubmit = (event) => {
@@ -92,12 +101,13 @@ const InputField = ({
                     width: `${wordWidth}px`,
                 }}
                 name="guessedWord"
-                autoComplete="false"
+                autoComplete="off"
                 variant="filled"
                 placeholder={isIncorrectPlaceHolderShown && word}
                 InputProps={{ classes: { root: classes.inputRoot, input: classes.input } }}
                 onChange={handleInputChanged}
                 disabled={isCorrectStatusShown}
+                inputRef={inputRef}
             />
             <span
                 className={clsx(
@@ -123,14 +133,15 @@ const InputField = ({
                     })}
                 {isCorrectStatusShown && word && <span className="correct-answer">{word}</span>}
             </span>
-            <IconButton
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={isCorrectStatusShown}
-            >
-                <ArrowForwardIosIcon fontSize="large" />
-            </IconButton>
+            {isCorrectStatusShown ? (
+                <IconButton variant="contained" color="primary" onClick={handleNewWord}>
+                    <ArrowForwardIosIcon fontSize="large" />
+                </IconButton>
+            ) : (
+                <IconButton variant="contained" color="primary" type="submit">
+                    <CheckIcon fontSize="large" />
+                </IconButton>
+            )}
         </form>
     );
 };
@@ -142,6 +153,7 @@ InputField.propTypes = {
     wordStatus: PropTypes.objectOf(PropTypes.string).isRequired,
     setInitialState: PropTypes.func.isRequired,
     isCorrectPlaceholderShown: PropTypes.bool.isRequired,
+    handleNewWord: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

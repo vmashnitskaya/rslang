@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 
 const Transcription = ({ transcription }) => (
     <Typography gutterBottom variant="h5" component="h2">
-        {transcription}
+        {transcription && transcription.toLowerCase()}
     </Typography>
 );
 

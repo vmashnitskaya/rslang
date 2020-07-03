@@ -9,7 +9,7 @@ const LinearProgressWithLabel = ({ toLearn, learned }) => {
                 <LinearProgress
                     variant="determinate"
                     color="primary"
-                    value={(learned / toLearn) * 100}
+                    value={learned > toLearn ? '100%' : (learned / toLearn) * 100}
                 />
             </Box>
             <Box minWidth={25}>

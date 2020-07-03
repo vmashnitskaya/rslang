@@ -38,7 +38,6 @@ const putUserStatistics = async (userId, token, statistics) => {
     let content = '';
     if (rawResponse.status === 200) {
         content = await rawResponse.json();
-        console.log(content);
     } else if (rawResponse.status === 400) {
         return undefined;
     } else if (rawResponse.status === 401) {
