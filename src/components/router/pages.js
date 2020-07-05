@@ -4,6 +4,7 @@ import AboutProject from '../aboutProject/index';
 import AboutTeam from '../aboutTeam/index';
 import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
+import SavannahGame from '../savannah';
 
 const pages = [
     {
@@ -37,6 +38,13 @@ const pages = [
         component: SpeakItGame,
         title: 'SpeakIt',
         url: '/speakit',
+        img: '/assets/images/start-image.jpg',
+        exact: true,
+    },
+    {
+        component: SavannahGame,
+        title: 'Savannah',
+        url: '/Savannah',
         img: '/assets/images/start-image.jpg',
         exact: true,
     },
