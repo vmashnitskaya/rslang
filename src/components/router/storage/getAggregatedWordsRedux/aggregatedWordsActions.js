@@ -16,7 +16,6 @@ const fetchAggrWordsFailed = (error) => ({
 });
 
 const fetchAggregatedWords = (userId, token, wordsPerPage, filter) => async (dispatch) => {
-    console.log(filter);
     try {
         dispatch(fetchAggrWordsPending());
         const aggrWords = await aggregatedWordsApi.getAggregatedWords(

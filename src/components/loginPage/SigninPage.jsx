@@ -20,11 +20,7 @@ const SigninPage = () => {
     });
 
     const onSignIn = async (email, password) => {
-        const user = {
-            email: `${email}`,
-            password: `${password}`,
-        };
-        dispatch(action.user.logIn(user));
+        await dispatch(action.user.logIn(email, password));
     };
     const onFormError = (text) => {
         dispatch(action.user.logInError(text));

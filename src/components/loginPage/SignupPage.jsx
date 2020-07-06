@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Typography, Box } from '@material-ui/core';
 import Form from './Form';
 import Message from './Message';
@@ -16,13 +16,20 @@ const SignupPage = () => {
         document.querySelector('form').reset();
     }, [infoMessage]);
 
-    const onSignUp = (email, password) => {
+    const history = useHistory();
+    const onSignUp = async (email, password) => {
         const user = {
             email: `${email}`,
             password: `${password}`,
         };
-        dispatch(action.user.create(user));
+        await dispatch(action.user.create(user));
     };
+
+    useEffect(() => {
+        if (infoMessage) {
+            history.push('/');
+        }
+    }, [infoMessage, errorMessage]);
     return (
         <div className="signin-page">
             <Typography align="center" variant="h3" color="primary">

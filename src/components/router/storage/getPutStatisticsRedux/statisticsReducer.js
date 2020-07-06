@@ -5,7 +5,9 @@ const initialState = {
     error: false,
     statistics: {
         learnedWords: 0,
-        optional: {},
+        optional: {
+            [`${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`]: 0,
+        },
     },
 };
 
@@ -28,7 +30,10 @@ const settingsReducer = (state = initialState, action) => {
                 error: payload,
             };
         case statisticsTypes.SET_DEFAULT_STATISTICS:
-            return state;
+            return {
+                ...state,
+                loading: false,
+            };
         case statisticsTypes.ENCREASE_LEARNED_WORDS_NUMBER:
             return {
                 ...state,

@@ -134,13 +134,13 @@ const MainCard = ({
         setIsDifficultDisabled(wordObj.userWord ? wordObj.userWord.optional.difficult : false);
         setIsNewWord(!wordObj.userWord);
         setIsRepeatDisabled(wordObj.userWord ? wordObj.userWord.optional.repeat : false);
+        setInitialState('true');
     }, [word, currentWordNumber]);
 
     useEffect(() => {
         if (isSoundEnabled) {
             setIsSoundEnabled(false);
         }
-        setInitialState('true');
     }, [isSoundEnabled, word]);
 
     const handleGuessedWordProvided = async (guessedWord) => {
@@ -192,15 +192,14 @@ const MainCard = ({
 
     const handleSoundPerformed = useCallback(() => {
         setIsSoundEnabled(false);
-        setInitialState('true');
-    }, [setInitialState]);
+    }, [setIsSoundEnabled]);
 
     const handleTranslationDisabled = () => {
         setIsTranslationEnabled(!isTranslationEnabled);
     };
 
-    const handleAnswerShow = () => {
-        handleGuessedWordProvided(word);
+    const handleAnswerShow = async () => {
+        await handleGuessedWordProvided(word);
     };
     const handleDeleteClick = async () => {
         setIsDeletedDisabled(true);
@@ -472,7 +471,7 @@ const MainCard = ({
                                     color="primary"
                                     onClick={handleAnswerShow}
                                 >
-                                    I don&apos;t know
+                                    Answer
                                 </Button>
                             )}
                             {optional.isShowDelete && (
@@ -518,7 +517,7 @@ const MainCard = ({
             </div>
             <Snackbar
                 open={Boolean(alertShown)}
-                autoHideDuration={3000}
+                autoHideDuration={5000}
                 onClose={handleAlertClose}
                 color="primary"
             >

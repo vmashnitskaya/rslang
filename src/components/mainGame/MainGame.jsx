@@ -8,10 +8,11 @@ import {
     DialogContentText,
     DialogTitle,
     Button,
+    Snackbar,
 } from '@material-ui/core';
 import MainCard from './MainCard';
 import Loading from './Loading';
-
+import Alert from './Alert';
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 import statisticsSelectors from '../router/storage/getPutStatisticsRedux/statisticsSelectors';
@@ -66,6 +67,14 @@ const filterForRepeatWords = {
                 },
             ],
         },
+        {
+            $and: [
+                {
+                    'userWord.optional.learned': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
     ],
 };
 
@@ -87,7 +96,8 @@ const MainGame = ({
 }) => {
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
     const [isNewWordWillBeShown, setIsNewWordWillBeShown] = useState(false);
-    const [wordsType, setWordsType] = useState('mixed');
+    const [wordsType, setWordsType] = useState('new');
+    const [alertShown, setAlertShown] = useState(false);
 
     useEffect(() => {
         if (settings.optional && wordsType && wordsType === 'new') {
@@ -99,16 +109,19 @@ const MainGame = ({
                 settings.wordsPerDay + 1,
                 filterForNewAndLearnedWords
             );
-            console.log(settings.optional);
-            console.log(wordsType);
         } else if (settings.optional && wordsType && wordsType === 'repeat') {
             fetchAggregatedWords(userId, token, settings.wordsPerDay + 1, filterForRepeatWords);
         }
     }, [wordsType, settings]);
 
     useEffect(() => {
-        setMainWords(aggregatedWords);
-        setCurrentWordNumber(0);
+        if (aggregatedWords === null) {
+            setWordsType('new');
+            setAlertShown(true);
+        } else {
+            setMainWords(aggregatedWords);
+            setCurrentWordNumber(0);
+        }
     }, [aggregatedWords]);
 
     const handleNewWord = useCallback(async () => {
@@ -169,6 +182,10 @@ const MainGame = ({
         }
     };
 
+    const handleAlertClose = () => {
+        setAlertShown(false);
+    };
+
     return loading || error || mainWords.length === 0 ? (
         <Loading error={error} settingsError={false} />
     ) : (
@@ -203,6 +220,16 @@ const MainGame = ({
                     </Button>
                 </DialogActions>
             </Dialog>
+            <Snackbar
+                open={Boolean(alertShown)}
+                autoHideDuration={3000}
+                onClose={handleAlertClose}
+                color="primary"
+            >
+                <Alert onClose={handleAlertClose}>
+                    {alertShown && "No words to repeat. Let's continue with new ones."}
+                </Alert>
+            </Snackbar>
         </>
     );
 };

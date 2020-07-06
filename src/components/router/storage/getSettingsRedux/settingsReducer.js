@@ -37,7 +37,10 @@ const settingsReducer = (state = initialState, action) => {
                 error: payload,
             };
         case settingsTypes.SET_DEFAULT_SETTINGS:
-            return state;
+            return {
+                ...state,
+                loading: false,
+            };
         default:
             return state;
     }

@@ -25,28 +25,32 @@ const getAggregatedWords = async (userId, token, wordsPerPage, filter) => {
     let content = '';
     if (rawResponse.status === 200) {
         const data = await rawResponse.json();
-        const shuffled = shuffle(data[0].paginatedResults).slice(0, wordsPerPage);
-        content = shuffled.map(
-            ({
-                word,
-                image,
-                audio,
-                textExample,
-                textMeaning,
-                audioMeaning,
-                audioExample,
-                ...other
-            }) => ({
-                word: word.toLowerCase(),
-                image: formatUrl(image),
-                audio: formatUrl(audio),
-                audioMeaning: formatUrl(audioMeaning),
-                audioExample: formatUrl(audioExample),
-                textExample: formatString(textExample),
-                textMeaning: formatString(textMeaning),
-                ...other,
-            })
-        );
+        if (!data[0].paginatedResults.length) {
+            content = null;
+        } else {
+            const shuffled = shuffle(data[0].paginatedResults).slice(0, wordsPerPage);
+            content = shuffled.map(
+                ({
+                    word,
+                    image,
+                    audio,
+                    textExample,
+                    textMeaning,
+                    audioMeaning,
+                    audioExample,
+                    ...other
+                }) => ({
+                    word: word.toLowerCase(),
+                    image: formatUrl(image),
+                    audio: formatUrl(audio),
+                    audioMeaning: formatUrl(audioMeaning),
+                    audioExample: formatUrl(audioExample),
+                    textExample: formatString(textExample),
+                    textMeaning: formatString(textMeaning),
+                    ...other,
+                })
+            );
+        }
     } else if (rawResponse.status === 401) {
         throw new Error('Wrong token');
     }
