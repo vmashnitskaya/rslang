@@ -12,6 +12,10 @@ import {
     Tooltip,
     Zoom,
     Snackbar,
+    Radio,
+    RadioGroup,
+    FormControlLabel,
+    FormControl,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
@@ -34,10 +38,21 @@ import mainGameSelectors from './redux/mainGameSelectors';
 
 import './MainCard.scss';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 450,
-        minWidth: 300,
+        minWidth: 290,
+    },
+    rootRadio: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    rootRadioOption: {
+        display: 'none',
+    },
+
+    label: {
+        color: theme.palette.primary.main,
     },
     media: {
         height: 0,
@@ -48,6 +63,7 @@ const useStyles = makeStyles({
         display: 'flex',
         justifyContent: 'space-between',
         marginTop: '10px',
+        flexWrap: 'wrap',
     },
     chartWrapper: {
         maxWidth: 450,
@@ -59,12 +75,11 @@ const useStyles = makeStyles({
     icons: {
         padding: 4,
     },
-});
+}));
 
 const MainCard = ({
     wordObj,
     settings,
-    newWord,
     wordStatus,
     setIncorrectWordProvided,
     setCorrectWordProvided,
@@ -77,6 +92,10 @@ const MainCard = ({
     statistics,
     userId,
     token,
+    addNewWord,
+    currentWordNumber,
+    handleWordsTypeChanged,
+    wordsType,
 }) => {
     const {
         _id,
@@ -99,15 +118,30 @@ const MainCard = ({
 
     const [isSoundEnabled, setIsSoundEnabled] = useState(false);
     const [alertShown, setAlertShown] = useState('');
-    const [isDifficultDisabled, setIsDifficultDisabled] = useState(false);
-    const [isDeletedDisabled, setisDeletedDisabled] = useState(false);
+    const [isDifficultDisabled, setIsDifficultDisabled] = useState(
+        wordObj.userWord ? wordObj.userWord.optional.difficult : false
+    );
+    const [isDeletedDisabled, setIsDeletedDisabled] = useState(
+        wordObj.userWord ? wordObj.userWord.optional.deleted : false
+    );
+    const [isRepeatDisabled, setIsRepeatDisabled] = useState(
+        wordObj.userWord ? wordObj.userWord.optional.repeat : false
+    );
+    const [isNewWord, setIsNewWord] = useState(!wordObj.userWord);
+
+    useEffect(() => {
+        setIsDeletedDisabled(wordObj.userWord ? wordObj.userWord.optional.deleted : false);
+        setIsDifficultDisabled(wordObj.userWord ? wordObj.userWord.optional.difficult : false);
+        setIsNewWord(!wordObj.userWord);
+        setIsRepeatDisabled(wordObj.userWord ? wordObj.userWord.optional.repeat : false);
+    }, [word, currentWordNumber]);
 
     useEffect(() => {
         if (isSoundEnabled) {
             setIsSoundEnabled(false);
         }
         setInitialState('true');
-    }, [isSoundEnabled]);
+    }, [isSoundEnabled, word]);
 
     const handleGuessedWordProvided = async (guessedWord) => {
         if (word === guessedWord.trim()) {
@@ -116,25 +150,40 @@ const MainCard = ({
                 setIsSoundEnabled(true);
             }
 
-            await passedWordsApi.postPassedWords(userId, token, _id, {
-                difficulty: 'default',
-                optional: {
-                    learned: true,
-                    word,
-                    image,
-                    audio,
-                    textMeaning,
-                    audioMeaning,
-                    audioExample,
-                    textExample,
-                    transcription,
-                    wordTranslate,
-                    textMeaningTranslate,
-                    textExampleTranslate,
-                },
-            });
+            if (isDifficultDisabled || isDeletedDisabled || wordObj.userWord || isRepeatDisabled) {
+                await passedWordsApi.putPassedWords(userId, token, _id, {
+                    difficulty: 'default',
+                    optional: {
+                        difficult: isDifficultDisabled,
+                        deleted: isDeletedDisabled,
+                        repeat: isRepeatDisabled,
+                        learned: true,
+                    },
+                });
+            } else {
+                await passedWordsApi.postPassedWords(userId, token, _id, {
+                    difficulty: 'default',
+                    optional: {
+                        learned: true,
+                    },
+                });
+            }
         } else {
             setIncorrectWordProvided(guessedWord);
+            addNewWord(
+                {
+                    ...wordObj,
+                    userWord: {
+                        optional: {
+                            learned: true,
+                            difficult: isDifficultDisabled,
+                            deleted: isDeletedDisabled,
+                            repeat: true,
+                        },
+                    },
+                },
+                currentWordNumber + 2
+            );
         }
     };
     const handleAutoSoundEnabled = () => {
@@ -154,52 +203,88 @@ const MainCard = ({
         handleGuessedWordProvided(word);
     };
     const handleDeleteClick = async () => {
-        setisDeletedDisabled(true);
+        setIsDeletedDisabled(true);
         setAlertShown('deleted');
-        await passedWordsApi.postPassedWords(userId, token, _id, {
-            difficulty: 'default',
-            optional: {
-                deleted: true,
-                word,
-                image,
-                audio,
-                textMeaning,
-                audioMeaning,
-                audioExample,
-                textExample,
-                transcription,
-                wordTranslate,
-                textMeaningTranslate,
-                textExampleTranslate,
-            },
-        });
+
+        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled) {
+            await passedWordsApi.putPassedWords(userId, token, _id, {
+                difficulty: 'default',
+                optional: {
+                    deleted: true,
+                    difficult: isDifficultDisabled,
+                    repeat: isRepeatDisabled,
+                    learned: Boolean(wordObj.userWord),
+                },
+            });
+        } else {
+            await passedWordsApi.postPassedWords(userId, token, _id, {
+                difficulty: 'default',
+                optional: {
+                    deleted: true,
+                },
+            });
+        }
     };
 
     const handleDifficultClick = async () => {
         setIsDifficultDisabled(true);
         setAlertShown('difficult');
 
-        await passedWordsApi.postPassedWords(userId, token, _id, {
-            difficulty: 'default',
-            optional: {
-                difficult: true,
-                word,
-                image,
-                audio,
-                textMeaning,
-                audioMeaning,
-                audioExample,
-                textExample,
-                transcription,
-                wordTranslate,
-                textMeaningTranslate,
-                textExampleTranslate,
-            },
-        });
+        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled) {
+            await passedWordsApi.putPassedWords(userId, token, _id, {
+                difficulty: 'default',
+                optional: {
+                    difficult: true,
+                    deleted: isDeletedDisabled,
+                    repeat: isRepeatDisabled,
+                    learned: Boolean(wordObj.userWord),
+                },
+            });
+        } else {
+            await passedWordsApi.postPassedWords(userId, token, _id, {
+                difficulty: 'default',
+                optional: {
+                    difficult: true,
+                },
+            });
+        }
     };
 
-    const handleRepeatClick = () => {
+    const handleRepeatClick = async () => {
         setAlertShown('repeat');
+        setIsRepeatDisabled(true);
+        addNewWord(
+            {
+                ...wordObj,
+                userWord: {
+                    optional: {
+                        learned: true,
+                        difficult: isDifficultDisabled,
+                        deleted: isDeletedDisabled,
+                        repeat: true,
+                    },
+                },
+            },
+            currentWordNumber + 2
+        );
+        if (isDifficultDisabled || isDeletedDisabled || wordObj.userWord || isRepeatDisabled) {
+            await passedWordsApi.putPassedWords(userId, token, _id, {
+                difficulty: 'default',
+                optional: {
+                    difficult: isDifficultDisabled,
+                    deleted: isDeletedDisabled,
+                    repeat: true,
+                    learned: true,
+                },
+            });
+        } else {
+            await passedWordsApi.postPassedWords(userId, token, _id, {
+                difficulty: 'default',
+                optional: {
+                    repeat: true,
+                },
+            });
+        }
     };
 
     const handleEasyClick = () => {
@@ -209,9 +294,45 @@ const MainCard = ({
     const handleAlertClose = () => {
         setAlertShown('');
     };
+    const handleRadioChange = (event) => {
+        if (wordsType && wordsType !== event.target.value) {
+            handleWordsTypeChanged(event.target.value);
+        }
+    };
     return (
         <>
             <div className="card__wrapper">
+                <FormControl component="fieldset">
+                    <RadioGroup
+                        aria-label="words"
+                        name="words"
+                        value={wordsType}
+                        onChange={handleRadioChange}
+                        className={classes.rootRadio}
+                    >
+                        <FormControlLabel
+                            value="new"
+                            control={<Radio className={classes.rootRadioOption} />}
+                            label="New"
+                            labelPlacement="top"
+                            className={wordsType === 'new' && classes.label}
+                        />
+                        <FormControlLabel
+                            value="mixed"
+                            control={<Radio className={classes.rootRadioOption} />}
+                            label="Mixed"
+                            labelPlacement="top"
+                            className={wordsType === 'mixed' && classes.label}
+                        />
+                        <FormControlLabel
+                            value="repeat"
+                            control={<Radio className={classes.rootRadioOption} />}
+                            label="Repeat words"
+                            labelPlacement="top"
+                            className={wordsType === 'repeat' && classes.label}
+                        />
+                    </RadioGroup>
+                </FormControl>
                 <div className={classes.chartWrapper}>
                     <LinearProgressWithLabel
                         className={classes.chart}
@@ -231,52 +352,63 @@ const MainCard = ({
                     <Card className={classes.root}>
                         <CardContent>
                             <div className="header">
-                                {newWord && <div className="new-word">new word</div>}
-                                <div className="difficulty">
-                                    <Tooltip
-                                        title="Easy"
-                                        placement="top"
-                                        TransitionComponent={Zoom}
-                                        onClick={handleEasyClick}
-                                    >
-                                        <IconButton
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.icons}
+                                {isNewWord ? (
+                                    <div className="new-word">new word</div>
+                                ) : (
+                                    <div className="new-word">word to repeat</div>
+                                )}
+                                {settings.optional.isShowDifficult && (
+                                    <div className="difficulty">
+                                        <Tooltip
+                                            title="Easy"
+                                            placement="top"
+                                            TransitionComponent={Zoom}
+                                            onClick={handleEasyClick}
                                         >
-                                            <MoodIcon fontSize="small" />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip
-                                        title="Difficult"
-                                        placement="top"
-                                        TransitionComponent={Zoom}
-                                        onClick={handleDifficultClick}
-                                    >
-                                        <IconButton
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.icons}
-                                            disabled={isDifficultDisabled}
+                                            <span>
+                                                <IconButton
+                                                    variant="contained"
+                                                    color="primary"
+                                                    className={classes.icons}
+                                                >
+                                                    <MoodIcon fontSize="small" />
+                                                </IconButton>
+                                            </span>
+                                        </Tooltip>
+                                        <Tooltip
+                                            title="Difficult"
+                                            placement="top"
+                                            TransitionComponent={Zoom}
+                                            onClick={handleDifficultClick}
                                         >
-                                            <MoodBadIcon fontSize="small" />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip
-                                        title="Repeat in this round"
-                                        placement="top"
-                                        TransitionComponent={Zoom}
-                                        onClick={handleRepeatClick}
-                                    >
-                                        <IconButton
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.icons}
+                                            <span>
+                                                <IconButton
+                                                    variant="contained"
+                                                    color="primary"
+                                                    className={classes.icons}
+                                                    disabled={isDifficultDisabled}
+                                                >
+                                                    <MoodBadIcon fontSize="small" />
+                                                </IconButton>
+                                            </span>
+                                        </Tooltip>
+                                        <Tooltip
+                                            title="Repeat in this round"
+                                            placement="top"
+                                            TransitionComponent={Zoom}
+                                            onClick={handleRepeatClick}
                                         >
-                                            <LoopIcon fontSize="small" />
-                                        </IconButton>
-                                    </Tooltip>
-                                </div>
+                                            <IconButton
+                                                variant="contained"
+                                                color="primary"
+                                                className={classes.icons}
+                                                disabled={isRepeatDisabled}
+                                            >
+                                                <LoopIcon fontSize="small" />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </div>
+                                )}
                             </div>
                             <Divider />
                             <div className={classes.word}>
@@ -305,6 +437,7 @@ const MainCard = ({
                                 isCorrectPlaceholderShown={Boolean(wordStatus.correctWord)}
                                 wordStatus={wordStatus}
                                 handleNewWord={handleNewWord}
+                                currentWordNumber={currentWordNumber}
                             />
 
                             {optional.isShowTextMeaning && (
@@ -418,6 +551,9 @@ const mapDispatchToProps = (dispatch) => ({
     setIsTranslationEnabled: (isTranslationEnabled) => {
         dispatch(mainGameActions.setIsTranslationEnabled(isTranslationEnabled));
     },
+    addNewWord: (newWord, currentNumber) => {
+        dispatch(mainGameActions.addNewWord(newWord, currentNumber));
+    },
 });
 
 const mapStateToProps = (state) => ({
@@ -442,6 +578,15 @@ MainCard.propTypes = {
         wordTranslate: PropTypes.string,
         textMeaningTranslate: PropTypes.string,
         textExampleTranslate: PropTypes.string,
+        userWord: PropTypes.shape({
+            difficulty: PropTypes.string,
+            optional: PropTypes.shape({
+                difficult: PropTypes.bool,
+                repeat: PropTypes.bool,
+                learned: PropTypes.bool,
+                deleted: PropTypes.bool,
+            }),
+        }),
     }),
     settings: PropTypes.shape({
         wordsPerDay: PropTypes.number,
@@ -456,7 +601,6 @@ MainCard.propTypes = {
             isShowDelete: PropTypes.bool,
         }),
     }).isRequired,
-    newWord: PropTypes.bool.isRequired,
     setCorrectWordProvided: PropTypes.func.isRequired,
     isAutoSoundEnabled: PropTypes.bool.isRequired,
     setAutoSoundEnabled: PropTypes.func.isRequired,
@@ -476,6 +620,10 @@ MainCard.propTypes = {
     }).isRequired,
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
+    addNewWord: PropTypes.func.isRequired,
+    currentWordNumber: PropTypes.number,
+    handleWordsTypeChanged: PropTypes.func.isRequired,
+    wordsType: PropTypes.string.isRequired,
 };
 
 MainCard.defaultProps = {
@@ -493,6 +641,7 @@ MainCard.defaultProps = {
         textMeaningTranslate: '',
         textExampleTranslate: '',
     },
+    currentWordNumber: 0,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainCard);

@@ -8,6 +8,7 @@ const speakItTypes = {
     SET_INITIAL_STATE: 'mainGame/SET_INITIAL_STATE',
     SET_IS_TRANSLATION_ENABLED: 'mainGame/SET_IS_TRANSLATION_ENABLED',
     SET_LEARNED_WORDS_NUMBER: 'mainGame/SET_LEARNED_WORDS_NUMBER',
+    ADD_NEW_WORD: 'mainGame/ADD_NEW_WORD',
 };
 
 export default speakItTypes;

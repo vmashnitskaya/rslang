@@ -62,6 +62,17 @@ const mainGameReducer = (state = initialState, action) => {
                 ...state,
                 learnedWordsNumber: payload,
             };
+        case mainGameTypes.ADD_NEW_WORD: {
+            const newArray = state.mainWords.slice(0);
+            const random =
+                payload.currentNumber +
+                Math.random() * (state.mainWords.length - payload.currentNumber);
+            newArray.splice(Math.round(random), 1, payload.newWord);
+            return {
+                ...state,
+                mainWords: newArray,
+            };
+        }
         default:
             return state;
     }

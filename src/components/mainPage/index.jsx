@@ -15,6 +15,8 @@ import { connect } from 'react-redux';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 import statisticsSelectors from '../router/storage/getPutStatisticsRedux/statisticsSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
+import settingsActions from '../router/storage/getSettingsRedux/settingsActions';
+import settingsSelectors from '../router/storage/getSettingsRedux/settingsSelectors';
 
 import Loading from './Loading';
 
@@ -24,14 +26,28 @@ const useStyles = makeStyles({
     },
 });
 
-const MainPage = ({ routes, userId, token, fetchStatistics, loading, error }) => {
+const MainPage = ({
+    routes,
+    userId,
+    token,
+    fetchStatistics,
+    loading,
+    error,
+    settingsError,
+    settingsLoading,
+    fetchSettings,
+}) => {
     const classes = useStyles();
 
     useEffect(() => {
         fetchStatistics(userId, token);
     }, [fetchStatistics]);
 
-    return loading || error ? (
+    useEffect(() => {
+        fetchSettings(userId, token);
+    }, [fetchSettings]);
+
+    return loading || error || settingsError || settingsLoading ? (
         <Loading error={error} />
     ) : (
         <section className="main_page">
@@ -65,12 +81,17 @@ const mapDispatchToProps = (dispatch) => ({
     fetchStatistics: (userId, token) => {
         dispatch(statisticsActions.fetchStatistics(userId, token));
     },
+    fetchSettings: (userId, token) => {
+        dispatch(settingsActions.fetchSettings(userId, token));
+    },
 });
 
 const mapStateToProps = (state) => ({
     statistics: statisticsSelectors.getStatistics(state),
     loading: statisticsSelectors.getLoading(state),
     error: statisticsSelectors.getError(state),
+    settingsError: settingsSelectors.getError(state),
+    settingsLoading: settingsSelectors.getLoading(state),
     userId: getUserId(state),
     token: getToken(state),
 });
@@ -88,6 +109,9 @@ MainPage.propTypes = {
     fetchStatistics: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     error: PropTypes.bool.isRequired,
+    settingsError: PropTypes.string.isRequired,
+    settingsLoading: PropTypes.bool.isRequired,
+    fetchSettings: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

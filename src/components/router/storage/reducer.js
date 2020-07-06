@@ -2,9 +2,8 @@ import { combineReducers } from 'redux';
 import types from './types';
 
 const initAuthState = {
-    userId: '5ee497332e6f8100172962d5',
-    token:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZTQ5NzMzMmU2ZjgxMDAxNzI5NjJkNSIsImlhdCI6MTU5MzgwMTMwMywiZXhwIjoxNTkzODE1NzAzfQ.5ZoD6eRL0y1C6LAu0j3ooOBG-fZ5d3I7vBoX1OQs_LQ',
+    userId: '',
+    token: '',
     createSuccess: null,
     createError: null,
     logInMessage: null,

@@ -19,9 +19,10 @@ const useStyles = makeStyles(() => ({
         fontSize: 24,
         marginTop: 0,
         textAlign: 'center',
+        fontFamily: "'Roboto Mono', monospace",
     },
     input: {
-        paddingTop: 10,
+        padding: '10px 7px 10px 7px',
     },
 }));
 
@@ -33,13 +34,14 @@ const InputField = ({
     setInitialState,
     isCorrectPlaceholderShown,
     handleNewWord,
+    currentWordNumber,
 }) => {
     const [guessedWord, setGuessedWord] = useState('');
     const [isIncorrectStatusShown, setIsIncorrectStatusShown] = useState(false);
     const [isCorrectStatusShown, setIsCorrectStatusShown] = useState(false);
     const inputRef = useRef();
     const classes = useStyles();
-    const wordWidth = word.length ? word.length * 18 : 200;
+    const wordWidth = word.length ? word.length * 17 : 200;
 
     useEffect(() => {
         setIsIncorrectStatusShown(false);
@@ -50,7 +52,7 @@ const InputField = ({
                 inputRef.current.focus();
             }
         });
-    }, [word]);
+    }, [word, currentWordNumber]);
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -103,7 +105,7 @@ const InputField = ({
                 name="guessedWord"
                 autoComplete="off"
                 variant="filled"
-                placeholder={isIncorrectPlaceHolderShown && word}
+                placeholder={isIncorrectPlaceHolderShown ? word : ''}
                 InputProps={{ classes: { root: classes.inputRoot, input: classes.input } }}
                 onChange={handleInputChanged}
                 disabled={isCorrectStatusShown}
@@ -122,6 +124,7 @@ const InputField = ({
                     word.split('').map((element, index) => {
                         return (
                             <span
+                                key={`${element}_${index + 1}`}
                                 className={clsx(
                                     'green-status',
                                     element !== wordStatus.incorrectWord[index] && 'red-status'
@@ -154,6 +157,7 @@ InputField.propTypes = {
     setInitialState: PropTypes.func.isRequired,
     isCorrectPlaceholderShown: PropTypes.bool.isRequired,
     handleNewWord: PropTypes.func.isRequired,
+    currentWordNumber: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

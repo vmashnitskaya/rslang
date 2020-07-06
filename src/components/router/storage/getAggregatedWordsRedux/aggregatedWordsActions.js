@@ -15,10 +15,16 @@ const fetchAggrWordsFailed = (error) => ({
     payload: error,
 });
 
-const fetchAggregatedWords = (userId, token, wordsPerPage) => async (dispatch) => {
+const fetchAggregatedWords = (userId, token, wordsPerPage, filter) => async (dispatch) => {
+    console.log(filter);
     try {
         dispatch(fetchAggrWordsPending());
-        const aggrWords = await aggregatedWordsApi.getAggregatedWords(userId, token, wordsPerPage);
+        const aggrWords = await aggregatedWordsApi.getAggregatedWords(
+            userId,
+            token,
+            wordsPerPage,
+            filter
+        );
         dispatch(fetchAggrWordsSuccess(userId, token, aggrWords));
     } catch (e) {
         dispatch(fetchAggrWordsFailed(e.message));

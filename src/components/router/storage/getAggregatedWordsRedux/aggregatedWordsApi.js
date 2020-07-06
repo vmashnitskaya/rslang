@@ -5,9 +5,13 @@ const formatString = (string) => {
     return string.replace(/<\/?[^>]+(>|$)/g, '');
 };
 
-const getAggregatedWords = async (userId, token, wordsPerPage) => {
-    const filter = JSON.stringify({ userWord: null });
-    const paramsStr = `&wordsPerPage=${wordsPerPage}&filter=${filter}`;
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+const getAggregatedWords = async (userId, token, wordsPerPage, filter) => {
+    const filtering = JSON.stringify(filter);
+    const paramsStr = `&wordsPerPage=${wordsPerPage * 3}&filter=${filtering}`;
     const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${paramsStr}`;
 
     const rawResponse = await fetch(url, {
@@ -21,7 +25,8 @@ const getAggregatedWords = async (userId, token, wordsPerPage) => {
     let content = '';
     if (rawResponse.status === 200) {
         const data = await rawResponse.json();
-        content = data[0].paginatedResults.map(
+        const shuffled = shuffle(data[0].paginatedResults).slice(0, wordsPerPage);
+        content = shuffled.map(
             ({
                 word,
                 image,

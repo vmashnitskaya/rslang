@@ -4,7 +4,7 @@ const initialState = {
     loading: false,
     error: false,
     settings: {
-        wordsPerDay: 30,
+        wordsPerDay: 20,
         optional: {
             isShowImage: true,
             isShowTranslate: true,

@@ -19,8 +19,14 @@
 .transcription {
     margin-right: 10px;
 }
+.highlightedRadio {
+    color: #9c27b0;
+}
 .action-buttons {
     margin-top: -10px;
+}
+.radio {
+    display: none;
 }
 .card {
     padding: 0.5rem;
@@ -31,7 +37,7 @@
     &__wrapper {
         @include flex($direction: column, $justify: center, $align: center);
         width: 100%;
-        padding-top: 100px;
+        padding-top: 90px;
     }
     &__container {
         @include flex(nowrap, column);

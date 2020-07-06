@@ -14,14 +14,60 @@ import Loading from './Loading';
 
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
-import settingsActions from '../router/storage/getSettingsRedux/settingsActions';
-import settingsSelectors from '../router/storage/getSettingsRedux/settingsSelectors';
 import statisticsSelectors from '../router/storage/getPutStatisticsRedux/statisticsSelectors';
 import mainGameActions from './redux/mainGameActions';
 import mainGameSelectors from './redux/mainGameSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
+import settingsSelectors from '../router/storage/getSettingsRedux/settingsSelectors';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 import './MainGame.scss';
+
+const filterForNewAndLearnedWords = {
+    $or: [
+        {
+            $and: [
+                {
+                    'userWord.optional.difficult': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+        { userWord: null },
+        {
+            $and: [
+                {
+                    'userWord.optional.repeat': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+    ],
+};
+
+const filterForNewWords = {
+    userWord: null,
+};
+
+const filterForRepeatWords = {
+    $or: [
+        {
+            $and: [
+                {
+                    'userWord.optional.difficult': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+        {
+            $and: [
+                {
+                    'userWord.optional.repeat': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+    ],
+};
 
 const MainGame = ({
     aggregatedWords,
@@ -30,10 +76,6 @@ const MainGame = ({
     fetchAggregatedWords,
     mainWords,
     setMainWords,
-    settings,
-    settingsError,
-    settingsLoading,
-    fetchSettings,
     userId,
     token,
     currentWordNumber,
@@ -41,17 +83,28 @@ const MainGame = ({
     increaseCurrentWordNumber,
     statistics,
     updateStatics,
+    settings,
 }) => {
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
     const [isNewWordWillBeShown, setIsNewWordWillBeShown] = useState(false);
-    useEffect(() => {
-        fetchSettings(userId, token);
-    }, [fetchSettings]);
+    const [wordsType, setWordsType] = useState('mixed');
 
     useEffect(() => {
-        setMainWords([]);
-        fetchAggregatedWords(userId, token, settings.wordsPerDay + 1);
-    }, [settings, fetchAggregatedWords]);
+        if (settings.optional && wordsType && wordsType === 'new') {
+            fetchAggregatedWords(userId, token, settings.wordsPerDay + 1, filterForNewWords);
+        } else if (settings.optional && wordsType && wordsType === 'mixed') {
+            fetchAggregatedWords(
+                userId,
+                token,
+                settings.wordsPerDay + 1,
+                filterForNewAndLearnedWords
+            );
+            console.log(settings.optional);
+            console.log(wordsType);
+        } else if (settings.optional && wordsType && wordsType === 'repeat') {
+            fetchAggregatedWords(userId, token, settings.wordsPerDay + 1, filterForRepeatWords);
+        }
+    }, [wordsType, settings]);
 
     useEffect(() => {
         setMainWords(aggregatedWords);
@@ -59,10 +112,29 @@ const MainGame = ({
     }, [aggregatedWords]);
 
     const handleNewWord = useCallback(async () => {
-        console.log(currentWordNumber);
-        console.log(mainWords.length);
         if (currentWordNumber >= mainWords.length - 1 && mainWords.length) {
-            await fetchAggregatedWords(userId, token, settings.wordsPerDay);
+            if (wordsType === 'new') {
+                await fetchAggregatedWords(
+                    userId,
+                    token,
+                    settings.wordsPerDay + 1,
+                    filterForNewWords
+                );
+            } else if (wordsType === 'mixed') {
+                await fetchAggregatedWords(
+                    userId,
+                    token,
+                    settings.wordsPerDay + 1,
+                    filterForNewAndLearnedWords
+                );
+            } else if (wordsType === 'repeat') {
+                await fetchAggregatedWords(
+                    userId,
+                    token,
+                    settings.wordsPerDay + 1,
+                    filterForRepeatWords
+                );
+            }
         }
         if (
             statistics.optional[new Date().toISOString().slice(0, 10).replace(/-/g, '')] ===
@@ -87,16 +159,28 @@ const MainGame = ({
         }
     }, [isPopUpOpened, isNewWordWillBeShown]);
 
-    return loading || error || settingsError || settingsLoading || mainWords.length === 0 ? (
-        <Loading error={error} settingsError={settingsError} />
+    const handleWordsTypeChanged = (type) => {
+        if (wordsType !== type && type === 'new') {
+            setWordsType('new');
+        } else if (wordsType !== type && type === 'mixed') {
+            setWordsType('mixed');
+        } else if (wordsType !== type && type === 'repeat') {
+            setWordsType('repeat');
+        }
+    };
+
+    return loading || error || mainWords.length === 0 ? (
+        <Loading error={error} settingsError={false} />
     ) : (
         <>
             <MainCard
                 settings={settings}
                 wordObj={mainWords.length !== 0 && mainWords[currentWordNumber]}
-                newWord
                 handleNewWord={handleNewWord}
                 statistics={statistics}
+                currentWordNumber={currentWordNumber}
+                handleWordsTypeChanged={handleWordsTypeChanged}
+                wordsType={wordsType}
             />
             <Dialog
                 open={isPopUpOpened}
@@ -108,9 +192,9 @@ const MainGame = ({
                 <DialogContent>
                     <DialogContentText>
                         You have achieved you goal and learned {settings.wordsPerDay} words.
-                        <p className="quote">
+                        <span className="quote">
                             &ldquo;It always seems impossible until it&apos;s done.&ldquo;
-                        </p>
+                        </span>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -124,11 +208,8 @@ const MainGame = ({
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchAggregatedWords: (userId, token, wordsPerDay) => {
-        dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay));
-    },
-    fetchSettings: (userId, token) => {
-        dispatch(settingsActions.fetchSettings(userId, token));
+    fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
+        dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
     },
     setMainWords: (words) => {
         dispatch(mainGameActions.setMainWords(words));
@@ -148,19 +229,33 @@ const mapStateToProps = (state) => ({
     aggregatedWords: aggregatedWordsSelectors.getAggregatedWords(state),
     loading: aggregatedWordsSelectors.getLoading(state),
     error: aggregatedWordsSelectors.getError(state),
-    settings: settingsSelectors.getSettings(state),
     mainWords: mainGameSelectors.getMainWords(state),
-    settingsError: settingsSelectors.getError(state),
-    settingsLoading: settingsSelectors.getLoading(state),
     userId: getUserId(state),
     token: getToken(state),
+    settings: settingsSelectors.getSettings(state),
     currentWordNumber: mainGameSelectors.getCurrentWordNumber(state),
     statistics: statisticsSelectors.getStatistics(state),
 });
 
 MainGame.propTypes = {
     aggregatedWords: PropTypes.arrayOf(
-        PropTypes.objectOf(PropTypes.PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+        PropTypes.shape({
+            id: PropTypes.string,
+            word: PropTypes.string,
+            audio: PropTypes.string,
+            image: PropTypes.string,
+            transcription: PropTypes.string,
+            wordTranslate: PropTypes.string,
+            userWord: PropTypes.shape({
+                difficulty: PropTypes.string,
+                optional: PropTypes.shape({
+                    learned: PropTypes.bool,
+                    difficult: PropTypes.bool,
+                    deleted: PropTypes.bool,
+                    repeat: PropTypes.bool,
+                }),
+            }),
+        })
     ).isRequired,
     loading: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
@@ -179,12 +274,9 @@ MainGame.propTypes = {
     settings: PropTypes.shape({
         wordsPerDay: PropTypes.number,
         optional: PropTypes.objectOf(PropTypes.bool),
-    }),
-    settingsError: PropTypes.string.isRequired,
-    settingsLoading: PropTypes.bool.isRequired,
+    }).isRequired,
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
-    fetchSettings: PropTypes.func.isRequired,
     currentWordNumber: PropTypes.number.isRequired,
     setCurrentWordNumber: PropTypes.func.isRequired,
     increaseCurrentWordNumber: PropTypes.func.isRequired,
@@ -197,19 +289,6 @@ MainGame.propTypes = {
 
 MainGame.defaultProps = {
     mainWords: [],
-    settings: {
-        wordsPerDay: 0,
-        optional: {
-            isShowImage: false,
-            isShowTranslate: false,
-            isShowTextMeaning: false,
-            isShowTextExample: false,
-            isShowTranscription: false,
-            isShowAnswer: false,
-            isShowDifficult: false,
-            isShowDelete: false,
-        },
-    },
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainGame);

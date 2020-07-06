@@ -1,9 +1,10 @@
 span.correct-answer-hidden {
     position: absolute;
-    left: 18px;
-    top: 15px;
+    left: 12px;
+    top: 13px;
     font-size: 24px;
     display: none;
+    font-family: "Roboto Mono", monospace;
     &.show {
         display: inline;
     }
@@ -16,5 +17,6 @@ span.correct-answer-hidden {
     .correct-answer {
         color: green;
         text-decoration: underline;
+        font-family: "Roboto Mono", monospace;
     }
 }

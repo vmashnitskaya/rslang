@@ -36,6 +36,10 @@ const mainGameActions = {
         type: mainGameTypes.SET_LEARNED_WORDS_NUMBER,
         payload: learnedWordsNumber,
     }),
+    addNewWord: (newWord, currentNumber) => ({
+        type: mainGameTypes.ADD_NEW_WORD,
+        payload: { newWord, currentNumber },
+    }),
 };
 
 export default mainGameActions;

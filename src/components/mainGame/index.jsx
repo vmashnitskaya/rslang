@@ -1,3 +1,1 @@
-import MainGame from './MainGame';
-
-export default MainGame;
+export { default } from './MainGame';

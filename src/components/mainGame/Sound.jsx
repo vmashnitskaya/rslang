@@ -39,10 +39,6 @@ const Sound = ({
 
     useEffect(() => {
         (async () => {
-            console.log(audioRef);
-            console.log(audioMeaningRef);
-            console.log(audioExampleRef);
-            console.log(`isSoundEnabled ${isSoundEnabled}`);
             if (isSoundEnabled) {
                 await playSound(audioRef);
             }

@@ -1,3 +1,10 @@
 .quote {
+    display: block;
     font-weight: 600;
+}
+.radio-group {
+    display: flex;
+    justify-content: center;
+    max-width: 450px;
+    min-width: 300px;
 }
