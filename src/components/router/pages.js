@@ -3,7 +3,9 @@ import MainPage from '../mainPage/index';
 import AboutProject from '../aboutProject/index';
 import AboutTeam from '../aboutTeam/index';
 import Sprint from '../sprint/Sprint';
+import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
+import MainGame from '../mainGame/index';
 
 const pages = [
     {
@@ -12,6 +14,13 @@ const pages = [
         url: '/',
         exact: true,
         img: '',
+    },
+    {
+        component: MainGame,
+        title: 'Words learning',
+        url: '/learn',
+        exact: false,
+        img: '/assets/images/learn.jpg',
     },
     {
         component: AboutProject,
@@ -39,6 +48,13 @@ const pages = [
         url: '/sprint',
         img: '/assets/images/sprint.png',
         exact: false,
+    },
+    {
+        component: SpeakItGame,
+        title: 'SpeakIt',
+        url: '/speakit',
+        img: '/assets/images/start-image.jpg',
+        exact: true,
     },
 ];
 
