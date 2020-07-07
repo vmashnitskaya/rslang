@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-const Timer = () => {
+const Timer = ({ onTimeOut }) => {
     const [current, setCurrent] = useState(60);
     const [enabled, setEnabled] = useState(true);
 
@@ -12,6 +13,7 @@ const Timer = () => {
             } else {
                 clearInterval(interval);
                 setEnabled(false);
+                onTimeOut();
             }
         }, 1000);
         return () => clearInterval(interval);
@@ -38,6 +40,10 @@ const Timer = () => {
             </div>
         </Box>
     );
+};
+
+Timer.propTypes = {
+    onTimeOut: PropTypes.func.isRequired,
 };
 
 export default Timer;

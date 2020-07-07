@@ -1,83 +1,112 @@
 main {
-    .sprint-game {
-        margin: 100px auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 95%;
-
-        .score_container {
-            margin: 0 auto;
+    .wrapper {
+        margin: 0 auto;
+        width: 100%;
+        background-image: url(../../../../../../Desktop/vector-abstract-background-design-wavy.jpg);
+        .sprint-game {
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
-
-                .countdown {
-                    position: relative;
-                
-                    &__visual {
-                        stroke-dasharray: 151px;
-                        stroke-dashoffset: 151px;
-                        stroke-linecap: butt;
-                        stroke-width: 4px;
-                        stroke: green;
-                        fill: none;
-                
-                        svg {
-                            width: 52px;
-                            height: 52px;
-                            transform: rotateZ(-90deg);
-                        }
-                    }
-                
-                    &__text {
-                        position: absolute;
-                        top: 18px;
-                        width: 52px;
-                        color: green;  
-                        font-size: 16px;
-                        font-weight: 600;
-                        text-align: center;
-                    }
-                
-                    @keyframes countdown-animation {
-                        0% {
-                            stroke-dashoffset: 0px;
-                        }
-                        100% {
-                            stroke-dashoffset: 151px;
-                        }
-                    }
-                }
-        }
-
-        .card {
-            margin: 0 auto;
-
-            &_img {
-                max-width: 50%;
-            }
-
-            &_content {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 95%;
+            .score_container {
+                margin: 0 auto;
                 display: flex;
-                flex-direction: column;
-                align-items: center;
+                justify-content: space-between;
+                width: 60%;
+
+                    .countdown {
+                        position: relative;
+                    
+                        &__visual {
+                            stroke-dasharray: 151px;
+                            stroke-dashoffset: 151px;
+                            stroke-linecap: butt;
+                            stroke-width: 4px;
+                            stroke: green;
+                            fill: none;
+                    
+                            svg {
+                                width: 52px;
+                                height: 52px;
+                                transform: rotateZ(-90deg);
+                            }
+                        }
+                    
+                        &__text {
+                            position: absolute;
+                            top: 18px;
+                            width: 52px;
+                            color: green;  
+                            font-size: 16px;
+                            font-weight: 600;
+                            text-align: center;
+                        }
+                    
+                        @keyframes countdown-animation {
+                            0% {
+                                stroke-dashoffset: 0px;
+                            }
+                            100% {
+                                stroke-dashoffset: 151px;
+                            }
+                        }
+                    }
+                    
+                    .score {
+                        font-size: 30px;
+                        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+                    }
+
+                    .star {
+                        width: 40px;
+                        height: 40px;
+                        
+                        &_full {
+                            color: rgb(248, 183, 3);
+                        }
+                    }
             }
 
-            .button {
+            .card {
+                margin: 0 auto;
+                width: 80%;
 
-                &_container {
+                &_content {
                     display: flex;
-                    justify-content: space-between;
-                    margin: 5%;
+                    flex-direction: column;
+                    align-items: center;
+                    
+                    .word, .translate {
+                        margin-top: 40px;
+                        font-size: 30px;
+                        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+                        color: rgba($color: #645a5a, $alpha: 1.0);
+                    }
+
+                    .sound {
+                        margin-top: 5%;
+                    }
                 }
 
-                &_right {
-                    background-color: green;
-                }
+                .button {
 
-                &_wrong {
-                    background-color: red;
+                    &_container {
+                        display: flex;
+                        justify-content: space-between;
+                        margin: 5%;
+                    }
+
+                    &_right {
+                        width: 40%;
+                        background-color: green;
+                    }
+
+                    &_wrong {
+                        width: 40%;
+                        background-color: red;
+                    }
                 }
             }
         }
