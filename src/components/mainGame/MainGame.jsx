@@ -9,6 +9,10 @@ import {
     DialogTitle,
     Button,
     Snackbar,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
 } from '@material-ui/core';
 import MainCard from './MainCard';
 import Loading from './Loading';
@@ -98,6 +102,8 @@ const MainGame = ({
     const [isNewWordWillBeShown, setIsNewWordWillBeShown] = useState(false);
     const [wordsType, setWordsType] = useState('new');
     const [alertShown, setAlertShown] = useState(false);
+    const [successAndErrors, setSuccessAndErrors] = useState([]);
+    const [countOfNewWords, setCountOfNewWords] = useState(0);
 
     useEffect(() => {
         if (settings.optional && wordsType && wordsType === 'new') {
@@ -186,6 +192,32 @@ const MainGame = ({
         setAlertShown(false);
     };
 
+    const handleSuccessAndErrors = (result) => {
+        if (successAndErrors.length === currentWordNumber) {
+            setSuccessAndErrors((prevState) => [...prevState, result]);
+        }
+    };
+
+    const handleCountNewWords = () => {
+        setCountOfNewWords(countOfNewWords + 1);
+    };
+
+    const handleMostSuccesfullSequence = () => {
+        let result = 1;
+        let count = 0;
+        successAndErrors.slice(successAndErrors.indexOf('correct')).forEach((element, index) => {
+            if (element === successAndErrors[index + 1]) {
+                count += 1;
+            } else {
+                if (result < count) {
+                    result = count;
+                }
+                count = 0;
+            }
+        });
+        return result;
+    };
+
     return loading || error || mainWords.length === 0 ? (
         <Loading error={error} settingsError={false} />
     ) : (
@@ -198,6 +230,8 @@ const MainGame = ({
                 currentWordNumber={currentWordNumber}
                 handleWordsTypeChanged={handleWordsTypeChanged}
                 wordsType={wordsType}
+                handleSuccessAndErrors={handleSuccessAndErrors}
+                handleCountNewWords={handleCountNewWords}
             />
             <Dialog
                 open={isPopUpOpened}
@@ -208,10 +242,41 @@ const MainGame = ({
                 <DialogTitle>Hooray!</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        You have achieved you goal and learned {settings.wordsPerDay} words.
+                        You have achieved you goal.
                         <span className="quote">
                             &ldquo;It always seems impossible until it&apos;s done.&ldquo;
                         </span>
+                        <Table>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell align="left">Amount of learned words</TableCell>
+                                    <TableCell align="center">{settings.wordsPerDay}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell align="left">
+                                        Percentage of sucessfull answers
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        {(successAndErrors.filter(
+                                            (element) => element === 'correct'
+                                        ).length *
+                                            100) /
+                                            settings.wordsPerDay}{' '}
+                                        %
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell align="left">Amount of new words</TableCell>
+                                    <TableCell align="center">{countOfNewWords}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell align="left">Most successfull sequence</TableCell>
+                                    <TableCell align="center">
+                                        {handleMostSuccesfullSequence()}
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
