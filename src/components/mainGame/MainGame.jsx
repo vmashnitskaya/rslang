@@ -267,7 +267,7 @@ const MainGame = ({
                                 </TableRow>
                                 <TableRow>
                                     <TableCell align="left">Amount of new words</TableCell>
-                                    <TableCell align="center">{countOfNewWords}</TableCell>
+                                    <TableCell align="center">{countOfNewWords - 1}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell align="left">Most successfull sequence</TableCell>
