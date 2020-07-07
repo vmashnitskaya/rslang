@@ -1,10 +1,30 @@
 import types from './types';
 import wordsApi from '../../router/storage/getWordsRedux/wordsApi';
 import utils from '../utils';
+import selectors from './selectors';
+
+const gamePlan = {
+    set: (payload) => ({ type: types.SET_GAME_PLAN, payload }),
+};
+
+const gameState = {
+    set: (payload) => ({ type: types.SET_GAME_STATE, payload }),
+};
 
 const words = {
-    get: (payload) => async (dispatch) => {
-        const { userWords, page, group } = payload;
+    get: (payload) => async (dispatch, getState) => {
+        dispatch(gameState.set(utils.gameState.LOADING_DATA));
+
+        const { userWords, group } = payload;
+        const plan = selectors.gamePlan(getState());
+        console.log(group);
+        const groupPlan = plan.find((e) => e.group === group);
+        const page = groupPlan.pages.shift();
+        if (!groupPlan.pages.length) {
+            groupPlan.pages = utils.createGroupPlan();
+        }
+        dispatch(gamePlan.set(plan));
+
         let correctWords = [];
         try {
             if (!userWords) {
@@ -20,7 +40,7 @@ const words = {
                 ) {
                     usedPages.push({
                         pageNumber,
-                        promise: wordsApi.fetchWords(pageNumber, group),
+                        promise: wordsApi.fetchWords(pageNumber, Math.round(Math.random() * 5)),
                     });
                 }
             }
@@ -48,16 +68,27 @@ const words = {
                 };
             });
             dispatch(words.set(result));
+
+            dispatch(gameState.set(utils.gameState.IN_PROGRESS));
         } catch (e) {
             console.error(e.message);
+            dispatch(gameState.set(utils.gameState.NOT_STARTED));
         }
     },
     set: (payload) => ({ type: types.SET_WORDS, payload }),
     clear: () => ({ type: types.CLEAR_WORDS }),
 };
 
+const gameSettings = {
+    setGroup: (payload) => ({ type: types.SET_GAME_SETTINGS_GROUP, payload }),
+    setUserWords: () => ({ type: types.SET_GAME_SETTINGS_USERWORDS }),
+};
+
 const action = {
     words,
+    gameSettings,
+    gamePlan,
+    gameState,
 };
 
 export default action;

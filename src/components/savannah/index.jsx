@@ -1,1 +1,1 @@
-export { default } from './Savannah';
+export { default } from './components/Savannah';

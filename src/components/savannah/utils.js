@@ -16,6 +16,24 @@ function shuffle(arr) {
     return array;
 }
 
+const gameState = {
+    NOT_STARTED: 0,
+    LOADING_DATA: 1,
+    IN_PROGRESS: 2,
+    FINISHED: 3,
+};
+
+const createGroupPlan = () => {
+    const pages = [];
+    for (let i = 0; i < 30; i += 1) {
+        pages.push(i);
+    }
+    shuffle(pages);
+    return pages;
+};
+
 export default {
     shuffle,
+    gameState,
+    createGroupPlan,
 };
