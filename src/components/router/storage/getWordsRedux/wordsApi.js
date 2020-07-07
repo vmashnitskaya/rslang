@@ -5,7 +5,6 @@ const formatString = (string) => {
     return string.replace(/<\/?[^>]+(>|$)/g, '');
 };
 
-
 const fetchWords = async (page, group) => {
     const url = `https://afternoon-falls-25894.herokuapp.com/words?page=${page}&group=${group}`;
     const res = await window.fetch(url, { method: 'GET' });
