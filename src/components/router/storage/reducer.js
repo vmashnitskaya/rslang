@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import types from './types';
 
 const initAuthState = {
-    userId: null,
+    userId: '',
     token: '',
     createSuccess: null,
     createError: null,

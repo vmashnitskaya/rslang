@@ -1,0 +1,76 @@
+@mixin flex($wrap: nowrap, $direction: row, $justify: center, $align: center) {
+    display: flex;
+    flex-wrap: $wrap;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+.new-word {
+    font-size: 14px;
+}
+.translate-icon {
+    cursor: pointer;
+}
+.header {
+    @include flex($justify: space-between);
+}
+.translation,
+.transcription {
+    margin-right: 10px;
+}
+.highlightedRadio {
+    color: #9c27b0;
+}
+.action-buttons {
+    margin-top: -10px;
+}
+.radio {
+    display: none;
+}
+.card {
+    padding: 0.5rem;
+    img {
+        width: 200px;
+        height: 200px;
+    }
+    &__wrapper {
+        @include flex($direction: column, $justify: center, $align: center);
+        width: 100%;
+        padding-top: 90px;
+    }
+    &__container {
+        @include flex(nowrap, column);
+        word-break: break-all;
+        div {
+            margin-bottom: 1rem;
+        }
+    }
+    &__word {
+        @include flex();
+    }
+    &__input {
+        margin-left: 1rem;
+    }
+    &__buttons {
+        @include flex(nowrap, row, space-between, flex-start);
+        button {
+            margin-bottom: 1rem;
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+@media (max-width: 755px) {
+    .card {
+        &__wrapper {
+            @include flex($direction: column);
+            margin-top: 30px;
+            transform: rotateX(-30px);
+        }
+    }
+    .statistics {
+        margin-left: 0;
+        margin-top: 30px;
+    }
+}
