@@ -1,12 +1,11 @@
 /*eslint-disable */
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import wordsActions from '../router/storage/getWordsRedux/wordsActions';
 import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
-// import getWords from '../router/storage/apiGetters/getWords';
 import './styles.scss';
 import './assets/sound.svg';
 
@@ -14,29 +13,49 @@ const Audition = ({ words, fetchWords }) => {
     const generateRandomNumber = (min, max) => {
         return Math.floor(Math.random() * (max - min)) + min;
     };
-    useEffect(() => {
-        fetchWords(1, 1);
-      }, []);
-    useEffect(() => {
-        if(words.length){console.log(words)}
-      }, [words]);
 
-    // const loadWords = useCallback(async (findGroup, findPage) => {
-    //     await fetchWords(findGroup, findPage);
-    // }, []);
+    const createArrayOfUniqueNumbers = (number, min, max) => {
+        const array = [];
+        for (let index = 0; index < array.length; index++) {
+            const element = array[index];
 
-    // useEffect(() => {
-    //     if(words){console.log(words)}
-    //   }, [words]);
+        }
+        while (array.length !== number - 1) {
+            const randomNumber = generateRandomNumber()
+        }
+    }
 
     const variants = ['qwe1', 'qwe2', 'qwe3', 'qwe4', 'qwe5'];
-    const [answerOfGame, setAnswerOfGame] = useState({});
+    const [gameData, setGameData] = useState({});
+    const [gameConfigs, setGameConfigs] = useState({});
     const numberOfQuestionsOnGame = 6;
     const numberOfAnswersOnGame = 6;
     const numberWordGroups = 5;
     const numberPagesInGroup = 30;
     const numberWordsOnThePage = 20;
-    // const words = [];
+
+    const createQuestionOnGame = () => {
+        const wordsData = {};
+        for (let i = 0; i < numberOfAnswersOnGame; i += 1) {
+            wordsData[`answer${i}`] = words
+        }
+    };
+
+    useEffect(() => {
+        const findGroup = generateRandomNumber(0, numberWordGroups);
+        const findPage = generateRandomNumber(0, numberPagesInGroup);
+        fetchWords(findPage, findGroup);
+    }, []);
+
+    useEffect(() => {
+        if (words.length) {
+            const startConfigs = {
+                questionIndex: 0,
+            }
+            setGameConfigs(startConfigs);
+            createQuestionOnGame();
+        }
+    }, [words]);
 
     // for (let i = 0; i < 1; i += 1) {
     //     const findGroup = generateRandomNumber(0, numberWordGroups);
@@ -52,7 +71,6 @@ const Audition = ({ words, fetchWords }) => {
     //     }
     //     // words.push();
     // }
-    // loadWords(1, 1);
     const cons = () => {
         console.log(words);
     }
