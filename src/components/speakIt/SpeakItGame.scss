@@ -1,0 +1,54 @@
+.game-page {
+    display: flex;
+    flex-direction: column;
+    max-width: 1020px;
+    height: 100%;
+    margin: 100px auto 10px auto;
+
+    .buttons {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 20px;
+        button {
+            font-size: 1.2rem;
+        }
+    }
+
+    @media screen and (max-width: 900px) {
+        .game-page {
+            width: 90%;
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .start-page {
+            padding-top: 10px;
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            &__button {
+                width: 200px;
+                height: 40px;
+                margin-top: 10px;
+                font-size: 2rem;
+            }
+        }
+        .game-page {
+            .buttons {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                margin-top: 20px;
+                .button {
+                    margin-top: 10px;
+                }
+            }
+            .cards {
+                justify-content: center;
+            }
+        }
+    }
+}
