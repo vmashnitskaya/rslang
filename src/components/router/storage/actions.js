@@ -22,6 +22,9 @@ const logInError = (payload) => ({ type: types.LOGIN_ERROR, payload });
 const logIn = (email, password) => async (dispatch) => {
     try {
         const data = await loginUser({ email, password });
+        const { token, userId } = data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('userId', userId);
         dispatch(loggedIn(data));
     } catch (error) {
         dispatch(logInError(error.message));
@@ -38,6 +41,8 @@ const create = (user) => async (dispatch, getState) => {
         await dispatch(logIn(user.email, user.password));
         const id = getUserId(getState());
         const token = getToken(getState());
+        localStorage.setItem('token', token);
+        localStorage.setItem('iserId', id);
         const statistics = statisticsSelectors.getStatistics(getState());
         const settings = settingsSelectors.getSettings(getState());
         await Promise.all([
@@ -49,6 +54,13 @@ const create = (user) => async (dispatch, getState) => {
     }
 };
 
+const logOut = (dispatch) => {
+    dispatch(token.clear());
+    dispatch(userId.clear());
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+};
+
 const user = {
     createSuccess,
     createError,
@@ -56,6 +68,7 @@ const user = {
     loggedIn,
     logInError,
     logIn,
+    logOut,
 };
 
 const action = {
