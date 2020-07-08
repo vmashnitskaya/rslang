@@ -35,6 +35,7 @@ const WordsTable = ({
 
     useEffect(() => {
         setWords([]);
+        setIsButtonDisabled(false);
         if (type === 'learned') {
             fetchAggregatedWords(userId, token, 500, filterForLearnedWords);
         } else if (type === 'difficult') {

@@ -78,7 +78,7 @@ const WordRow = ({ element, index, onButtonClick, settings, isButtonDisabled }) 
                         variant="outlined"
                         color="primary"
                         onClick={onClick}
-                        size="medium"
+                        size="small"
                         disabled={isButtonDisabled}
                     >
                         Restore
