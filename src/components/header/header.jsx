@@ -11,7 +11,7 @@ import { pagePropType } from '../router/pages';
 import './header.scss';
 
 const Header = ({ pages }) => {
-    const [isOpen, setNewPositionOfSidebar] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <div>
             <AppBar position="fixed" className="header">
@@ -20,7 +20,7 @@ const Header = ({ pages }) => {
                         edge="start"
                         color="inherit"
                         onClick={() => {
-                            setNewPositionOfSidebar(true);
+                            setIsOpen(true);
                         }}
                     >
                         <MenuIcon />
@@ -37,11 +37,7 @@ const Header = ({ pages }) => {
                     </ul>
                 </nav>
             </AppBar>
-            <Sidebar
-                pages={pages}
-                isOpen={isOpen}
-                setNewPositionOfSidebar={setNewPositionOfSidebar}
-            />
+            <Sidebar pages={pages} isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
     );
 };
