@@ -1,8 +1,9 @@
 main {
     .wrapper {
         margin: 0 auto;
+        height: 100%;
         width: 100%;
-        background-image: url(../../../../../../Desktop/vector-abstract-background-design-wavy.jpg);
+        background-image: url(../../../public/assets/images/sprint-bg.jpg);
         .sprint-game {
             height: 100vh;
             display: flex;
@@ -72,6 +73,7 @@ main {
             .card {
                 margin: 0 auto;
                 width: 80%;
+                display: flow-root;
 
                 &_content {
                     display: flex;
