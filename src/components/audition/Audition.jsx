@@ -82,10 +82,10 @@ const Audition = ({ words, fetchWords }) => {
         <Container maxWidth="md" className="audition">
             <div className="audition__question" />
             <div className="audition__variants">
-                {variants.map((variant, index) => (
-                    <Button size="large" className="audition__variant" key={variant} onClick={cons}>
+                {Object.keys(gameData).map((word, index) => (
+                    <Button size="large" className="audition__variant" key={gameData[word].word} onClick={cons}>
                         <span>{index + 1}. </span>
-                        <span>{variant}</span>
+                        <span>{gameData[word].wordTranslate}</span>
                     </Button>
                 ))}
             </div>
