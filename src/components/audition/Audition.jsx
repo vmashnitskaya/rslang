@@ -16,13 +16,14 @@ const Audition = ({ words, fetchWords }) => {
 
     const createArrayOfUniqueNumbers = (number, min, max) => {
         const array = [];
-        for (let index = 0; index < array.length; index++) {
-            const element = array[index];
-
+        for (let i = 0; i < number; i += 1) {
+            let randomNumber = generateRandomNumber(min, max);
+            while (array.includes(number)) {
+                randomNumber = generateRandomNumber();
+            }
+            array.push(randomNumber);
         }
-        while (array.length !== number - 1) {
-            const randomNumber = generateRandomNumber()
-        }
+        return array;
     }
 
     const variants = ['qwe1', 'qwe2', 'qwe3', 'qwe4', 'qwe5'];
@@ -36,9 +37,12 @@ const Audition = ({ words, fetchWords }) => {
 
     const createQuestionOnGame = () => {
         const wordsData = {};
-        for (let i = 0; i < numberOfAnswersOnGame; i += 1) {
-            wordsData[`answer${i}`] = words
-        }
+        const answersId = createArrayOfUniqueNumbers(numberOfAnswersOnGame, 0, numberWordsOnThePage);
+        for (let i = 0; i < answersId.length; i += 1) {
+            wordsData[`answer${i}`] = words[answersId[i]];
+        };
+        console.log(wordsData);
+        setGameData(wordsData);
     };
 
     useEffect(() => {
