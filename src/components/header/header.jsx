@@ -11,7 +11,7 @@ import { pagePropType } from '../router/pages';
 import './header.scss';
 
 const Header = ({ pages }) => {
-    const [isOpen, setNewPositionOfSidebar] = useState(false);
+    const [isOpen, setNewPositionOfSidebar] = useState(true);
     return (
         <div>
             <AppBar position="fixed" className="header">
