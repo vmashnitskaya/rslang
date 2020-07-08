@@ -5,6 +5,8 @@ const types = {
     SET_GAME_SETTINGS_USERWORDS: 'savannah/SET_GAME_SETTINGS_USERWORDS',
     SET_GAME_PLAN: 'savannah/SET_GAME_PLAN',
     SET_GAME_STATE: 'savannah/SET_GAME_STATE',
+    SET_GAME_RESULTS: 'savannah/SET_GAME_RESULTS',
+    CLEAR_GAME_RESULTS: 'savannah/CLEAR_GAME_RESULTS',
 };
 
 export default types;

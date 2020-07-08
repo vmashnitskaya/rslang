@@ -58,11 +58,25 @@ const gameState = (state = utils.gameState.NOT_STARTED, action) => {
     }
 };
 
+const gameResults = (state = [], action) => {
+    const { type, payload } = action;
+
+    switch (type) {
+        case types.SET_GAME_RESULTS:
+            return Array.isArray(payload) ? [...state, ...payload] : [...state, payload];
+        case types.CLEAR_GAME_RESULTS:
+            return [];
+        default:
+            return state;
+    }
+};
+
 const savannah = combineReducers({
     words,
     gameSettings,
     gamePlan,
     gameState,
+    gameResults,
 });
 
 export default savannah;

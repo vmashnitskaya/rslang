@@ -46,6 +46,7 @@ const mapDispatchToProps = (dispatch) => ({
     clear: () => {
         dispatch(actions.words.clear());
         dispatch(actions.gameState.set(utils.gameState.NOT_STARTED));
+        dispatch(actions.gameResults.clear());
     },
 });
 

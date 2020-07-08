@@ -84,11 +84,17 @@ const gameSettings = {
     setUserWords: () => ({ type: types.SET_GAME_SETTINGS_USERWORDS }),
 };
 
+const gameResults = {
+    set: (payload) => ({ type: types.SET_GAME_RESULTS, payload }),
+    clear: () => ({ type: types.CLEAR_GAME_RESULTS }),
+};
+
 const action = {
     words,
     gameSettings,
     gamePlan,
     gameState,
+    gameResults,
 };
 
 export default action;

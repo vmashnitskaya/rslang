@@ -5,7 +5,7 @@ import { Button, ButtonGroup } from '@material-ui/core';
 import actions from '../storage/actions';
 import selectors from '../storage/selectors';
 
-function StartPage({ settings, fetchWords, setGroup, setUserWords }) {
+function StartPage({ settings, userHaveWords, fetchWords, setGroup, setUserWords }) {
     const buttons = [];
     for (let i = 0; i < 6; i += 1) {
         buttons.push(
@@ -20,32 +20,47 @@ function StartPage({ settings, fetchWords, setGroup, setUserWords }) {
     }
 
     return (
-        <div>
-            <h2>Savannah</h2>
-            <Button
-                onClick={() => setUserWords()}
-                color="primary"
-                aria-label="contained primary button group"
-                variant={settings.userWords ? 'contained' : 'outlined'}
-            >
-                My Words
-            </Button>
-            <ButtonGroup
-                variant="outlined"
-                color="primary"
-                aria-label="contained primary button group"
-            >
-                {buttons.map((e) => e)};
-            </ButtonGroup>
+        <>
+            <div className="level">
+                {userHaveWords ? (
+                    <>
+                        <div>
+                            <p>You have enough words to repeat</p>
+                            <Button
+                                onClick={() => setUserWords()}
+                                color="primary"
+                                aria-label="contained primary button group"
+                                variant={settings.userWords ? 'contained' : 'outlined'}
+                            >
+                                My Words
+                            </Button>
+                        </div>
+                        <p>or</p>
+                    </>
+                ) : null}
+
+                <div>
+                    <p>You can choose your level</p>
+                    <ButtonGroup
+                        variant="outlined"
+                        color="primary"
+                        aria-label="contained primary button group"
+                    >
+                        {buttons.map((e) => e)};
+                    </ButtonGroup>
+                </div>
+            </div>
+            <h2>SAVANNAH</h2>
             <Button
                 onClick={() => fetchWords(settings.userWords, settings.group)}
                 color="primary"
                 aria-label="contained primary button group"
                 variant="contained"
+                className="start"
             >
                 Start Game
             </Button>
-        </div>
+        </>
     );
 }
 
@@ -63,6 +78,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
     settings: selectors.gameSettings(state),
+    userHaveWords: selectors.userHaveWords(state),
 });
 
 StartPage.defaultProps = {
@@ -74,6 +90,7 @@ StartPage.propTypes = {
         userWords: PropTypes.bool.isRequired,
         group: PropTypes.number.isRequired,
     }).isRequired,
+    userHaveWords: PropTypes.bool.isRequired,
     fetchWords: PropTypes.func.isRequired,
     setGroup: PropTypes.func.isRequired,
     setUserWords: PropTypes.func.isRequired,

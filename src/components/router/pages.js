@@ -25,6 +25,7 @@ const pages = [
         component: AboutTeam,
         title: 'About Team',
         url: '/aboutteam',
+        img: '/assets/images/happy.jpg',
         exact: true,
     },
     {
@@ -45,13 +46,13 @@ const pages = [
         component: SavannahGame,
         title: 'Savannah',
         url: '/Savannah',
-        img: '/assets/images/start-image.jpg',
+        img: '/assets/images/draw.jpg',
         exact: true,
     },
 ];
 
 export const pagePropType = PropTypes.exact({
-    component: PropTypes.func.isRequired,
+    component: PropTypes.elementType.isRequired,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     exact: PropTypes.bool.isRequired,

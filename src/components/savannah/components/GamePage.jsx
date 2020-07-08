@@ -2,18 +2,26 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import actions from '../storage/actions';
 import selectors from '../storage/selectors';
 import utils from '../utils';
 
-function GamePage({ words, setFinished, gameState }) {
+function GamePage({ words, setFinished, gameState, setGameResults }) {
     const [sec, setSec] = useState(3);
+
+    const [index, setIndex] = useState(0);
+    const [roundFinished, setRoundFinished] = useState(null);
+    const [gameFinished, setGameFinished] = useState(false);
+    const [timeoutId, setTimeoutId] = useState(null);
+    const [lives, setLives] = useState(new Array(5).fill(true));
 
     useEffect(() => {
         let id = null;
         if (sec > 0) {
-            id = setTimeout(() => setSec((prev) => prev - 1), 1000);
+            id = setTimeout(() => setSec((prev) => prev - 1), 1000000);
+        } else {
+            setRoundFinished(true);
         }
         return () => {
             if (id) {
@@ -22,63 +30,57 @@ function GamePage({ words, setFinished, gameState }) {
         };
     }, [sec]);
 
-    const [index, setIndex] = useState(0);
+    const mapWordToResults = (ind, correct) => {
+        return {
+            id: words[ind].id,
+            word: words[ind].word,
+            correct,
+        };
+    };
 
-    const [results, setResults] = useState([]);
-    const [timeoutId, setTimeoutId] = useState(null);
-
-    function wordClick(word, correct) {
-        console.log(correct);
-        setResults((prev) => {
-            const arr = [
-                ...prev,
-                {
-                    id: word.id,
-                    word: word.word,
-                    correct,
-                },
-            ];
-            return arr;
-        });
-        if (index + 1 < words.length) {
-            setIndex((prev) => prev + 1);
-        } else {
-            console.log(results);
-            setFinished();
+    const finishRound = (correct) => {
+        setGameResults(mapWordToResults(index, correct));
+        if (!correct) {
+            setLives((prev) => {
+                const newLivesArr = prev.slice();
+                const ind = prev.indexOf(true);
+                if (ind >= 0) {
+                    newLivesArr[ind] = false;
+                }
+                return newLivesArr;
+            });
         }
-    }
+        if (index >= words.length - 1) {
+            setGameFinished(true);
+        } else {
+            setIndex((prev) => prev + 1);
+        }
+        clearTimeout(timeoutId);
+        setRoundFinished(true);
+    };
+
+    const finishGame = (ind) => {
+        setGameResults(words.slice(ind).map((e, i) => mapWordToResults(i + ind, false)));
+        setGameFinished(true);
+        setRoundFinished(true);
+    };
 
     useEffect(() => {
-        let id = null;
-        if (sec <= 0) {
-            id = setTimeout(() => {
-                setResults((prev) => {
-                    console.log(false);
-                    const arr = [
-                        ...prev,
-                        {
-                            id: words[index].id,
-                            word: words[index].word,
-                            correct: false,
-                        },
-                    ];
-                    return arr;
-                });
-                if (index + 1 < words.length) {
-                    setIndex((prev) => prev + 1);
-                } else {
-                    console.log(results);
-                    setFinished();
-                }
-            }, 5000);
+        if (lives.indexOf(true) < 0) {
+            finishGame(index);
         }
-        setTimeoutId(id);
-        return () => {
-            if (id) {
-                clearTimeout(id);
-            }
-        };
-    }, [sec, index]);
+    }, [lives]);
+
+    useEffect(() => {
+        if (gameFinished) {
+            clearTimeout(timeoutId);
+            setFinished();
+        } else if (roundFinished) {
+            const id = setTimeout(() => finishRound(false), 5000);
+            setTimeoutId(id);
+            setRoundFinished(false);
+        }
+    }, [roundFinished]);
 
     return (
         <div>
@@ -87,13 +89,24 @@ function GamePage({ words, setFinished, gameState }) {
             ) : (
                 <>
                     <div>
+                        {lives.map((e, i) => {
+                            const key = `live_${i}`;
+                            return <p key={key}>{e ? 'O' : 'X'}</p>;
+                        })}
+                    </div>
+                    <div>
                         <p>{words[index].word}</p>
                     </div>
                     <div>
                         {words[index].translations.map((e) => (
-                            <p onClick={() => wordClick(words[index], e.correct)}>{e.word}</p>
+                            <p key={`wrd_${e.word}`} onClick={() => finishRound(e.correct)}>
+                                {e.word}
+                            </p>
                         ))}
                     </div>
+                    <Button onClick={() => finishGame(index)} variant="contained">
+                        Stop game
+                    </Button>
                 </>
             )}
         </div>
@@ -103,6 +116,9 @@ function GamePage({ words, setFinished, gameState }) {
 const mapDispatchToProps = (dispatch) => ({
     setFinished: (payload) => {
         dispatch(actions.gameState.set(utils.gameState.FINISHED));
+    },
+    setGameResults: (payload) => {
+        dispatch(actions.gameResults.set(payload));
     },
 });
 
@@ -116,16 +132,21 @@ GamePage.defaultProps = {
 };
 
 GamePage.propTypes = {
-    words: PropTypes.arrayOf({
-        id: PropTypes.string.isRequired,
-        word: PropTypes.string.isRequired,
-        translations: PropTypes.arrayOf({
+    words: PropTypes.arrayOf(
+        PropTypes.exact({
+            id: PropTypes.string.isRequired,
             word: PropTypes.string.isRequired,
-            correct: PropTypes.bool.isRequired,
-        }),
-    }),
+            translations: PropTypes.arrayOf(
+                PropTypes.exact({
+                    word: PropTypes.string.isRequired,
+                    correct: PropTypes.bool.isRequired,
+                })
+            ).isRequired,
+        })
+    ),
     gameState: PropTypes.number.isRequired,
     setFinished: PropTypes.func.isRequired,
+    setGameResults: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamePage);

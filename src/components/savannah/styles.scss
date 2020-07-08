@@ -1,6 +1,42 @@
 .savannah {
     height: calc(100vh - 64px);
     padding-top: 64px;
+    background-image: url('/assets/images/bg-savannah.svg');
+    background-position: bottom;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    justify-items: center;
+    align-items: center;
+    color: #6cffde;
+
+    h2{
+        font-size: 40px;
+        opacity: .8;
+        letter-spacing: 13px;
+        font-weight: 300;
+    }
+
+    p{
+        font-size: 22px;
+    }
+
+    .level{
+        display: flex;
+
+        &>p{
+            color: white;
+        }
+
+        &>div{
+            display: grid;
+            justify-items: center;
+            margin: 0 35px;
+        }
+    }
+
+    .start{
+        padding: 15px 30px;
+    }
 }
 
 .savannah-spinner-bg {
