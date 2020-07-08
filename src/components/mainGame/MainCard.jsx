@@ -229,7 +229,7 @@ const MainCard = ({
         setIsDifficultDisabled(true);
         setAlertShown('difficult');
 
-        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled) {
+        if (isDeletedDisabled || wordObj.userWord || isRepeatDisabled) {
             await passedWordsApi.putPassedWords(userId, token, _id, {
                 difficulty: 'default',
                 optional: {
