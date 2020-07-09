@@ -54,10 +54,14 @@ const Audition = ({ words, fetchWords }) => {
             createQuestionOnGame();
         }
     }, [words]);
-    const playAudioOfWord = () => {};
+    const playAudioOfWord = () => {
+        const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
+        const audio = gameData[`answer${currentRightIdOfWord}`].audio;
+        playAudio(audio);
+    };
     return (
         <Container maxWidth="md" className="audition">
-            <div className="audition__question" onClick={playAudioOfWord()}/>
+            <div className="audition__question" onClick={playAudioOfWord}/>
             <div className="audition__variants">
                 {Object.keys(gameData).map((word, index) => (
                     <Button
