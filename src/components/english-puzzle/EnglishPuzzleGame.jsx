@@ -170,7 +170,6 @@ const EnglishPuzzleGame = ({
         if (wordsType === 'repeat' && aggregatedWords.length && aggregatedWords.length > 10) {
             setData(
                 aggregatedWords
-                    .slice(0, 10)
                     .map(
                         ({
                             textExample,
@@ -195,7 +194,7 @@ const EnglishPuzzleGame = ({
                                 translation: textExampleTranslate,
                             };
                         }
-                    )
+                    ).sort(() => Math.random() - 0.5)
             );
         } else if (
             wordsType === 'repeat' &&
