@@ -11,7 +11,6 @@ import './styles.scss';
 import './assets/sound.svg';
 
 const Audition = ({ words, fetchWords }) => {
-    const variants = ['qwe1', 'qwe2', 'qwe3', 'qwe4', 'qwe5'];
     const [gameData, setGameData] = useState({});
     const [gameConfigs, setGameConfigs] = useState({});
     const numberOfQuestionsOnGame = 6;
@@ -22,11 +21,14 @@ const Audition = ({ words, fetchWords }) => {
 
     const createQuestionOnGame = () => {
         const wordsData = {};
-        const answersId = createArrayOfUniqueNumbers(numberOfAnswersOnGame, 0, numberWordsOnThePage);
+        const answersId = createArrayOfUniqueNumbers(
+            numberOfAnswersOnGame,
+            0,
+            numberWordsOnThePage
+        );
         for (let i = 0; i < answersId.length; i += 1) {
             wordsData[`answer${i}`] = words[answersId[i]];
-        };
-        console.log(wordsData);
+        }
         setGameData(wordsData);
     };
 
@@ -40,35 +42,23 @@ const Audition = ({ words, fetchWords }) => {
         if (words.length) {
             const startConfigs = {
                 questionIndex: 0,
-            }
+            };
             setGameConfigs(startConfigs);
             createQuestionOnGame();
         }
     }, [words]);
-
-    // for (let i = 0; i < 1; i += 1) {
-    //     const findGroup = generateRandomNumber(0, numberWordGroups);
-    //     const findPage = generateRandomNumber(0, numberPagesInGroup);
-    //     const ob = {};
-    //     for (let i = 0; i < 1; i += 1) {
-    //         const findWord = generateRandomNumber(0, numberWordsOnThePage);
-    //         // ob[`answer${i}`] = wordsActions.fetchWords(findGroup, findPage);
-    //         // console.log(ob);
-    //         const response = loadWords(findPage, findGroup);
-    //         ob[`answer${i}`] = response[findWord];
-    //         console.log(response);
-    //     }
-    //     // words.push();
-    // }
-    const cons = () => {
-        console.log(words);
-    }
+    const cons = () => {};
     return (
         <Container maxWidth="md" className="audition">
             <div className="audition__question" />
             <div className="audition__variants">
                 {Object.keys(gameData).map((word, index) => (
-                    <Button size="large" className="audition__variant" key={gameData[word].word} onClick={cons}>
+                    <Button
+                        size="large"
+                        className="audition__variant"
+                        key={gameData[word].word}
+                        onClick={cons}
+                    >
                         <span>{index + 1}. </span>
                         <span>{gameData[word].wordTranslate}</span>
                     </Button>
@@ -85,14 +75,15 @@ const mapDispatchToProps = (dispatch) => ({
     fetchWords: (page, group) => {
         dispatch(wordsActions.fetchWords(page, group));
     },
-})
+});
 
 const mapStateToProps = (state) => ({
     words: wordsSelectors.getWords(state),
-})
+});
 
 Audition.propTypes = {
+    words: PropTypes.arrayOf.isRequired,
     fetchWords: PropTypes.func.isRequired,
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Audition);
