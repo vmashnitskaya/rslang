@@ -31,13 +31,9 @@ module.exports = (env, options) => {
             contentBase: path.join(__dirname, 'public'),
             watchContentBase: true,
             hot: true,
+            hotOnly: true,
             injectClient: false,
-            compress: true,
             port: 9000,
-            watchOptions: {
-                aggregateTimeout: 300,
-                poll: 1000,
-            },
             historyApiFallback: true,
         },
         module: {
@@ -87,17 +83,25 @@ module.exports = (env, options) => {
                 filename: 'style.css',
             }),
             new HtmlWebpackPlugin({
-                template: 'public/index.html',
+                template: 'src/index.html',
             }),
-            new CopyPlugin({ patterns: [{ from: 'public' }] }),
-            !isProduction && new webpack.HotModuleReplacementPlugin(),
-            !isProduction && new webpack.NoEmitOnErrorsPlugin(),
         ],
         optimization: {
             minimize: isProduction,
             minimizer: [new OptimizeCSSAssetsPlugin({})],
         },
     };
+
+    if (!isProduction) {
+        config.plugins.push(new webpack.HotModuleReplacementPlugin());
+        config.plugins.push(new webpack.NoEmitOnErrorsPlugin());
+    } else {
+        config.plugins.push(
+            new CopyPlugin({
+                patterns: [{ from: 'public', to: path.resolve(__dirname, 'dist') }],
+            })
+        );
+    }
 
     return config;
 };

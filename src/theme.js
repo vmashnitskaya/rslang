@@ -8,7 +8,14 @@ const theme = createMuiTheme({
             main: purple[500],
         },
         secondary: {
-            main: green[500],
+            main: green[300],
+        },
+    },
+    overrides: {
+        MuiTable: {
+            root: {
+                tableLayout: 'fixed',
+            },
         },
     },
 });
