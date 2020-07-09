@@ -6,26 +6,11 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import wordsActions from '../router/storage/getWordsRedux/wordsActions';
 import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
+import { generateRandomNumber, createArrayOfUniqueNumbers } from './number';
 import './styles.scss';
 import './assets/sound.svg';
 
 const Audition = ({ words, fetchWords }) => {
-    const generateRandomNumber = (min, max) => {
-        return Math.floor(Math.random() * (max - min)) + min;
-    };
-
-    const createArrayOfUniqueNumbers = (number, min, max) => {
-        const array = [];
-        for (let i = 0; i < number; i += 1) {
-            let randomNumber = generateRandomNumber(min, max);
-            while (array.includes(number)) {
-                randomNumber = generateRandomNumber();
-            }
-            array.push(randomNumber);
-        }
-        return array;
-    }
-
     const variants = ['qwe1', 'qwe2', 'qwe3', 'qwe4', 'qwe5'];
     const [gameData, setGameData] = useState({});
     const [gameConfigs, setGameConfigs] = useState({});
