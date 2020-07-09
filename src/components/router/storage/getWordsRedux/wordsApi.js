@@ -9,7 +9,6 @@ const fetchWords = async (page, group) => {
     const url = `https://afternoon-falls-25894.herokuapp.com/words?page=${page}&group=${group}`;
     const res = await window.fetch(url, { method: 'GET' });
     const json = await res.json();
-<<<<<<< HEAD
     const words = json.map(
         ({
             word,
@@ -31,15 +30,6 @@ const fetchWords = async (page, group) => {
             ...other,
         })
     );
-=======
-    const words = json.map(({ word, image, audio, audioExample, ...other }) => ({
-        word: word.toLowerCase(),
-        image: formatUrl(image),
-        audio: formatUrl(audio),
-        audioExample: formatUrl(audioExample),
-        ...other,
-    }));
->>>>>>> feat: add redux to english-puzzle
     return words;
 };
 

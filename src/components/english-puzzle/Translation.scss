@@ -1,13 +1,15 @@
 $base-color: #eceff1;
 .game {
     &__translation {
-        text-align: center;
+        display: flex;
+        justify-content: center;
         height: 60px;
-        margin-top: -20px;
+        margin-top: -10px;
         .sound-wrapper {
             height: 30px;
             .sound {
                 font-size: 2rem;
+                margin-top: 4px;
                 border: none;
                 outline: none;
                 cursor: pointer;

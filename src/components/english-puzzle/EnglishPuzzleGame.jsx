@@ -69,7 +69,8 @@ const useStyles = makeStyles((theme) => ({
     rootRadio: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginLeft: '-27px',
+        alignItems: 'center',
+        marginRight: '250px',
     },
     rootRadioOption: {
         display: 'none',
@@ -164,47 +165,12 @@ const EnglishPuzzleGame = ({
     };
 
     useEffect(() => {
-        if (words.length) {
-            let currentArray = null;
-            if (option % 2) {
-                currentArray = words.slice(10, 20);
-            } else {
-                currentArray = words.slice(0, 10);
-            }
-            setData(
-                currentArray.map(
-                    ({
-                        textExample,
-                        audioExample,
-                        textExampleTranslate,
-                        wordsPerExampleSentence,
-                    }) => {
-                        const sentence = textExample.replace(/<\/?[^>]+(>|$)/g, '');
-                        const shuffledArray = shuffle(sentence.slice(0).split(' '));
-                        const originalArray = sentence.slice(0).split(' ');
-                        return {
-                            text: sentence,
-                            pronunciation: audioExample,
-                            shuffled: {
-                                array: shuffledArray,
-                                first: originalArray[0],
-                                last: originalArray[wordsPerExampleSentence - 1],
-                            },
-                            originalArray,
-                            guessedArray: [],
-                            wordsPerExampleSentence,
-                            translation: textExampleTranslate,
-                        };
-                    }
-                )
-            );
-        }
-    }, [words]);
-
-    useEffect(() => {
+        setCurrentLine(0);
+        setGuessedArrays([]);
         if (wordsType === 'repeat' && aggregatedWords.length && aggregatedWords.length > 10) {
             setData(
                 aggregatedWords
+                    .slice(0, 10)
                     .map(
                         ({
                             textExample,
@@ -230,7 +196,6 @@ const EnglishPuzzleGame = ({
                             };
                         }
                     )
-                    .sort(() => Math.random() - 0.5)
             );
         } else if (
             wordsType === 'repeat' &&
@@ -316,14 +281,16 @@ const EnglishPuzzleGame = ({
     const handleWordGuessed = (word, index) => {
         setCurrentGuessedWords([...currentGuessedWords, word]);
 
-        const current = currentShuffled.array.slice(0).splice(index, 1);
+        const current = currentShuffled.array.slice(0);
+        current.splice(index, 1);
         setCurrentShuffled({ ...currentShuffled, array: current });
     };
 
     const handleWordPassed = (word, index) => {
         setCurrentShuffled({ ...currentShuffled, array: [...currentShuffled.array, word] });
 
-        const current = currentGuessedWords.slice(0).splice(index, 1);
+        const current = currentGuessedWords.slice(0);
+        current.splice(index, 1);
         setCurrentGuessedWords(current);
     };
 
@@ -438,30 +405,6 @@ const EnglishPuzzleGame = ({
         <StartPage onClick={handleStartPageClose} />
     ) : (
         <div className="ep-page">
-            <FormControl component="fieldset">
-                <RadioGroup
-                    aria-label="words"
-                    name="words"
-                    value={wordsType}
-                    onChange={handleRadioChange}
-                    className={classes.rootRadio}
-                >
-                    <FormControlLabel
-                        value="new"
-                        control={<Radio className={classes.rootRadioOption} />}
-                        label="New"
-                        labelPlacement="top"
-                        className={wordsType === 'new' && classes.label}
-                    />
-                    <FormControlLabel
-                        value="repeat"
-                        control={<Radio className={classes.rootRadioOption} />}
-                        label="Repeat words"
-                        labelPlacement="top"
-                        className={wordsType === 'repeat' && classes.label}
-                    />
-                </RadioGroup>
-            </FormControl>
             <div className="header">
                 <div className="header__drop-downs">
                     <DropDown
@@ -485,6 +428,30 @@ const EnglishPuzzleGame = ({
                         passed={optionsPassed}
                     />
                 </div>
+                <FormControl component="fieldset">
+                    <RadioGroup
+                        aria-label="words"
+                        name="words"
+                        value={wordsType}
+                        onChange={handleRadioChange}
+                        className={classes.rootRadio}
+                    >
+                        <FormControlLabel
+                            value="new"
+                            control={<Radio className={classes.rootRadioOption} />}
+                            label="New"
+                            labelPlacement="top"
+                            className={wordsType === 'new' && classes.label}
+                        />
+                        <FormControlLabel
+                            value="repeat"
+                            control={<Radio className={classes.rootRadioOption} />}
+                            label="Repeat words"
+                            labelPlacement="top"
+                            className={wordsType === 'repeat' && classes.label}
+                        />
+                    </RadioGroup>
+                </FormControl>
                 <Hints
                     handleAutoEnabledChecked={enableAutoPronunciation}
                     handlePronunciationHintChecked={enablePronunciation}
