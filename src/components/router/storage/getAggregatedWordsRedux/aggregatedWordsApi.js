@@ -54,6 +54,7 @@ const getAggregatedWords = async (userId, token, wordsPerPage, filter) => {
     } else if (rawResponse.status === 401) {
         throw new Error('Wrong token');
     }
+    console.log(content);
     return content;
 };
 

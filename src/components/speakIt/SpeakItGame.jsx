@@ -123,7 +123,9 @@ const SpeakItGame = ({
     }, []);
 
     useEffect(() => {
-        if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length > 11) {
+        setSelectedCard(null);
+        setGuessedWords([]);
+        if (wordsType === 'repeat' && aggregatedWords.length && aggregatedWords.length > 10) {
             setCards(
                 aggregatedWords
                     .slice(0, 10)
@@ -137,7 +139,11 @@ const SpeakItGame = ({
                     .sort(() => Math.random() - 0.5)
             );
             setSelectedCard(null);
-        } else if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length < 11) {
+        } else if (
+            wordsType === 'repeat' &&
+            aggregatedWords.length &&
+            aggregatedWords.length < 10
+        ) {
             setWordsType('new');
             setAlertShown(true);
         } else if (words) {
@@ -154,7 +160,6 @@ const SpeakItGame = ({
                     .sort(() => Math.random() - 0.5)
             );
         }
-        setSelectedCard(null);
     }, [words, aggregatedWords]);
 
     const handleComplexityChange = (newComplexity) => {
@@ -181,7 +186,9 @@ const SpeakItGame = ({
 
     const handleStartGame = () => {
         setGameStarted(true);
-        setSelectedCard(null);
+        if (!guessedWords.length) {
+            setSelectedCard(null);
+        }
         setSpeechText('');
         const speechRecognition = speechRecognitionRef.current;
         if (speechRecognition) {
@@ -202,6 +209,12 @@ const SpeakItGame = ({
             }
         }
     };
+
+    useEffect(() => {
+        if (cards.length) {
+            setGuessedWords([]);
+        }
+    }, [cards]);
 
     const handlePopUpOpened = useCallback(() => {
         setPopUpOpened(true);
@@ -285,6 +298,7 @@ const SpeakItGame = ({
                 currentComplexity={complexity}
                 onComplexityChange={handleComplexityChange}
                 complexityArray={[0, 1, 2, 3, 4, 5]}
+                wordsType={wordsType}
             />
             {selectedCard ? (
                 <Image image={selectedCard.image} word={selectedCard.word} />
