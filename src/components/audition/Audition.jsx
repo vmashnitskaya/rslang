@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import wordsActions from '../router/storage/getWordsRedux/wordsActions';
 import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
 import { generateRandomNumber, createArrayOfUniqueNumbers } from './number';
+import playAudio from './audio';
 import './styles.scss';
 import './assets/sound.svg';
 
@@ -21,6 +22,7 @@ const Audition = ({ words, fetchWords }) => {
 
     const createQuestionOnGame = () => {
         const wordsData = {};
+        const gameConfigsArray = gameConfigs;
         const answersId = createArrayOfUniqueNumbers(
             numberOfAnswersOnGame,
             0,
@@ -29,7 +31,12 @@ const Audition = ({ words, fetchWords }) => {
         for (let i = 0; i < answersId.length; i += 1) {
             wordsData[`answer${i}`] = words[answersId[i]];
         }
+        gameConfigsArray.rightAnswerOfCurrentQuestion = generateRandomNumber(
+            0, numberOfAnswersOnGame - 1
+        );
         setGameData(wordsData);
+        setGameConfigs(gameConfigsArray);
+        playAudio(wordsData[`answer${gameConfigs.rightAnswerOfCurrentQuestion}`].audio);
     };
 
     useEffect(() => {
@@ -47,17 +54,16 @@ const Audition = ({ words, fetchWords }) => {
             createQuestionOnGame();
         }
     }, [words]);
-    const cons = () => {};
+    const playAudioOfWord = () => {};
     return (
         <Container maxWidth="md" className="audition">
-            <div className="audition__question" />
+            <div className="audition__question" onClick={playAudioOfWord()}/>
             <div className="audition__variants">
                 {Object.keys(gameData).map((word, index) => (
                     <Button
                         size="large"
                         className="audition__variant"
                         key={gameData[word].word}
-                        onClick={cons}
                     >
                         <span>{index + 1}. </span>
                         <span>{gameData[word].wordTranslate}</span>
@@ -82,7 +88,7 @@ const mapStateToProps = (state) => ({
 });
 
 Audition.propTypes = {
-    words: PropTypes.arrayOf.isRequired,
+    words: PropTypes.arrayOf(PropTypes.object).isRequired,
     fetchWords: PropTypes.func.isRequired,
 };
 
