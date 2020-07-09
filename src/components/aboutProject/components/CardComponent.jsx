@@ -2,7 +2,7 @@ import React from 'react';
 import CardMedia from '@material-ui/core/CardMedia';
 import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
-import * as txtx from './textInformation';
+import * as txtx from './TextInformation';
 
 const UserPhoto = () => {
     return <CardMedia component="img" image="" />;
