@@ -4,11 +4,11 @@ import './Loader.scss';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const Loader = ({ error }) => {
+const Loader = ({ error, errorAggr }) => {
     return (
         <div className="loader-wrapper">
             <CircularProgress color="primary" />
-            {error && (
+            {(error || errorAggr) && (
                 <div className="error-message">Sorry for inconvenience, try again later.</div>
             )}
         </div>
@@ -17,6 +17,7 @@ const Loader = ({ error }) => {
 
 Loader.propTypes = {
     error: PropTypes.bool.isRequired,
+    errorAggr: PropTypes.bool.isRequired,
 };
 
 export default Loader;

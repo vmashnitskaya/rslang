@@ -1,6 +1,6 @@
-import React, { useMemo, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+import React, { useMemo, useEffect, useState } from 'react';
+import { Button, FormControl, Paper, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import DropDown from './DropDown';
@@ -15,10 +15,42 @@ import wordsActions from '../router/storage/getWordsRedux/wordsActions';
 import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
 import puzzleActions from './redux/puzzleActions';
 import puzzleSelectors from './redux/puzzleSelectors';
+import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
+import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
+import { getToken, getUserId } from '../router/storage/selectors';
 import './EnglishPuzzleGame.scss';
 
 const maxLevel = 5;
 const maxOption = 59;
+
+const filterForRepeatWords = {
+    $or: [
+        {
+            $and: [
+                {
+                    'userWord.optional.difficult': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+        {
+            $and: [
+                {
+                    'userWord.optional.repeat': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+        {
+            $and: [
+                {
+                    'userWord.optional.learned': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+    ],
+};
 
 let localStoragePagination = localStorage.getItem('pagination')
     ? JSON.parse(localStorage.getItem('pagination'))
@@ -32,6 +64,20 @@ if (localStoragePagination && localStoragePagination.option < maxOption) {
 } else if (localStoragePagination) {
     localStoragePagination = { option: 0, level: 0 };
 }
+
+const useStyles = makeStyles((theme) => ({
+    rootRadio: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginLeft: '-27px',
+    },
+    rootRadioOption: {
+        display: 'none',
+    },
+    label: {
+        color: theme.palette.primary.main,
+    },
+}));
 
 const EnglishPuzzleGame = ({
     words,
@@ -76,8 +122,16 @@ const EnglishPuzzleGame = ({
     setCorrectResultEnabledOptions,
     setIsStartPage,
     isStartPage,
+    userId,
+    token,
+    aggregatedWords,
+    loadingAggr,
+    errorAggr,
+    fetchAggregatedWords,
 }) => {
     const { level, option } = pagination;
+    const [wordsType, setWordsType] = useState('new');
+    const classes = useStyles();
 
     const levelOptions = useMemo(
         () =>
@@ -96,15 +150,18 @@ const EnglishPuzzleGame = ({
         []
     );
 
+    useEffect(() => {
+        if (userId && token && wordsType === 'repeat') {
+            fetchAggregatedWords(userId, token, 20, filterForRepeatWords);
+        } else {
+            const group = Math.floor(option / 2);
+            fetchWords(group, level);
+        }
+    }, [wordsType, fetchAggregatedWords, fetchWords]);
+
     const shuffle = (array) => {
         return array.sort(() => Math.random() - 0.5);
     };
-
-    useEffect(() => {
-        const group = Math.floor(option / 2);
-        fetchWords(group, level);
-        localStorage.setItem('pagination', JSON.stringify({ level, option }));
-    }, [level, option, fetchWords]);
 
     useEffect(() => {
         if (words.length) {
@@ -114,7 +171,6 @@ const EnglishPuzzleGame = ({
             } else {
                 currentArray = words.slice(0, 10);
             }
-
             setData(
                 currentArray.map(
                     ({
@@ -142,10 +198,84 @@ const EnglishPuzzleGame = ({
                     }
                 )
             );
-            setCurrentLine(0);
-            setGuessedArrays([]);
         }
     }, [words]);
+
+    useEffect(() => {
+        if (wordsType === 'repeat' && aggregatedWords.length && aggregatedWords.length > 10) {
+            setData(
+                aggregatedWords
+                    .map(
+                        ({
+                            textExample,
+                            audioExample,
+                            textExampleTranslate,
+                            wordsPerExampleSentence,
+                        }) => {
+                            const sentence = textExample.replace(/<\/?[^>]+(>|$)/g, '');
+                            const shuffledArray = shuffle(sentence.slice(0).split(' '));
+                            const originalArray = sentence.slice(0).split(' ');
+                            return {
+                                text: sentence,
+                                pronunciation: audioExample,
+                                shuffled: {
+                                    array: shuffledArray,
+                                    first: originalArray[0],
+                                    last: originalArray[wordsPerExampleSentence - 1],
+                                },
+                                originalArray,
+                                guessedArray: [],
+                                wordsPerExampleSentence,
+                                translation: textExampleTranslate,
+                            };
+                        }
+                    )
+                    .sort(() => Math.random() - 0.5)
+            );
+        } else if (
+            wordsType === 'repeat' &&
+            aggregatedWords.length &&
+            aggregatedWords.length < 10
+        ) {
+            setWordsType('new');
+        } else if (words) {
+            if (words.length) {
+                let currentArray = null;
+                if (option % 2) {
+                    currentArray = words.slice(10, 20);
+                } else {
+                    currentArray = words.slice(0, 10);
+                }
+                setData(
+                    currentArray.map(
+                        ({
+                            textExample,
+                            audioExample,
+                            textExampleTranslate,
+                            wordsPerExampleSentence,
+                        }) => {
+                            const sentence = textExample.replace(/<\/?[^>]+(>|$)/g, '');
+                            const shuffledArray = shuffle(sentence.slice(0).split(' '));
+                            const originalArray = sentence.slice(0).split(' ');
+                            return {
+                                text: sentence,
+                                pronunciation: audioExample,
+                                shuffled: {
+                                    array: shuffledArray,
+                                    first: originalArray[0],
+                                    last: originalArray[wordsPerExampleSentence - 1],
+                                },
+                                originalArray,
+                                guessedArray: [],
+                                wordsPerExampleSentence,
+                                translation: textExampleTranslate,
+                            };
+                        }
+                    )
+                );
+            }
+        }
+    }, [words, aggregatedWords]);
 
     useEffect(() => {
         if (data.length) {
@@ -298,10 +428,40 @@ const EnglishPuzzleGame = ({
         setIsStartPage(!isStartPage);
     };
 
+    const handleRadioChange = (event) => {
+        if (wordsType && wordsType !== event.target.value) {
+            setWordsType(event.target.value);
+        }
+    };
+
     return isStartPage ? (
         <StartPage onClick={handleStartPageClose} />
     ) : (
         <div className="ep-page">
+            <FormControl component="fieldset">
+                <RadioGroup
+                    aria-label="words"
+                    name="words"
+                    value={wordsType}
+                    onChange={handleRadioChange}
+                    className={classes.rootRadio}
+                >
+                    <FormControlLabel
+                        value="new"
+                        control={<Radio className={classes.rootRadioOption} />}
+                        label="New"
+                        labelPlacement="top"
+                        className={wordsType === 'new' && classes.label}
+                    />
+                    <FormControlLabel
+                        value="repeat"
+                        control={<Radio className={classes.rootRadioOption} />}
+                        label="Repeat words"
+                        labelPlacement="top"
+                        className={wordsType === 'repeat' && classes.label}
+                    />
+                </RadioGroup>
+            </FormControl>
             <div className="header">
                 <div className="header__drop-downs">
                     <DropDown
@@ -333,8 +493,8 @@ const EnglishPuzzleGame = ({
                 />
             </div>
 
-            {loading || error || data.length === 0 ? (
-                <Loader error={error} />
+            {loading || error || loadingAggr || errorAggr || data.length === 0 ? (
+                <Loader error={error} errorAggr={errorAggr} />
             ) : (
                 <div className="main game">
                     <Translation
@@ -474,6 +634,9 @@ const mapDispatchToProps = (dispatch) => ({
     setIsStartPage: (isStartPage) => {
         dispatch(puzzleActions.setIsStartPage(isStartPage));
     },
+    fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
+        dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
+    },
 });
 
 const mapStateToProps = (state) => ({
@@ -498,6 +661,11 @@ const mapStateToProps = (state) => ({
     options: puzzleSelectors.getOptions(state),
     correctResultEnabledOptions: puzzleSelectors.getCorrectResultEnabledOptions(state),
     isStartPage: puzzleSelectors.getIsStartPage(state),
+    userId: getUserId(state),
+    token: getToken(state),
+    aggregatedWords: aggregatedWordsSelectors.getAggregatedWords(state),
+    loadingAggr: aggregatedWordsSelectors.getLoading(state),
+    errorAggr: aggregatedWordsSelectors.getError(state),
 });
 
 EnglishPuzzleGame.propTypes = {
@@ -567,6 +735,30 @@ EnglishPuzzleGame.propTypes = {
     setCorrectResultEnabledOptions: PropTypes.func.isRequired,
     setIsStartPage: PropTypes.func.isRequired,
     isStartPage: PropTypes.bool.isRequired,
+    aggregatedWords: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+            word: PropTypes.string,
+            audio: PropTypes.string,
+            image: PropTypes.string,
+            transcription: PropTypes.string,
+            wordTranslate: PropTypes.string,
+            userWord: PropTypes.shape({
+                difficulty: PropTypes.string,
+                optional: PropTypes.shape({
+                    learned: PropTypes.bool,
+                    difficult: PropTypes.bool,
+                    deleted: PropTypes.bool,
+                    repeat: PropTypes.bool,
+                }),
+            }),
+        })
+    ).isRequired,
+    loadingAggr: PropTypes.bool.isRequired,
+    errorAggr: PropTypes.bool.isRequired,
+    fetchAggregatedWords: PropTypes.func.isRequired,
+    userId: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
 };
 
 EnglishPuzzleGame.defaultProps = {
