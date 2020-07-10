@@ -31,3 +31,9 @@ div.audition {
         margin-bottom: 20px;
     }
 }
+button.audition__button_disabled {
+    text-decoration: line-through;
+    color: gray;
+    cursor: not-allowed;
+    pointer-events: auto;
+}

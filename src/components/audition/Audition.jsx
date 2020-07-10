@@ -14,6 +14,7 @@ import './assets/sound.svg';
 const Audition = ({ words, fetchWords }) => {
     const [gameData, setGameData] = useState({});
     const [gameConfigs, setGameConfigs] = useState({});
+    const [classesOfButtons, setClassesOfButtons] = useState('');
     const numberOfQuestionsOnGame = 6;
     const numberOfAnswersOnGame = 6;
     const numberWordGroups = 5;
@@ -60,13 +61,16 @@ const Audition = ({ words, fetchWords }) => {
         playAudio(audio);
     };
     const checkAnswer = (event) => {
-        const chosenWord = event.target.textContent;
-        const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
-        const rightWord = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
-        if (chosenWord.includes(rightWord)) {
-            console.log('Right word');
-        } else {
-            console.log('Wrong word');
+        if (classesOfButtons !== 'audition__button_disabled') {
+            const chosenWord = event.target.textContent;
+            const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
+            const rightWord = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
+            setClassesOfButtons('audition__button_disabled');
+            if (chosenWord.includes(rightWord)) {
+                console.log('Right word');
+            } else {
+                console.log('Wrong word');
+            }
         }
     }
     return (
@@ -76,7 +80,7 @@ const Audition = ({ words, fetchWords }) => {
                 {Object.keys(gameData).map((word, index) => (
                     <Button
                         size="large"
-                        className="audition__variant"
+                        className={`audition__variant ${classesOfButtons}`}
                         key={gameData[word].word}
                         onClick={checkAnswer}
                     >
