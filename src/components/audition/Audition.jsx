@@ -15,6 +15,7 @@ const Audition = ({ words, fetchWords }) => {
     const [gameData, setGameData] = useState({});
     const [gameConfigs, setGameConfigs] = useState({});
     const [classesOfButtons, setClassesOfButtons] = useState('');
+    const [rightWordOnPage, setRightWordOnPage] = useState('');
     const numberOfQuestionsOnGame = 6;
     const numberOfAnswersOnGame = 6;
     const numberWordGroups = 5;
@@ -64,9 +65,11 @@ const Audition = ({ words, fetchWords }) => {
         if (classesOfButtons !== 'audition__button_disabled') {
             const chosenWord = event.target.textContent;
             const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
-            const rightWord = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
+            const rightWord = gameData[`answer${currentRightIdOfWord}`].word;
+            const rightWordTranslation = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
             setClassesOfButtons('audition__button_disabled');
-            if (chosenWord.includes(rightWord)) {
+            setRightWordOnPage(`${rightWord} - ${rightWordTranslation}`);
+            if (chosenWord.includes(rightWordTranslation)) {
                 event.target.classList.add('audition__button_right');
                 console.log('Right word');
             } else {
@@ -77,6 +80,7 @@ const Audition = ({ words, fetchWords }) => {
     return (
         <Container maxWidth="md" className="audition">
             <div className="audition__question" onClick={playAudioOfWord}/>
+            <div className="audition__right-word">{rightWordOnPage}</div>
             <div className="audition__variants">
                 {Object.keys(gameData).map((word, index) => (
                     <Button
