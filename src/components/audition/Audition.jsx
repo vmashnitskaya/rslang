@@ -93,7 +93,7 @@ const Audition = ({ words, fetchWords }) => {
                     </Button>
                 ))}
             </div>
-            <Button variant="outlined" size="large">
+            <Button variant="outlined" size="large" onClick={checkAnswer}>
                 Не знаю
             </Button>
         </Container>
