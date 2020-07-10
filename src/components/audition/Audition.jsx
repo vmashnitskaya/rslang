@@ -59,6 +59,16 @@ const Audition = ({ words, fetchWords }) => {
         const audio = gameData[`answer${currentRightIdOfWord}`].audio;
         playAudio(audio);
     };
+    const checkAnswer = (event) => {
+        const chosenWord = event.target.textContent;
+        const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
+        const rightWord = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
+        if (chosenWord.includes(rightWord)) {
+            console.log('Right word');
+        } else {
+            console.log('Wrong word');
+        }
+    }
     return (
         <Container maxWidth="md" className="audition">
             <div className="audition__question" onClick={playAudioOfWord}/>
@@ -68,6 +78,7 @@ const Audition = ({ words, fetchWords }) => {
                         size="large"
                         className="audition__variant"
                         key={gameData[word].word}
+                        onClick={checkAnswer}
                     >
                         {`${index + 1}. ${gameData[word].wordTranslate}`}
                     </Button>
