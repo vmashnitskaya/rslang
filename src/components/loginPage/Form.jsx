@@ -37,7 +37,7 @@ const Form = ({
         setPassword(event.target.value);
     };
     return (
-        <form id={className} className={className} onSubmit={handleSubmit}>
+        <form autoComplete="off" id={className} className={className} onSubmit={handleSubmit}>
             <Box display="flex" alignItems="center" flexDirection="column">
                 <TextField
                     className={emailClassName}
