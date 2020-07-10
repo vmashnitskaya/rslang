@@ -4,6 +4,8 @@ import { Box, Typography, AppBar, Toolbar, IconButton, Button, Dialog } from '@m
 import { makeStyles } from '@material-ui/core/styles';
 import ComplexityPoints from '../speakIt/ComplexityPoints';
 import './StartGame.scss';
+import useUserWord from '../router/storage/hooks/useUserWords';
+import Loading from './Loading';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -15,14 +17,27 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function StartGame({ onClose, onComplexityChange, complexity }) {
+export default function StartGame({ onClose, onComplexityChange, onChooseUserWords, complexity }) {
     const classes = useStyles();
     const [open, setOpen] = useState(true);
     const [show, setShow] = useState(false);
+    const [message, setMessage] = useState(null);
+    const { words, error, loading } = useUserWord();
 
     const handleClose = () => {
         onClose();
         setOpen(false);
+    };
+
+    const handleUserWords = () => {
+        if (words.length < 40) {
+            setMessage(
+                'Your words are not enought for this game. Please go to main game or use random words.'
+            );
+        } else {
+            onChooseUserWords(true);
+            handleClose();
+        }
     };
 
     const handleShow = () => {
@@ -35,6 +50,8 @@ export default function StartGame({ onClose, onComplexityChange, complexity }) {
 
     return (
         <div className="start-page_wrapper">
+            {loading && <Loading className="loader" />}
+            {error && <Typography>Something get`s wrong</Typography>}
             <Dialog fullScreen open={open} onClose={handleClose}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
@@ -61,6 +78,7 @@ export default function StartGame({ onClose, onComplexityChange, complexity }) {
                             className="start-page_game__button"
                             color="primary"
                             variant="contained"
+                            onClick={handleUserWords}
                         >
                             My words
                         </Button>
@@ -86,6 +104,7 @@ export default function StartGame({ onClose, onComplexityChange, complexity }) {
                         />
                     </Box>
                 )}
+                <Typography>{message}</Typography>
                 <Button
                     variant="contained"
                     color="primary"
@@ -102,5 +121,6 @@ export default function StartGame({ onClose, onComplexityChange, complexity }) {
 StartGame.propTypes = {
     onClose: PropTypes.func.isRequired,
     onComplexityChange: PropTypes.func.isRequired,
+    onChooseUserWords: PropTypes.func.isRequired,
     complexity: PropTypes.number.isRequired,
 };

@@ -5,16 +5,30 @@ import StartGame from './StartGame';
 
 const Sprint = () => {
     const [started, setStart] = useState(false);
-    const onStart = useCallback(() => setStart(true));
+    const [userWords, setUserWord] = useState(false);
+    const onStart = useCallback(() => {
+        setStart(true);
+    });
     const [complexity, setComplexity] = useState(0);
     const onComplexityChange = useCallback((c) => setComplexity(c));
+    const onUserWords = useCallback((uw) => setUserWord(uw));
 
     return (
         <BrowserRouter>
             <Switch>
                 <Route exact path="/sprint">
-                    <StartGame onClose={onStart} onComplexityChange={onComplexityChange} />
-                    {started && <App complexity={complexity} className="sprint-game" />}
+                    <StartGame
+                        onClose={onStart}
+                        onChooseUserWords={onUserWords}
+                        onComplexityChange={onComplexityChange}
+                    />
+                    {started && (
+                        <App
+                            userWordsOnly={userWords}
+                            complexity={complexity}
+                            className="sprint-game"
+                        />
+                    )}
                 </Route>
             </Switch>
         </BrowserRouter>

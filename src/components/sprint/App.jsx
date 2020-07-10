@@ -8,20 +8,18 @@ import WordContent from './WordContent';
 import './styles.scss';
 import useAggregatedWords from '../router/storage/hooks/useAggregatedWords';
 import ResultGame from './ResultGame';
-import Loading from '../speakIt/Loading';
-
-const POINT_FOR_RIGHT_ANSWER = 10;
-const BONUS_POINTS = 50;
-const MAX_STRICK = 4;
+import Loading from './Loading';
+import { POINT_FOR_RIGHT_ANSWER, BONUS_POINTS, MAX_STRICK } from './constants';
 
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
-export default function App({ complexity }) {
+export default function App({ userWordsOnly, complexity }) {
     const [page, setPage] = useState(0);
+    const filterUserWordsOnly = userWordsOnly ? { userWord: { $ne: null } } : {};
     const config = {
         group: complexity,
         page,
-        filter: { $or: [{ page }, { page: page + 1 }] },
+        filter: { $or: [{ page }, { page: page + 1 }], ...filterUserWordsOnly },
         wordsPerPage: 40,
     };
     const { data, error, loading } = useAggregatedWords(config);
@@ -92,7 +90,7 @@ export default function App({ complexity }) {
 
     return (
         <Box>
-            {loading && <Loading />}
+            {loading && <Loading className="loader" />}
             {error && (
                 <Box>
                     <Paper>Something wrong. Please try again later</Paper>
@@ -151,5 +149,6 @@ export default function App({ complexity }) {
 }
 
 App.propTypes = {
+    userWordsOnly: PropTypes.bool.isRequired,
     complexity: PropTypes.number.isRequired,
 };
