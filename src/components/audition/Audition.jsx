@@ -67,6 +67,7 @@ const Audition = ({ words, fetchWords }) => {
             const rightWord = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
             setClassesOfButtons('audition__button_disabled');
             if (chosenWord.includes(rightWord)) {
+                event.target.classList.add('audition__button_right');
                 console.log('Right word');
             } else {
                 console.log('Wrong word');
@@ -89,7 +90,7 @@ const Audition = ({ words, fetchWords }) => {
                 ))}
             </div>
             <Button variant="outlined" size="large">
-                I don`t know
+                Не знаю
             </Button>
         </Container>
     );

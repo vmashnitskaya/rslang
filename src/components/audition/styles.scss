@@ -31,9 +31,27 @@ div.audition {
         margin-bottom: 20px;
     }
 }
-button.audition__button_disabled {
-    text-decoration: line-through;
-    color: gray;
-    cursor: not-allowed;
-    pointer-events: auto;
+button.audition__button {
+    &_disabled {
+        // text-decoration: line-through;
+        color: gray;
+        cursor: not-allowed;
+        pointer-events: auto;
+    }
+}
+span.audition__button {
+    &_right::before {
+        content: '';
+        display: inline-flex;
+        width: 50px;
+        height: 50px;
+        background: url('./assets/ok.svg');
+        background-size: 35px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    &_right {
+        text-decoration: none;
+        color: black;
+    }
 }
