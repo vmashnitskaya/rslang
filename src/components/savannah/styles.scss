@@ -51,6 +51,80 @@
         color: white;
         display: grid;
         padding: 20px;
+        position: relative;
+
+        .timer {
+            display: grid;
+            justify-content: center;
+            grid-template-rows: 2fr 1fr;
+            align-items: center;
+
+            .loading {
+                position: relative;
+                height: 114px;
+                width: 114px;
+                margin: 0 auto 30px;
+
+                .round1 {
+                    position: absolute;
+                    left: -6px;
+                    top: -7px;
+                    width: 95px;
+                    height: 131px;
+                    background: url('/assets/images/timer/round1.png') no-repeat;
+                    background-size: cover;
+                    animation: rotate-animate 2s linear infinite;
+                    transform-origin: 65px 66px;
+                }
+
+                .round2 {
+                    position: absolute;
+                    left: 12px;
+                    top: -7px;
+                    width: 111px;
+                    height: 57px;
+                    background: url('/assets/images/timer/round2.png') no-repeat;
+                    background-size: cover;
+                    animation: rotate-animate 2s linear infinite;
+                    transform-origin: 46px 64px;
+                }
+
+                .round3 {
+                    position: absolute;
+                    left: 59px;
+                    top: 31px;
+                    width: 53px;
+                    height: 74px;
+                    background: url('/assets/images/timer/round3.png') no-repeat;
+                    background-size: cover;
+                    animation: rotate-animate 2s linear infinite;
+                    transform-origin: -1px 26px;
+                }
+                .count {
+                    position: absolute;
+                    top: 37px;
+                    right: 0;
+                    left: 0;
+                    font-size: 40px;
+                    line-height: 1;
+                    font-weight: 300;
+                    text-align: center;
+                    -webkit-font-smoothing: antialiased;
+                    color: #fff;
+                }
+            }
+
+            .hint{
+                display: grid;
+                justify-items: center;
+                opacity: 0.7;
+
+                img{
+                    width: 40px;
+                    height: 32px;
+                }
+            }
+        }
 
         &_header{
             display: flex;
@@ -357,71 +431,6 @@
                     animation-delay: .9s;
                 }
             }
-        }
-    }
-
-}
-
-.timer {
-    height: 100px;
-    top: 50%;
-    margin-top: -50px;
-    position: absolute;
-    right: 0;
-    left: 0;
-
-    .loading {
-        position: relative;
-        height: 114px;
-        width: 114px;
-        margin: 0 auto 30px;
-
-        .round1 {
-            position: absolute;
-            left: -6px;
-            top: -7px;
-            width: 95px;
-            height: 131px;
-            background: url('/assets/images/timer/round1.png') no-repeat;
-            background-size: cover;
-            animation: rotate-animate 2s linear infinite;
-            transform-origin: 65px 66px;
-        }
-
-        .round2 {
-            position: absolute;
-            left: 12px;
-            top: -7px;
-            width: 111px;
-            height: 57px;
-            background: url('/assets/images/timer/round2.png') no-repeat;
-            background-size: cover;
-            animation: rotate-animate 2s linear infinite;
-            transform-origin: 46px 64px;
-        }
-
-        .round3 {
-            position: absolute;
-            left: 59px;
-            top: 31px;
-            width: 53px;
-            height: 74px;
-            background: url('/assets/images/timer/round3.png') no-repeat;
-            background-size: cover;
-            animation: rotate-animate 2s linear infinite;
-            transform-origin: -1px 26px;
-        }
-        .count {
-            position: absolute;
-            top: 37px;
-            right: 0;
-            left: 0;
-            font-size: 40px;
-            line-height: 1;
-            font-weight: 300;
-            text-align: center;
-            -webkit-font-smoothing: antialiased;
-            color: #fff;
         }
     }
 

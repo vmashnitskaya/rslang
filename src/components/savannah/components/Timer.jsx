@@ -26,6 +26,10 @@ function Timer({ callback }) {
                 <i className="round3" />
                 <div className="count">{sec}</div>
             </div>
+            <div className="hint">
+                <img src="/assets/images/timer/keyboard.svg" alt="keyboard" />
+                <p>You can use 1, 2, 3, 4 keys for quick answer</p>
+            </div>
         </div>
     );
 }

@@ -15,6 +15,19 @@ function Answers({ translations, active, callback }) {
         setPressedIndex(-1);
     }, [translations]);
 
+    useEffect(() => {
+        const keypress = (event) => {
+            if (['1', '2', '3', '4'].includes(event.key)) {
+                const index = Number(event.key) - 1;
+                if (!Number.isNaN(index)) {
+                    answerPressed(index, translations[index].correct);
+                }
+            }
+        };
+        document.addEventListener('keypress', keypress);
+        return () => document.removeEventListener('keypress', keypress);
+    }, [translations]);
+
     return (
         <div className="game_answers">
             {translations.map((e, i) => {
@@ -22,7 +35,7 @@ function Answers({ translations, active, callback }) {
                 if (e.correct && !active) {
                     style = { background: 'rgba(80,227,194,.15)' };
                 }
-                if (pressedIndex > 0 && pressedIndex === i && !e.correct) {
+                if (pressedIndex >= 0 && pressedIndex === i && !e.correct) {
                     style = { background: 'rgba(255,109,127,.3)' };
                 }
                 return (

@@ -95,8 +95,10 @@ function GamePage({ words, setFinished, setGameResults, rightAnswersCallback }) 
     }, [tempResults, rightAnswersCallback]);
 
     useEffect(() => {
-        clearTimeout(roundTimeout.current);
-        clearTimeout(piuuTimeout.current);
+        return () => {
+            clearTimeout(roundTimeout.current);
+            clearTimeout(piuuTimeout.current);
+        };
     }, []);
 
     return (

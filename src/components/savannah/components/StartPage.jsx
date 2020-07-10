@@ -25,7 +25,7 @@ function StartPage({ settings, userHaveWords, fetchWords, setGroup, setUserWords
                 {userHaveWords ? (
                     <>
                         <div>
-                            <p>You have enough words to repeat</p>
+                            <p>You can repeat learned words</p>
                             <Button
                                 onClick={() => setUserWords()}
                                 color="primary"
@@ -40,7 +40,7 @@ function StartPage({ settings, userHaveWords, fetchWords, setGroup, setUserWords
                 ) : null}
 
                 <div>
-                    <p>You can choose your level</p>
+                    <p>You can choose difficulty level</p>
                     <ButtonGroup
                         variant="outlined"
                         color="primary"
