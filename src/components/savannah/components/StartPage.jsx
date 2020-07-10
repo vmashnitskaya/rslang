@@ -50,7 +50,13 @@ function StartPage({ settings, userHaveWords, fetchWords, setGroup, setUserWords
                     </ButtonGroup>
                 </div>
             </div>
-            <h2>SAVANNAH</h2>
+            <div>
+                <h2>SAVANNAH</h2>
+                <p>
+                    This excercise will help you to improve vocabulary. The more words you know, the
+                    more experience points you get.
+                </p>
+            </div>
             <Button
                 onClick={() => fetchWords(settings.userWords, settings.group)}
                 color="primary"

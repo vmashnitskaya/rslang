@@ -5,6 +5,13 @@ function Timer({ callback }) {
     const [sec, setSec] = useState(3);
 
     useEffect(() => {
+        const audio = new Audio();
+        audio.preload = 'auto';
+        audio.src = '/assets/audio/savannah/gong.mp3';
+        audio.play();
+    }, []);
+
+    useEffect(() => {
         let id = null;
         if (sec > 0) {
             id = setTimeout(() => setSec((prev) => prev - 1), 1000);

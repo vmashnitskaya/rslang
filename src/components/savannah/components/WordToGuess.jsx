@@ -20,11 +20,19 @@ function EnglishWord({ name, roundResult }) {
             timeoutIdWord.current = setTimeout(() => {
                 setWordClass('word fail');
                 setDivClass('question start');
+                const audio = new Audio();
+                audio.preload = 'auto';
+                audio.src = '/assets/audio/savannah/error.mp3';
+                audio.play();
             }, 100);
         } else if (roundResult === true) {
             timeoutIdWord.current = setTimeout(() => {
                 setWordClass('word success');
                 setDivClass('question success_fall');
+                const audio = new Audio();
+                audio.preload = 'auto';
+                audio.src = '/assets/audio/savannah/correct.mp3';
+                audio.play();
                 timeoutIdDiv.current = setTimeout(() => {
                     setDivClass('question success_hide');
                 }, 500);

@@ -10,7 +10,7 @@
 
     .start_page{
         display: grid;
-        grid-template-rows: 1fr auto 1fr;
+        grid-template-rows: 1fr 2fr 1fr;
         justify-items: center;
         align-items: center;
         color: #6cffde;
@@ -21,10 +21,12 @@
             opacity: .8;
             letter-spacing: 13px;
             font-weight: 300;
+            text-align: center;
         }
 
         p{
             font-size: 22px;
+            opacity: .8;
         }
 
         .level{
@@ -56,14 +58,14 @@
         .timer {
             display: grid;
             justify-content: center;
-            grid-template-rows: 2fr 1fr;
+            grid-template-rows: 3fr 1fr;
             align-items: center;
 
             .loading {
                 position: relative;
                 height: 114px;
                 width: 114px;
-                margin: 0 auto 30px;
+                justify-self: center;
 
                 .round1 {
                     position: absolute;

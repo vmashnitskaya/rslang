@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 function Crystal({ level, correct }) {
+    useEffect(() => {
+        if (level > 0) {
+            const audio = new Audio();
+            audio.preload = 'auto';
+            audio.src = '/assets/audio/savannah/levelUp.mp3';
+            audio.play();
+        }
+    }, [level]);
+
     return (
         <div className="crystal">
             <div>

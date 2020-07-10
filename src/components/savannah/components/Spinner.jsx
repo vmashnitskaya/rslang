@@ -3,7 +3,7 @@ import { CircularProgress } from '@material-ui/core';
 
 const Spinner = () => (
     <div className="savannah-spinner-bg">
-        <CircularProgress />
+        <CircularProgress size="100px" color="secondary" />
     </div>
 );
 

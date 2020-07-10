@@ -8,6 +8,10 @@ import utils from '../utils';
 
 function StatisticsWindow({ results, clear }) {
     useEffect(() => {
+        const audio = new Audio();
+        audio.preload = 'auto';
+        audio.src = '/assets/audio/savannah/show_result.mp3';
+        audio.play();
         return () => {
             clear();
         };
