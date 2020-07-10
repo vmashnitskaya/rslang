@@ -7,7 +7,7 @@ import '../styles.scss';
 import StartPage from './StartPage';
 import GamePage from './GamePage';
 import StatisticsWindow from './StatisticsWindow';
-import Spinner from './Spinner';
+import Spinner from '../../spinner/Spinner';
 import utils from '../utils';
 
 function Savannah({ gameState, clear }) {
