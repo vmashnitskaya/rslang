@@ -5,6 +5,7 @@ import AboutTeam from '../aboutTeam/index';
 import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
 import MainGame from '../mainGame/index';
+import SettingsPage from '../settingsPage';
 
 const pages = [
     {
@@ -46,6 +47,13 @@ const pages = [
         title: 'SpeakIt',
         url: '/speakit',
         img: '/assets/images/start-image.jpg',
+        exact: true,
+    },
+    {
+        component: SettingsPage,
+        title: 'Settings',
+        url: '/settings',
+        img: '/assets/images/angry.jpg',
         exact: true,
     },
 ];

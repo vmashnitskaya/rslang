@@ -1,0 +1,85 @@
+.setting-page {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: baseline;
+}
+
+.main-settings {
+    padding-top: 5rem;
+    h5 {
+        margin-bottom: 1.2rem;
+    }
+    &__title {
+        display: flex;
+        align-items: center;
+    }
+    &__wordsNumber {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .MuiTypography-body1 {
+        font-size: 1.5rem;
+    }
+    .MuiFormControlLabel-labelPlacementStart {
+        margin-left: 0;
+    }
+}
+
+.option-settings {
+    margin-top: 1rem;
+    &__title {
+        display: flex;
+        align-items: center;
+    }
+    &__subtitle {
+        margin-top: 1rem !important;
+    }
+    .MuiTypography-body1 {
+        font-size: 1.5rem;
+    }
+    .MuiFormControlLabel-labelPlacementStart {
+        margin-left: 0;
+    }
+}
+
+.buttons-block {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    margin-top: 1rem;
+    .MuiButtonBase-root {
+        &:first-child {
+            margin-right: 1rem;
+        }
+    }
+}
+
+@media (max-width: 959px) {
+    .main-settings, .option-settings {
+        .MuiTypography-body1 {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+@media (max-width: 599px) {
+    // .setting-page {
+    //     justify-content: flex-start;
+    // }
+    .main-settings {
+        .MuiSlider-root {
+            width: 95%;
+        }
+        .MuiTypography-body1 {
+            font-size: 1rem;
+        }
+    }
+    .option-settings {
+        .MuiTypography-body1 {
+            font-size: 1rem;
+        }
+    }
+}
