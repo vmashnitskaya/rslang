@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -21,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const DropDown = ({ className, name, label, value, level, options, onChange, passed }) => {
+const DropDown = ({ className, name, label, value, options, onChange, isDropdownDisabled }) => {
     const classes = useStyles();
     const handleChange = (event) => {
         onChange(event.target.value);
@@ -31,23 +30,16 @@ const DropDown = ({ className, name, label, value, level, options, onChange, pas
             <InputLabel id={name} className={classes.root}>
                 {label}
             </InputLabel>
-            <Select className={classes.select} labelId={name} value={value} onChange={handleChange}>
+            <Select
+                className={classes.select}
+                labelId={name}
+                value={value}
+                onChange={handleChange}
+                disabled={isDropdownDisabled}
+            >
                 {options.map((option) => {
                     return (
-                        <MenuItem
-                            key={option.value}
-                            value={option.value}
-                            className={clsx(
-                                className === 'page' &&
-                                    passed[level] &&
-                                    passed[level].includes(option.value) &&
-                                    'passed',
-                                className === 'level' &&
-                                    passed &&
-                                    passed.includes(option.value) &&
-                                    'passed'
-                            )}
-                        >
+                        <MenuItem key={option.value} value={option.value} className={className}>
                             {option.text}
                         </MenuItem>
                     );
@@ -69,11 +61,7 @@ DropDown.propTypes = {
             text: PropTypes.string.isRequired,
         })
     ).isRequired,
-    passed: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.number),
-        PropTypes.objectOf(PropTypes.arrayOf(PropTypes.number)),
-    ]).isRequired,
-    level: PropTypes.number.isRequired,
+    isDropdownDisabled: PropTypes.bool.isRequired,
 };
 
 DropDown.defaultProps = {
