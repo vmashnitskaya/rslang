@@ -20,7 +20,7 @@ function StartPage({ settings, userHaveWords, fetchWords, setGroup, setUserWords
     }
 
     return (
-        <>
+        <div className="start_page">
             <div className="level">
                 {userHaveWords ? (
                     <>
@@ -56,11 +56,11 @@ function StartPage({ settings, userHaveWords, fetchWords, setGroup, setUserWords
                 color="primary"
                 aria-label="contained primary button group"
                 variant="contained"
-                className="start"
+                className="start_btn"
             >
                 Start Game
             </Button>
-        </>
+        </div>
     );
 }
 
@@ -80,10 +80,6 @@ const mapStateToProps = (state) => ({
     settings: selectors.gameSettings(state),
     userHaveWords: selectors.userHaveWords(state),
 });
-
-StartPage.defaultProps = {
-    // words: null,
-};
 
 StartPage.propTypes = {
     settings: PropTypes.exact({

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,11 +11,19 @@ import Spinner from './Spinner';
 import utils from '../utils';
 
 function Savannah({ gameState, clear }) {
+    const [rightAnswers, setrightAnswers] = useState(0);
+
     useEffect(() => {
         return () => {
             clear();
         };
     }, []);
+
+    useEffect(() => {
+        if (gameState === utils.gameState.NOT_STARTED && rightAnswers !== 0) {
+            setrightAnswers(0);
+        }
+    }, [gameState, rightAnswers]);
 
     let content;
     switch (gameState) {
@@ -29,7 +36,7 @@ function Savannah({ gameState, clear }) {
             );
             break;
         case utils.gameState.IN_PROGRESS:
-            content = <GamePage />;
+            content = <GamePage rightAnswersCallback={setrightAnswers} />;
             break;
         case utils.gameState.FINISHED:
             content = <StatisticsWindow />;
@@ -39,7 +46,11 @@ function Savannah({ gameState, clear }) {
             break;
     }
 
-    return <section className="savannah">{content}</section>;
+    return (
+        <section className="savannah" style={{ backgroundPositionY: `${100 - rightAnswers * 5}%` }}>
+            {content}
+        </section>
+    );
 }
 
 const mapDispatchToProps = (dispatch) => ({
@@ -53,10 +64,6 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
     gameState: selectors.gameState(state),
 });
-
-Savannah.defaultProps = {
-    // words: null,
-};
 
 Savannah.propTypes = {
     gameState: PropTypes.number.isRequired,

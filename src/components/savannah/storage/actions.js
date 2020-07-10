@@ -2,6 +2,7 @@ import types from './types';
 import wordsApi from '../../router/storage/getWordsRedux/wordsApi';
 import utils from '../utils';
 import selectors from './selectors';
+import vocabluarySelectors from '../../vocabulary/redux/vocabularySelectors';
 
 const gamePlan = {
     set: (payload) => ({ type: types.SET_GAME_PLAN, payload }),
@@ -16,19 +17,24 @@ const words = {
         dispatch(gameState.set(utils.gameState.LOADING_DATA));
 
         const { userWords, group } = payload;
-        const plan = selectors.gamePlan(getState());
-        console.log(group);
-        const groupPlan = plan.find((e) => e.group === group);
-        const page = groupPlan.pages.shift();
-        if (!groupPlan.pages.length) {
-            groupPlan.pages = utils.createGroupPlan();
+        let page = -1;
+        if (!userWords) {
+            const plan = selectors.gamePlan(getState());
+            const groupPlan = plan.find((e) => e.group === group);
+            page = groupPlan.pages.shift();
+            if (!groupPlan.pages.length) {
+                groupPlan.pages = utils.createGroupPlan();
+            }
+            dispatch(gamePlan.set(plan));
         }
-        dispatch(gamePlan.set(plan));
 
         let correctWords = [];
         try {
             if (!userWords) {
                 correctWords = await wordsApi.fetchWords(page, group);
+            } else {
+                const rawWords = vocabluarySelectors.getWords(getState(), 'learned').slice();
+                correctWords = utils.shuffle(rawWords).slice(0, 20);
             }
             const usedPages = [];
             let wrongWords = [];
@@ -62,7 +68,7 @@ const words = {
                     });
                 }
                 return {
-                    id: e.id,
+                    id: e.id ? e.id : 'no_id',
                     word: e.word,
                     translations: utils.shuffle(translations),
                 };

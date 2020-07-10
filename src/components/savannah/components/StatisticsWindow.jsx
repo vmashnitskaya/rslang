@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import actions from '../storage/actions';
 import selectors from '../storage/selectors';
 import utils from '../utils';
@@ -19,10 +18,10 @@ function StatisticsWindow({ results, clear }) {
             <h2>The end</h2>
             <div>
                 {results.map((e, i) => (
-                    <div key={`res_${e.word}`}>
-                        <p>{i}</p>
-                        <p>{e.word}</p>
-                        <p>{e.correct ? 'right' : 'wrong'}</p>
+                    <div style={{ display: 'flex' }} key={`res_${e.word}`}>
+                        <div>{i} </div>
+                        <div>{e.word} </div>
+                        <div>{e.correct ? 'right' : 'wrong'}</div>
                     </div>
                 ))}
             </div>
