@@ -2,6 +2,8 @@ div.audition {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    height: 80vh;
     padding-top: 80px;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     &__question {
@@ -20,9 +22,11 @@ div.audition {
     }
     &__variants {
         display: flex;
-        margin-bottom: 15px;
     }
     &__variant {
         margin-right: 10px;
+    }
+    & > * {
+        margin-bottom: 20px;
     }
 }
