@@ -16,6 +16,7 @@ const Audition = ({ words, fetchWords }) => {
     const [gameConfigs, setGameConfigs] = useState({});
     const [classesOfButtons, setClassesOfButtons] = useState('');
     const [rightWordOnPage, setRightWordOnPage] = useState('');
+    const [stylesForPicture, setStylesForPicture] = useState({});
     const numberOfQuestionsOnGame = 6;
     const numberOfAnswersOnGame = 6;
     const numberWordGroups = 5;
@@ -67,6 +68,11 @@ const Audition = ({ words, fetchWords }) => {
             const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
             const rightWord = gameData[`answer${currentRightIdOfWord}`].word;
             const rightWordTranslation = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
+            const pictureOfWord = gameData[`answer${currentRightIdOfWord}`].image;
+            const stylesForPicture = {
+                background: `url('${pictureOfWord}') center no-repeat`,
+            }
+            setStylesForPicture(stylesForPicture);
             setClassesOfButtons('audition__button_disabled');
             setRightWordOnPage(`${rightWord} - ${rightWordTranslation}`);
             if (chosenWord.includes(rightWordTranslation)) {
@@ -75,11 +81,12 @@ const Audition = ({ words, fetchWords }) => {
             } else {
                 console.log('Wrong word');
             }
+
         }
     }
     return (
         <Container maxWidth="md" className="audition">
-            <div className="audition__question" onClick={playAudioOfWord}/>
+            <div className="audition__question" style={stylesForPicture} onClick={playAudioOfWord}/>
             <div className="audition__right-word">{rightWordOnPage}</div>
             <div className="audition__variants">
                 {Object.keys(gameData).map((word, index) => (
