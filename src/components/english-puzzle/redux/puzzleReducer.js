@@ -1,38 +1,30 @@
 import puzzleTypes from './puzzleTypes';
 
-const maxLevel = 5;
-
-const puzzleReducer = (
-    state = {
-        pagination: { level: 0, option: 0 },
-        levelPassed: [],
-        optionsPassed: Array.from({ length: maxLevel + 1 }, (_, i) => i).reduce(
-            (acc, el) => ({ ...acc, [el]: [] }),
-            {}
-        ),
-        data: [],
-        currentLine: 0,
-        currentGuessedWords: [],
-        guessedArrays: [],
-        currentShuffled: { array: [] },
-        currentOriginalArray: [],
-        soundLink: '',
-        differenceIndexes: undefined,
-        gameInProgress: true,
-        readyForReview: false,
-        readyForContinue: false,
-        translation: '',
-        wrongResult: false,
-        options: {
-            translationShown: true,
-            soundEnabled: true,
-            autoSoundEnabled: true,
-        },
-        correctResultEnabledOptions: false,
-        isStartPage: true,
+const initialState = {
+    pagination: { level: 0, option: 0 },
+    data: [],
+    currentLine: 0,
+    currentGuessedWords: [],
+    guessedArrays: [],
+    currentShuffled: { array: [] },
+    currentOriginalArray: [],
+    soundLink: '',
+    differenceIndexes: undefined,
+    gameInProgress: true,
+    readyForReview: false,
+    readyForContinue: false,
+    translation: '',
+    wrongResult: false,
+    options: {
+        translationShown: true,
+        soundEnabled: true,
+        autoSoundEnabled: true,
     },
-    action
-) => {
+    correctResultEnabledOptions: false,
+    isStartPage: true,
+};
+
+const puzzleReducer = (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
@@ -135,6 +127,8 @@ const puzzleReducer = (
                 ...state,
                 isStartPage: payload,
             };
+        case puzzleTypes.SET_DEFAULT_STATE:
+            return initialState;
         default:
             return state;
     }

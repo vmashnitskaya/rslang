@@ -77,6 +77,9 @@ const puzzleActions = {
         type: puzzleTypes.SET_IS_START_PAGE,
         payload: isStartPage,
     }),
+    setDefaultState: () => ({
+        type: puzzleTypes.SET_DEFAULT_STATE,
+    }),
 };
 
 export default puzzleActions;

@@ -75,9 +75,27 @@ const ResultsPopUp = ({ open, data, onClose, onNewGame }) => {
 
 ResultsPopUp.propTypes = {
     open: PropTypes.bool.isRequired,
-    data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+    data: PropTypes.arrayOf(
+        PropTypes.shape({
+            text: PropTypes.string,
+            pronunciation: PropTypes.string,
+            shuffled: PropTypes.shape({
+                array: PropTypes.arrayOf(PropTypes.string),
+                first: PropTypes.string,
+                last: PropTypes.string,
+            }),
+            originalArray: PropTypes.arrayOf(PropTypes.string),
+            guessedArray: PropTypes.arrayOf(PropTypes.string),
+            wordsPerExampleSentence: PropTypes.number,
+            translation: PropTypes.string,
+        })
+    ),
     onClose: PropTypes.func.isRequired,
     onNewGame: PropTypes.func.isRequired,
+};
+
+ResultsPopUp.defaultProps = {
+    data: [],
 };
 
 export default ResultsPopUp;

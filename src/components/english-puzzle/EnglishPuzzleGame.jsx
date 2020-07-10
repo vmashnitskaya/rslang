@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useRef, useCallback } from 'react';
 import { Button, FormControl, Paper, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -23,6 +23,7 @@ import './EnglishPuzzleGame.scss';
 
 const maxLevel = 5;
 const maxOption = 59;
+const minWidth = 1200;
 
 const filterForRepeatWords = {
     $or: [
@@ -126,12 +127,15 @@ const EnglishPuzzleGame = ({
     loadingAggr,
     errorAggr,
     fetchAggregatedWords,
+    setDefaultState,
 }) => {
     const { level, option } = pagination;
     const [wordsType, setWordsType] = useState('new');
     const classes = useStyles();
     const [isDropdownDisabled, setIsDropdownDisabled] = useState(false);
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
+    const [minWindow, setMinWindow] = useState(false);
+    const container = useRef();
 
     const levelOptions = useMemo(
         () =>
@@ -149,6 +153,24 @@ const EnglishPuzzleGame = ({
             })),
         []
     );
+
+    const handleWindowResize = useCallback(() => {
+        setMinWindow(
+            container.current && container.current.getBoundingClientRect().width < minWidth
+        );
+    }, []);
+
+    useEffect(() => {
+        setDefaultState();
+        handleWindowResize();
+    }, [setDefaultState, handleWindowResize]);
+
+    useEffect(() => {
+        window.addEventListener('resize', handleWindowResize);
+        return () => {
+            window.removeEventListener('resize', handleWindowResize);
+        };
+    }, []);
 
     useEffect(() => {
         if (userId && token && wordsType === 'repeat') {
@@ -389,7 +411,9 @@ const EnglishPuzzleGame = ({
     };
 
     return isStartPage ? (
-        <StartPage onClick={handleStartPageClose} />
+        <div ref={container}>
+            <StartPage onClick={handleStartPageClose} minWindow={minWindow} />
+        </div>
     ) : (
         <>
             <div className="ep-page">
@@ -593,6 +617,9 @@ const mapDispatchToProps = (dispatch) => ({
     fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
         dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
     },
+    setDefaultState: () => {
+        dispatch(puzzleActions.setDefaultState());
+    },
 });
 
 const mapStateToProps = (state) => ({
@@ -707,14 +734,15 @@ EnglishPuzzleGame.propTypes = {
         })
     ).isRequired,
     loadingAggr: PropTypes.bool.isRequired,
-    errorAggr: PropTypes.bool.isRequired,
+    errorAggr: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
+    setDefaultState: PropTypes.func.isRequired,
 };
 
 EnglishPuzzleGame.defaultProps = {
-    error: null,
+    error: false,
     data: [],
     currentLine: 0,
     currentGuessedWords: [],
@@ -724,6 +752,7 @@ EnglishPuzzleGame.defaultProps = {
     soundLink: '',
     differenceIndexes: undefined,
     translation: '',
+    errorAggr: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EnglishPuzzleGame);
