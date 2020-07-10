@@ -17,6 +17,7 @@ const Audition = ({ words, fetchWords }) => {
     const [classesOfButtons, setClassesOfButtons] = useState('');
     const [rightWordOnPage, setRightWordOnPage] = useState('');
     const [stylesForPicture, setStylesForPicture] = useState({});
+    const [contentOfSkipButton, setContentOfSkipButton] = useState('Не знаю');
     const numberOfQuestionsOnGame = 6;
     const numberOfAnswersOnGame = 6;
     const numberWordGroups = 5;
@@ -75,6 +76,7 @@ const Audition = ({ words, fetchWords }) => {
             setStylesForPicture(stylesForPicture);
             setClassesOfButtons('audition__button_disabled');
             setRightWordOnPage(`${rightWord} - ${rightWordTranslation}`);
+            setContentOfSkipButton('→');
             if (chosenWord.includes(rightWordTranslation)) {
                 event.target.classList.add('audition__button_right');
                 console.log('Right word');
@@ -101,7 +103,7 @@ const Audition = ({ words, fetchWords }) => {
                 ))}
             </div>
             <Button variant="outlined" size="large" onClick={checkAnswer}>
-                Не знаю
+                {contentOfSkipButton}
             </Button>
         </Container>
     );
