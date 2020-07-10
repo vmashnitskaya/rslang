@@ -36,7 +36,8 @@ const Audition = ({ words, fetchWords }) => {
             wordsData[`answer${i}`] = words[answersId[i]];
         }
         gameConfigsArray.rightAnswerOfCurrentQuestion = generateRandomNumber(
-            0, numberOfAnswersOnGame - 1
+            0,
+            numberOfAnswersOnGame - 1
         );
         setGameData(wordsData);
         setGameConfigs(gameConfigsArray);
@@ -60,7 +61,7 @@ const Audition = ({ words, fetchWords }) => {
     }, [words]);
     const playAudioOfWord = () => {
         const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
-        const audio = gameData[`answer${currentRightIdOfWord}`].audio;
+        const { audio } = gameData[`answer${currentRightIdOfWord}`];
         playAudio(audio);
     };
     const checkAnswer = (event) => {
@@ -72,7 +73,7 @@ const Audition = ({ words, fetchWords }) => {
             const pictureOfWord = gameData[`answer${currentRightIdOfWord}`].image;
             const stylesForPicture = {
                 background: `url('${pictureOfWord}') center no-repeat`,
-            }
+            };
             setStylesForPicture(stylesForPicture);
             setClassesOfButtons('audition__button_disabled');
             setRightWordOnPage(`${rightWord} - ${rightWordTranslation}`);
@@ -83,12 +84,15 @@ const Audition = ({ words, fetchWords }) => {
             } else {
                 console.log('Wrong word');
             }
-
         }
-    }
+    };
     return (
         <Container maxWidth="md" className="audition">
-            <div className="audition__question" style={stylesForPicture} onClick={playAudioOfWord}/>
+            <div
+                className="audition__question"
+                style={stylesForPicture}
+                onClick={playAudioOfWord}
+            />
             <div className="audition__right-word">{rightWordOnPage}</div>
             <div className="audition__variants">
                 {Object.keys(gameData).map((word, index) => (
