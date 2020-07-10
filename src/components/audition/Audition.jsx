@@ -69,8 +69,7 @@ const Audition = ({ words, fetchWords }) => {
                         className="audition__variant"
                         key={gameData[word].word}
                     >
-                        <span>{index + 1}. </span>
-                        <span>{gameData[word].wordTranslate}</span>
+                        {`${index + 1}. ${gameData[word].wordTranslate}`}
                     </Button>
                 ))}
             </div>
