@@ -6,6 +6,7 @@ import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
 import MainGame from '../mainGame/index';
 import SettingsPage from '../settingsPage';
+import AnagrammGame from '../anagrammGame';
 
 const pages = [
     {
@@ -55,6 +56,13 @@ const pages = [
         url: '/settings',
         img: '/assets/images/angry.jpg',
         exact: true,
+    },
+    {
+        component: AnagrammGame,
+        title: 'Anagramm Game',
+        url: '/anagramm',
+        exact: true,
+        img: '/assets/images/angry.jpg',
     },
 ];
 

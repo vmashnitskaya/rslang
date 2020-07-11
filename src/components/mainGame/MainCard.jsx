@@ -96,6 +96,8 @@ const MainCard = ({
     currentWordNumber,
     handleWordsTypeChanged,
     wordsType,
+    handleSuccessAndErrors,
+    handleCountNewWords,
 }) => {
     const {
         _id,
@@ -133,6 +135,9 @@ const MainCard = ({
         setIsDeletedDisabled(wordObj.userWord ? wordObj.userWord.optional.deleted : false);
         setIsDifficultDisabled(wordObj.userWord ? wordObj.userWord.optional.difficult : false);
         setIsNewWord(!wordObj.userWord);
+        if (!wordObj.userWord) {
+            handleCountNewWords();
+        }
         setIsRepeatDisabled(wordObj.userWord ? wordObj.userWord.optional.repeat : false);
         setInitialState('true');
     }, [word, currentWordNumber]);
@@ -149,6 +154,7 @@ const MainCard = ({
             if (isAutoSoundEnabled) {
                 setIsSoundEnabled(true);
             }
+            handleSuccessAndErrors('correct');
 
             if (isDifficultDisabled || isDeletedDisabled || wordObj.userWord || isRepeatDisabled) {
                 await passedWordsApi.putPassedWords(userId, token, _id, {
@@ -170,6 +176,7 @@ const MainCard = ({
             }
         } else {
             setIncorrectWordProvided(guessedWord);
+            handleSuccessAndErrors('incorrect');
             addNewWord(
                 {
                     ...wordObj,
@@ -229,7 +236,7 @@ const MainCard = ({
         setIsDifficultDisabled(true);
         setAlertShown('difficult');
 
-        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled) {
+        if (isDeletedDisabled || wordObj.userWord || isRepeatDisabled) {
             await passedWordsApi.putPassedWords(userId, token, _id, {
                 difficulty: 'default',
                 optional: {
@@ -623,6 +630,8 @@ MainCard.propTypes = {
     currentWordNumber: PropTypes.number,
     handleWordsTypeChanged: PropTypes.func.isRequired,
     wordsType: PropTypes.string.isRequired,
+    handleSuccessAndErrors: PropTypes.func.isRequired,
+    handleCountNewWords: PropTypes.func.isRequired,
 };
 
 MainCard.defaultProps = {

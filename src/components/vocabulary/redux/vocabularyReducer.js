@@ -1,18 +1,15 @@
 import { combineReducers } from 'redux';
 import vocabularyTypes from './vocabularyTypes';
-import temp from '../temp';
 
-const wordsReducer = (state = temp, action) => {
-    const { type, payload, meta } = action;
+const wordsReducer = (state = [], action) => {
+    const { type, payload } = action;
 
     switch (type) {
         case vocabularyTypes.SET_VOCABULARY_WORDS:
-            return { ...state, [meta.type]: payload };
-        case vocabularyTypes.DELETE_WORD_BY_INDEX: {
-            const words = state[meta.type]
-                ? state[meta.type].filter((_, index) => index !== payload)
-                : undefined;
-            return { ...state, [meta.type]: words };
+            return payload.length ? payload : [];
+        case vocabularyTypes.DELETE_WORD_BY_ID: {
+            const newArray = state.filter((element) => element._id !== payload);
+            return newArray;
         }
         default:
             return state;
