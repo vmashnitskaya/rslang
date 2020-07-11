@@ -18,6 +18,11 @@ const Audition = ({ words, fetchWords }) => {
     const [rightWordOnPage, setRightWordOnPage] = useState('');
     const [stylesForPicture, setStylesForPicture] = useState({});
     const [contentOfSkipButton, setContentOfSkipButton] = useState('Не знаю');
+    const newGameStats = {
+        numberOfChosenRightWords: 0,
+        numberOfChosenWrongWords: 0,
+    };
+    const [gameStats, setGameStats] = useState(newGameStats);
     const numberOfQuestionsOnGame = 6;
     const numberOfAnswersOnGame = 6;
     const numberWordGroups = 5;
@@ -39,6 +44,7 @@ const Audition = ({ words, fetchWords }) => {
             0,
             numberOfAnswersOnGame - 1
         );
+        gameConfigsArray.questionIndex += 1;
         setGameData(wordsData);
         setGameConfigs(gameConfigsArray);
         playAudio(wordsData[`answer${gameConfigs.rightAnswerOfCurrentQuestion}`].audio);
@@ -53,17 +59,19 @@ const Audition = ({ words, fetchWords }) => {
     useEffect(() => {
         if (words.length) {
             const startConfigs = {
-                questionIndex: 0,
+                questionIndex: -1,
             };
             setGameConfigs(startConfigs);
             createQuestionOnGame();
         }
     }, [words]);
+
     const playAudioOfWord = () => {
         const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
         const { audio } = gameData[`answer${currentRightIdOfWord}`];
         playAudio(audio);
     };
+
     const checkAnswer = (event) => {
         if (classesOfButtons !== 'audition__button_disabled') {
             const chosenWord = event.target.textContent;
@@ -74,18 +82,24 @@ const Audition = ({ words, fetchWords }) => {
             const stylesForPicture = {
                 background: `url('${pictureOfWord}') center no-repeat`,
             };
+            const statsArray = gameStats;
             setStylesForPicture(stylesForPicture);
             setClassesOfButtons('audition__button_disabled');
             setRightWordOnPage(`${rightWord} - ${rightWordTranslation}`);
             setContentOfSkipButton('→');
             if (chosenWord.includes(rightWordTranslation)) {
                 event.target.classList.add('audition__button_right');
+                statsArray.numberOfChosenRightWords += 1;
                 console.log('Right word');
             } else {
+                statsArray.numberOfChosenWrongWords += 1;
                 console.log('Wrong word');
             }
+            console.log(statsArray);
+            setGameStats(statsArray);
         }
     };
+
     return (
         <Container maxWidth="md" className="audition">
             <div
