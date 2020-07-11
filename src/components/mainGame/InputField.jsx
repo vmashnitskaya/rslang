@@ -110,6 +110,7 @@ const InputField = ({
                 onChange={handleInputChanged}
                 disabled={isCorrectStatusShown}
                 inputRef={inputRef}
+                value={isIncorrectStatusShown || isCorrectStatusShown ? '' : undefined}
             />
             <span
                 className={clsx(
