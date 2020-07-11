@@ -13,7 +13,7 @@ import './assets/sound.svg';
 
 const Audition = ({ words, fetchWords }) => {
     // const [gameData, setGameData] = useState({});
-    const [gameConfigs, setGameConfigs] = useState({});
+    let gameConfigs = {};
     let classesOfButtons = '';
     let rightWordOnPage = '';
     let stylesForPicture = {};
@@ -106,7 +106,6 @@ const Audition = ({ words, fetchWords }) => {
 
     const createQuestionOnGame = () => {
         const wordsData = {};
-        const gameConfigsArray = gameConfigs;
         const answersId = createArrayOfUniqueNumbers(
             numberOfAnswersOnGame,
             0,
@@ -115,18 +114,17 @@ const Audition = ({ words, fetchWords }) => {
         for (let i = 0; i < answersId.length; i += 1) {
             wordsData[`answer${i}`] = words[answersId[i]];
         }
-        gameConfigsArray.rightAnswerOfCurrentQuestion = generateRandomNumber(
+        gameConfigs.rightAnswerOfCurrentQuestion = generateRandomNumber(
             0,
             numberOfAnswersOnGame - 1
         );
-        gameConfigsArray.questionIndex += 1;
+        gameConfigs.questionIndex += 1;
         gameData = wordsData;
         chosenRightWord = false;
         contentOfSkipButton = 'I don`t know';
         stylesForPicture = {};
         rightWordOnPage = '';
         classesOfButtons = '';
-        setGameConfigs(gameConfigsArray);
         playAudio(wordsData[`answer${gameConfigs.rightAnswerOfCurrentQuestion}`].audio);
         createNewContentOfPage(wordsData);
     };
@@ -135,7 +133,13 @@ const Audition = ({ words, fetchWords }) => {
         if (contentOfSkipButton === 'I don`t know') {
             checkAnswer();
         } else {
-            createQuestionOnGame();
+            const numberOfQuestion = gameConfigs.questionIndex;
+            if (numberOfQuestion < numberOfQuestionsOnGame) {
+                createQuestionOnGame();
+            } else {
+                console.log('Game end');
+                console.log(gameStats);
+            }
         }
     }
 
@@ -147,10 +151,9 @@ const Audition = ({ words, fetchWords }) => {
 
     useEffect(() => {
         if (words.length) {
-            const startConfigs = {
+            gameConfigs = {
                 questionIndex: -1,
             };
-            setGameConfigs(startConfigs);
             createQuestionOnGame();
         }
     }, [words]);
