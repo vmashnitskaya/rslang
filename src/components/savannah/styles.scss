@@ -436,6 +436,46 @@
         }
     }
 
+    .counter {
+        margin-left: 10px;
+        width: 45px;
+    }
+
+    .result-row {
+        display: flex;
+        justify-content: flex-start;
+        margin: 4px 1px;
+        padding: 2px 0;
+        cursor: pointer;
+        .words {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            div {
+                width: 50%;
+                font-size: 1.2rem;
+                font-weight: 400;
+                padding: 2px 4px;
+            }
+        }
+        .sound {
+            display: inline-block;
+            margin-right: 4px;
+            width: 25px;
+            height: 25px;
+        }
+    }
+
+    .results-actions {
+        display: flex;
+        justify-content: space-between;
+        .button {
+            margin: 10px;
+            width: 150px;
+            height: 40px;
+        }
+    }
+
 }
 
 @keyframes rotate-animate{

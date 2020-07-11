@@ -28,6 +28,8 @@ function GamePage({ words, setFinished, setGameResults, rightAnswersCallback }) 
         return {
             id: words[ind].id,
             word: words[ind].word,
+            wordTranslate: words[ind].wordTranslate,
+            audio: words[ind].audio,
             correct,
         };
     };
@@ -149,6 +151,8 @@ GamePage.propTypes = {
         PropTypes.exact({
             id: PropTypes.string.isRequired,
             word: PropTypes.string.isRequired,
+            audio: PropTypes.string.isRequired,
+            wordTranslate: PropTypes.string.isRequired,
             translations: PropTypes.arrayOf(
                 PropTypes.exact({
                     word: PropTypes.string.isRequired,

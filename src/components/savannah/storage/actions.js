@@ -70,6 +70,8 @@ const words = {
                 return {
                     id: e.id ? e.id : 'no_id',
                     word: e.word,
+                    audio: e.audio,
+                    wordTranslate: e.wordTranslate,
                     translations: utils.shuffle(translations),
                 };
             });

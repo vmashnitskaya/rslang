@@ -1,7 +1,20 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    Table,
+    DialogTitle,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Chip,
+} from '@material-ui/core';
+import ResultCard from './ResultCard';
 import actions from '../storage/actions';
 import selectors from '../storage/selectors';
 import utils from '../utils';
@@ -16,23 +29,72 @@ function StatisticsWindow({ results, clear }) {
             clear();
         };
     }, []);
-
     return (
-        <div>
-            <h2>The end</h2>
-            <div>
-                {results.map((e, i) => (
-                    <div style={{ display: 'flex' }} key={`res_${e.word}`}>
-                        <div>{i} </div>
-                        <div>{e.word} </div>
-                        <div>{e.correct ? 'right' : 'wrong'}</div>
-                    </div>
-                ))}
-            </div>
-            <Button onClick={clear} variant="contained">
-                New game
-            </Button>
-        </div>
+        <Dialog open onClose={clear}>
+            <DialogTitle>Results</DialogTitle>
+            <DialogContent>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="left" colSpan={5}>
+                                Success
+                                <Chip
+                                    label={results.filter((e) => e.correct).length}
+                                    color="primary"
+                                    variant="outlined"
+                                    className="counter"
+                                />
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {results
+                            .filter((e) => e.correct)
+                            .map((e) => (
+                                <ResultCard
+                                    key={e.word}
+                                    word={e.word}
+                                    translation={e.wordTranslate}
+                                    audio={e.audio}
+                                />
+                            ))}
+                    </TableBody>
+                </Table>
+
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="left" colSpan={5}>
+                                Error
+                                <Chip
+                                    label={results.filter((e) => !e.correct).length}
+                                    color="primary"
+                                    variant="outlined"
+                                    className="counter"
+                                />
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {results
+                            .filter((e) => !e.correct)
+                            .map((e) => (
+                                <ResultCard
+                                    key={e.word}
+                                    word={e.word}
+                                    translation={e.wordTranslate}
+                                    audio={e.audio}
+                                />
+                            ))}
+                    </TableBody>
+                </Table>
+            </DialogContent>
+            <DialogActions>
+                <Button color="primary" autoFocus onClick={clear}>
+                    New game
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 }
 
@@ -55,6 +117,8 @@ StatisticsWindow.propTypes = {
         PropTypes.exact({
             id: PropTypes.string.isRequired,
             word: PropTypes.string.isRequired,
+            wordTranslate: PropTypes.string.isRequired,
+            audio: PropTypes.string.isRequired,
             correct: PropTypes.bool.isRequired,
         })
     ).isRequired,
