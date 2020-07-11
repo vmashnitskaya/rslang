@@ -3,13 +3,14 @@
     display: flex !important;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    align-items: baseline;
+    align-items: center;
+    height: 100vh;
 }
 
 .main-settings {
-    padding-top: 5rem;
     h5 {
-        margin-bottom: 1.2rem;
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
     }
     &__title {
         display: flex;
@@ -33,9 +34,6 @@
     &__title {
         display: flex;
         align-items: center;
-    }
-    &__subtitle {
-        margin-top: 1rem !important;
     }
     .MuiTypography-body1 {
         font-size: 1.5rem;
@@ -63,18 +61,23 @@
             font-size: 1.2rem;
         }
     }
+    .main-settings {
+        h5 {
+            font-size: 1.2rem;
+        }
+    }
 }
 
 @media (max-width: 599px) {
-    // .setting-page {
-    //     justify-content: flex-start;
-    // }
     .main-settings {
+        h5{
+            margin-top: 0;
+        }
+        padding-top: 4rem;
         .MuiSlider-root {
             width: 95%;
         }
         .MuiTypography-body1 {
-            font-size: 1rem;
         }
     }
     .option-settings {

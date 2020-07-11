@@ -20,6 +20,7 @@ import settingsSelectors from '../router/storage/getSettingsRedux/settingsSelect
 import userSettingsApi from '../router/storage/getSettingsRedux/settingsApi';
 import settingsActions from '../router/storage/getSettingsRedux/settingsActions';
 import './SettingsPage.scss';
+import PopUp from './PopUp';
 
 const TooltipIcon = ({ title }) => {
     return (
@@ -34,6 +35,13 @@ const TooltipIcon = ({ title }) => {
 const SettingsPage = ({ settings, fetchSettings }) => {
     const userId = useSelector(getUserId);
     const token = useSelector(getToken);
+
+    const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+    const [popUpTitle, setPopUpTitle] = useState('');
+    const [popUpText, setPopUpText] = useState('');
+    const handleClosePopUp = () => {
+        setIsPopUpOpen(false);
+    };
 
     const { optional, wordsPerDay } = settings;
     const [wordsNumber, setWordsNumber] = useState(wordsPerDay);
@@ -58,10 +66,16 @@ const SettingsPage = ({ settings, fetchSettings }) => {
     const saveSettings = async () => {
         await userSettingsApi.putUserSettings(userId, token, newSettings);
         await fetchSettings(userId, token);
+        setPopUpTitle('Updated');
+        setPopUpText('Settings updated successfully');
+        setIsPopUpOpen(true);
     };
     const cancelSettings = () => {
         setWordsNumber(wordsPerDay);
         setSettingsOptional({ ...optional });
+        setPopUpTitle('Previous settings');
+        setPopUpText('Settings reset to previous');
+        setIsPopUpOpen(true);
     };
 
     return (
@@ -229,6 +243,12 @@ const SettingsPage = ({ settings, fetchSettings }) => {
                     Save
                 </Button>
             </section>
+            <PopUp
+                isPopUpOpen={isPopUpOpen}
+                onPopUpClose={handleClosePopUp}
+                title={popUpTitle}
+                text={popUpText}
+            />
         </Container>
     );
 };
