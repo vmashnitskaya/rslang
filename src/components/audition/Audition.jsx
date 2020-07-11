@@ -12,22 +12,96 @@ import './styles.scss';
 import './assets/sound.svg';
 
 const Audition = ({ words, fetchWords }) => {
-    const [gameData, setGameData] = useState({});
+    // const [gameData, setGameData] = useState({});
     const [gameConfigs, setGameConfigs] = useState({});
-    const [classesOfButtons, setClassesOfButtons] = useState('');
-    const [rightWordOnPage, setRightWordOnPage] = useState('');
-    const [stylesForPicture, setStylesForPicture] = useState({});
-    const [contentOfSkipButton, setContentOfSkipButton] = useState('Не знаю');
+    let classesOfButtons = '';
+    let rightWordOnPage = '';
+    let stylesForPicture = {};
+    let contentOfSkipButton = 'Не знаю';
     const newGameStats = {
         numberOfChosenRightWords: 0,
         numberOfChosenWrongWords: 0,
     };
     const [gameStats, setGameStats] = useState(newGameStats);
+    const [contentOnTheState, setContentOnTheState] = useState(<div>dd</div>);
     const numberOfQuestionsOnGame = 6;
     const numberOfAnswersOnGame = 6;
     const numberWordGroups = 5;
     const numberPagesInGroup = 30;
     const numberWordsOnThePage = 20;
+    let gameData = {};
+    let chosenRightWord = false;
+
+    const playAudioOfWord = () => {
+        const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
+        const { audio } = gameData[`answer${currentRightIdOfWord}`];
+        playAudio(audio);
+    };
+
+    const checkAnswer = (event) => {
+        if (classesOfButtons !== 'audition__button_disabled') {
+            const chosenWord = event.target.textContent;
+            const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
+            const rightWord = gameData[`answer${currentRightIdOfWord}`].word;
+            const rightWordTranslation = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
+            const pictureOfWord = gameData[`answer${currentRightIdOfWord}`].image;
+            const stylesForPictureObject = {
+                background: `url('${pictureOfWord}') center no-repeat`,
+            };
+            const statsArray = gameStats;
+            stylesForPicture = stylesForPictureObject;
+            classesOfButtons = 'audition__button_disabled';
+            rightWordOnPage = `${rightWord} - ${rightWordTranslation}`;
+            contentOfSkipButton = '→';
+            if (chosenWord.includes(rightWordTranslation)) {
+                event.target.classList.add('audition__button_right');
+                statsArray.numberOfChosenRightWords += 1;
+                chosenRightWord = true;
+            } else {
+                statsArray.numberOfChosenWrongWords += 1;
+            }
+            console.log(statsArray);
+            setGameStats(statsArray);
+            console.log(gameData);
+            createNewContentOfPage(gameData);
+        }
+    };
+
+    const createNewContentOfPage = (currentWordsOfLevel) => {
+        const content = (
+            <>
+                <div
+                    className="audition__question"
+                    style={stylesForPicture}
+                    onClick={playAudioOfWord}
+                />
+                <div className="audition__right-word">{rightWordOnPage}</div>
+                <div className="audition__variants">
+                    {Object.keys(currentWordsOfLevel).map((word, index) => {
+                        let classes = classesOfButtons;
+                        const rightIdWord = gameConfigs.rightAnswerOfCurrentQuestion;
+                        if (rightIdWord === index && chosenRightWord) {
+                            classes = `${classesOfButtons} audition__button_right`;
+                        }
+                        return (
+                            <Button
+                                size="large"
+                                className={`audition__variant ${classes}`}
+                                key={currentWordsOfLevel[word].word}
+                                onClick={checkAnswer}
+                            >
+                                {`${index + 1}. ${currentWordsOfLevel[word].wordTranslate}`}
+                            </Button>
+                        )
+                    })}
+                </div>
+                <Button variant="outlined" size="large" onClick={checkAnswer}>
+                    {contentOfSkipButton}
+                </Button>
+            </>
+        );
+        setContentOnTheState(content);
+    };
 
     const createQuestionOnGame = () => {
         const wordsData = {};
@@ -45,9 +119,11 @@ const Audition = ({ words, fetchWords }) => {
             numberOfAnswersOnGame - 1
         );
         gameConfigsArray.questionIndex += 1;
-        setGameData(wordsData);
+        gameData = wordsData;
+        chosenRightWord = false;
         setGameConfigs(gameConfigsArray);
         playAudio(wordsData[`answer${gameConfigs.rightAnswerOfCurrentQuestion}`].audio);
+        createNewContentOfPage(wordsData);
     };
 
     useEffect(() => {
@@ -66,63 +142,13 @@ const Audition = ({ words, fetchWords }) => {
         }
     }, [words]);
 
-    const playAudioOfWord = () => {
-        const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
-        const { audio } = gameData[`answer${currentRightIdOfWord}`];
-        playAudio(audio);
-    };
-
-    const checkAnswer = (event) => {
-        if (classesOfButtons !== 'audition__button_disabled') {
-            const chosenWord = event.target.textContent;
-            const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
-            const rightWord = gameData[`answer${currentRightIdOfWord}`].word;
-            const rightWordTranslation = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
-            const pictureOfWord = gameData[`answer${currentRightIdOfWord}`].image;
-            const stylesForPicture = {
-                background: `url('${pictureOfWord}') center no-repeat`,
-            };
-            const statsArray = gameStats;
-            setStylesForPicture(stylesForPicture);
-            setClassesOfButtons('audition__button_disabled');
-            setRightWordOnPage(`${rightWord} - ${rightWordTranslation}`);
-            setContentOfSkipButton('→');
-            if (chosenWord.includes(rightWordTranslation)) {
-                event.target.classList.add('audition__button_right');
-                statsArray.numberOfChosenRightWords += 1;
-                console.log('Right word');
-            } else {
-                statsArray.numberOfChosenWrongWords += 1;
-                console.log('Wrong word');
-            }
-            console.log(statsArray);
-            setGameStats(statsArray);
-        }
-    };
+    const ContentOfThePage = () => {
+        return(<>{contentOnTheState}</>)
+    }
 
     return (
         <Container maxWidth="md" className="audition">
-            <div
-                className="audition__question"
-                style={stylesForPicture}
-                onClick={playAudioOfWord}
-            />
-            <div className="audition__right-word">{rightWordOnPage}</div>
-            <div className="audition__variants">
-                {Object.keys(gameData).map((word, index) => (
-                    <Button
-                        size="large"
-                        className={`audition__variant ${classesOfButtons}`}
-                        key={gameData[word].word}
-                        onClick={checkAnswer}
-                    >
-                        {`${index + 1}. ${gameData[word].wordTranslate}`}
-                    </Button>
-                ))}
-            </div>
-            <Button variant="outlined" size="large" onClick={checkAnswer}>
-                {contentOfSkipButton}
-            </Button>
+            <ContentOfThePage />
         </Container>
     );
 };

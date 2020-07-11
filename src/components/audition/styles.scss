@@ -43,8 +43,6 @@ button.audition__button {
         cursor: not-allowed;
         pointer-events: auto;
     }
-}
-span.audition__button {
     &_right::before {
         content: '';
         display: inline-flex;
