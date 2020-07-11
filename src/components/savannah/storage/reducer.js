@@ -47,6 +47,19 @@ const gamePlan = (state = initialGamePlan, action) => {
     }
 };
 
+const message = (state = null, action) => {
+    const { type, payload } = action;
+
+    switch (type) {
+        case types.SET_MESSAGE:
+            return payload;
+        case types.CLEAR_MESSAGE:
+            return null;
+        default:
+            return state;
+    }
+};
+
 const gameState = (state = utils.gameState.NOT_STARTED, action) => {
     const { type, payload } = action;
 
@@ -77,6 +90,7 @@ const savannah = combineReducers({
     gamePlan,
     gameState,
     gameResults,
+    message,
 });
 
 export default savannah;

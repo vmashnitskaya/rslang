@@ -7,6 +7,8 @@ const types = {
     SET_GAME_STATE: 'savannah/SET_GAME_STATE',
     SET_GAME_RESULTS: 'savannah/SET_GAME_RESULTS',
     CLEAR_GAME_RESULTS: 'savannah/CLEAR_GAME_RESULTS',
+    SET_MESSAGE: 'savannah/SET_MESSAGE',
+    CLEAR_MESSAGE: 'savannah/CLEAR_MESSAGE',
 };
 
 export default types;

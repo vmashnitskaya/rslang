@@ -8,9 +8,10 @@ import StartPage from './StartPage';
 import GamePage from './GamePage';
 import StatisticsWindow from './StatisticsWindow';
 import Spinner from '../../spinner/Spinner';
+import ErrorHeandler from './ErrorHeandler';
 import utils from '../utils';
 
-function Savannah({ gameState, clear }) {
+function Savannah({ gameState, clear, error }) {
     const [rightAnswers, setrightAnswers] = useState(0);
 
     useEffect(() => {
@@ -26,24 +27,28 @@ function Savannah({ gameState, clear }) {
     }, [gameState, rightAnswers]);
 
     let content;
-    switch (gameState) {
-        case utils.gameState.LOADING_DATA:
-            content = (
-                <>
-                    <StartPage />
-                    <Spinner />
-                </>
-            );
-            break;
-        case utils.gameState.IN_PROGRESS:
-            content = <GamePage rightAnswersCallback={setrightAnswers} />;
-            break;
-        case utils.gameState.FINISHED:
-            content = <StatisticsWindow />;
-            break;
-        default:
-            content = <StartPage />;
-            break;
+    if (error) {
+        content = <ErrorHeandler message={error} />;
+    } else {
+        switch (gameState) {
+            case utils.gameState.LOADING_DATA:
+                content = (
+                    <>
+                        <StartPage />
+                        <Spinner />
+                    </>
+                );
+                break;
+            case utils.gameState.IN_PROGRESS:
+                content = <GamePage rightAnswersCallback={setrightAnswers} />;
+                break;
+            case utils.gameState.FINISHED:
+                content = <StatisticsWindow />;
+                break;
+            default:
+                content = <StartPage />;
+                break;
+        }
     }
 
     return (
@@ -63,10 +68,16 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
     gameState: selectors.gameState(state),
+    error: selectors.message(state),
 });
+
+Savannah.defaultProps = {
+    error: null,
+};
 
 Savannah.propTypes = {
     gameState: PropTypes.number.isRequired,
+    error: PropTypes.string,
     clear: PropTypes.func.isRequired,
 };
 

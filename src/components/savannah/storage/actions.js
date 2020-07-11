@@ -12,29 +12,37 @@ const gameState = {
     set: (payload) => ({ type: types.SET_GAME_STATE, payload }),
 };
 
+const message = {
+    set: (payload) => ({ type: types.SET_MESSAGE, payload }),
+};
+
 const words = {
     get: (payload) => async (dispatch, getState) => {
         dispatch(gameState.set(utils.gameState.LOADING_DATA));
 
-        const { userWords, group } = payload;
-        let page = -1;
-        if (!userWords) {
-            const plan = selectors.gamePlan(getState());
-            const groupPlan = plan.find((e) => e.group === group);
-            page = groupPlan.pages.shift();
-            if (!groupPlan.pages.length) {
-                groupPlan.pages = utils.createGroupPlan();
-            }
-            dispatch(gamePlan.set(plan));
-        }
-
-        let correctWords = [];
         try {
+            const { userWords, group } = payload;
+            let page = -1;
+            if (!userWords) {
+                const plan = selectors.gamePlan(getState());
+                const groupPlan = plan.find((e) => e.group === group);
+                page = groupPlan.pages.shift();
+                if (!groupPlan.pages.length) {
+                    groupPlan.pages = utils.createGroupPlan();
+                }
+                dispatch(gamePlan.set(plan));
+            }
+
+            let correctWords = [];
             if (!userWords) {
                 correctWords = await wordsApi.fetchWords(page, group);
+                console.log(correctWords);
             } else {
                 const rawWords = vocabluarySelectors.getWords(getState(), 'learned').slice();
                 correctWords = utils.shuffle(rawWords).slice(0, 20);
+            }
+            if (!correctWords || correctWords.length < 20) {
+                throw new Error();
             }
             const usedPages = [];
             let wrongWords = [];
@@ -53,6 +61,9 @@ const words = {
             await Promise.all(usedPages.map((e) => e.promise)).then((e) =>
                 e.forEach((f) => wrongWords.push(...f))
             );
+            if (!wrongWords || wrongWords.length < 60) {
+                throw new Error();
+            }
             wrongWords = utils.shuffle(wrongWords);
             const result = correctWords.map((e, i) => {
                 const translations = [
@@ -79,7 +90,7 @@ const words = {
 
             dispatch(gameState.set(utils.gameState.IN_PROGRESS));
         } catch (e) {
-            console.error(e.message);
+            dispatch(message.set('Something went wrong. Try again later'));
             dispatch(gameState.set(utils.gameState.NOT_STARTED));
         }
     },
@@ -103,6 +114,7 @@ const action = {
     gamePlan,
     gameState,
     gameResults,
+    message,
 };
 
 export default action;

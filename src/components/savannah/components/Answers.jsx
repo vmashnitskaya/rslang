@@ -16,17 +16,17 @@ function Answers({ translations, active, callback }) {
     }, [translations]);
 
     useEffect(() => {
-        const keypress = (event) => {
-            if (['1', '2', '3', '4'].includes(event.key)) {
+        const keydown = (event) => {
+            if (!event.repeat && ['1', '2', '3', '4'].includes(event.key)) {
                 const index = Number(event.key) - 1;
                 if (!Number.isNaN(index)) {
                     answerPressed(index, translations[index].correct);
                 }
             }
         };
-        document.addEventListener('keypress', keypress);
-        return () => document.removeEventListener('keypress', keypress);
-    }, [translations]);
+        document.addEventListener('keydown', keydown);
+        return () => document.removeEventListener('keydown', keydown);
+    }, [translations, active]);
 
     return (
         <div className="game_answers">

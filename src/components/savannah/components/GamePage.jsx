@@ -36,7 +36,11 @@ function GamePage({ words, setFinished, setGameResults, rightAnswersCallback }) 
 
     const finishRound = (correct) => {
         clearTimeout(roundTimeout.current);
-        setTempResults((prev) => [...prev, mapWordToResults(round, correct)]);
+        setTempResults((prev) =>
+            prev.find((e) => e.id === words[round].id)
+                ? prev
+                : [...prev, mapWordToResults(round, correct)]
+        );
         if (!correct) {
             setLives((prev) => {
                 const newLivesArr = prev.slice();
