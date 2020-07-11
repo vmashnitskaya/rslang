@@ -80,7 +80,7 @@ const InputField = ({
     useEffect(() => {
         setTimeout(() => {
             setIsIncorrectStatusShown(false);
-        }, 3000);
+        }, 1000);
     }, [isIncorrectStatusShown]);
 
     return (
@@ -110,6 +110,7 @@ const InputField = ({
                 onChange={handleInputChanged}
                 disabled={isCorrectStatusShown}
                 inputRef={inputRef}
+                value={isIncorrectStatusShown || isCorrectStatusShown ? '' : undefined}
             />
             <span
                 className={clsx(

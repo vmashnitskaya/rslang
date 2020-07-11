@@ -1,5 +1,3 @@
-import React from 'react';
+import AboutProject from './components/AboutProject';
 
-export default function AboutProject() {
-    return <section>About project</section>;
-}
+export default AboutProject;

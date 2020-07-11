@@ -5,7 +5,10 @@ import AboutTeam from '../aboutTeam/index';
 import Sprint from '../sprint/Sprint';
 import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
+import SavannahGame from '../savannah';
 import MainGame from '../mainGame/index';
+import SettingsPage from '../settingsPage';
+import AnagrammGame from '../anagrammGame';
 
 const pages = [
     {
@@ -33,6 +36,7 @@ const pages = [
         component: AboutTeam,
         title: 'About Team',
         url: '/aboutteam',
+        img: '/assets/images/happy.jpg',
         exact: true,
     },
     {
@@ -56,10 +60,31 @@ const pages = [
         img: '/assets/images/start-image.jpg',
         exact: true,
     },
+    {
+        component: SavannahGame,
+        title: 'Savannah',
+        url: '/Savannah',
+        img: '/assets/images/draw.jpg',
+        exact: true,
+    },
+    {
+        component: SettingsPage,
+        title: 'Settings',
+        url: '/settings',
+        img: '/assets/images/angry.jpg',
+        exact: true,
+    },
+    {
+        component: AnagrammGame,
+        title: 'Anagramm Game',
+        url: '/anagramm',
+        exact: true,
+        img: '/assets/images/angry.jpg',
+    },
 ];
 
 export const pagePropType = PropTypes.exact({
-    component: PropTypes.func.isRequired,
+    component: PropTypes.elementType.isRequired,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     exact: PropTypes.bool.isRequired,
