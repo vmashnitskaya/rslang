@@ -1,4 +1,4 @@
-/*eslint-disable */
+// /*eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,7 +12,6 @@ import './styles.scss';
 import './assets/sound.svg';
 
 const Audition = ({ words, fetchWords }) => {
-    // const [gameData, setGameData] = useState({});
     let gameConfigs = {};
     let classesOfButtons = '';
     let rightWordOnPage = '';
@@ -32,40 +31,12 @@ const Audition = ({ words, fetchWords }) => {
     let gameData = {};
     let chosenRightWord = false;
     let skipButton = {};
+    let checkAnswer = {};
 
     const playAudioOfWord = () => {
         const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
         const { audio } = gameData[`answer${currentRightIdOfWord}`];
         playAudio(audio);
-    };
-
-    const checkAnswer = (event) => {
-        if (classesOfButtons !== 'audition__button_disabled') {
-            const chosenWord = event.target.textContent;
-            const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
-            const rightWord = gameData[`answer${currentRightIdOfWord}`].word;
-            const rightWordTranslation = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
-            const pictureOfWord = gameData[`answer${currentRightIdOfWord}`].image;
-            const stylesForPictureObject = {
-                background: `url('${pictureOfWord}') center no-repeat`,
-            };
-            const statsArray = gameStats;
-            stylesForPicture = stylesForPictureObject;
-            classesOfButtons = 'audition__button_disabled';
-            rightWordOnPage = `${rightWord} - ${rightWordTranslation}`;
-            contentOfSkipButton = '→';
-            if (chosenWord.includes(rightWordTranslation)) {
-                event.target.classList.add('audition__button_right');
-                statsArray.numberOfChosenRightWords += 1;
-                chosenRightWord = true;
-            } else {
-                statsArray.numberOfChosenWrongWords += 1;
-            }
-            console.log(statsArray);
-            setGameStats(statsArray);
-            console.log(gameData);
-            createNewContentOfPage(gameData);
-        }
     };
 
     const createNewContentOfPage = (currentWordsOfLevel) => {
@@ -93,7 +64,7 @@ const Audition = ({ words, fetchWords }) => {
                             >
                                 {`${index + 1}. ${currentWordsOfLevel[word].wordTranslate}`}
                             </Button>
-                        )
+                        );
                     })}
                 </div>
                 <Button variant="outlined" size="large" onClick={skipButton}>
@@ -102,6 +73,33 @@ const Audition = ({ words, fetchWords }) => {
             </>
         );
         setContentOnTheState(content);
+    };
+
+    checkAnswer = (event) => {
+        if (classesOfButtons !== 'audition__button_disabled') {
+            const chosenWord = event.target.textContent;
+            const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
+            const rightWord = gameData[`answer${currentRightIdOfWord}`].word;
+            const rightWordTranslation = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
+            const pictureOfWord = gameData[`answer${currentRightIdOfWord}`].image;
+            const stylesForPictureObject = {
+                background: `url('${pictureOfWord}') center no-repeat`,
+            };
+            const statsArray = gameStats;
+            stylesForPicture = stylesForPictureObject;
+            classesOfButtons = 'audition__button_disabled';
+            rightWordOnPage = `${rightWord} - ${rightWordTranslation}`;
+            contentOfSkipButton = '→';
+            if (chosenWord.includes(rightWordTranslation)) {
+                event.target.classList.add('audition__button_right');
+                statsArray.numberOfChosenRightWords += 1;
+                chosenRightWord = true;
+            } else {
+                statsArray.numberOfChosenWrongWords += 1;
+            }
+            setGameStats(statsArray);
+            createNewContentOfPage(gameData);
+        }
     };
 
     const createQuestionOnGame = () => {
@@ -141,7 +139,7 @@ const Audition = ({ words, fetchWords }) => {
                 console.log(gameStats);
             }
         }
-    }
+    };
 
     useEffect(() => {
         const findGroup = generateRandomNumber(0, numberWordGroups);
@@ -159,8 +157,8 @@ const Audition = ({ words, fetchWords }) => {
     }, [words]);
 
     const ContentOfThePage = () => {
-        return(<>{contentOnTheState}</>)
-    }
+        return <>{contentOnTheState}</>;
+    };
 
     return (
         <Container maxWidth="md" className="audition">
