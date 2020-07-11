@@ -437,7 +437,7 @@ SpeakItGame.propTypes = {
         PropTypes.objectOf(PropTypes.PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
     ).isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.string,
+    error: PropTypes.bool,
     fetchWords: PropTypes.func.isRequired,
     complexity: PropTypes.number.isRequired,
     cards: PropTypes.arrayOf(
@@ -492,7 +492,7 @@ SpeakItGame.propTypes = {
 };
 
 SpeakItGame.defaultProps = {
-    error: null,
+    error: false,
     guessedWords: [],
     selectedCard: {},
     speechText: '',

@@ -15,7 +15,17 @@ import { getToken, getUserId } from '../router/storage/selectors';
 
 const filterForDifficultWords = { 'userWord.optional.difficult': true };
 const filterForLearnedWords = { 'userWord.optional.learned': true };
-const filterForDeletedWords = { 'userWord.optional.deleted': true };
+const filterForDeletedWords = {
+    $or: [
+        {
+            'userWord.optional.deleted': true,
+        },
+
+        {
+            'userWord.optional.easy': true,
+        },
+    ],
+};
 
 const WordsTable = ({
     type,
@@ -152,7 +162,7 @@ WordsTable.propTypes = {
     ).isRequired,
     updateUserWord: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.string.isRequired,
+    error: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
     aggregatedWords: PropTypes.arrayOf(
         PropTypes.shape({
@@ -180,6 +190,10 @@ WordsTable.propTypes = {
         wordsPerDay: PropTypes.number,
         optional: PropTypes.objectOf(PropTypes.bool),
     }).isRequired,
+};
+
+WordsTable.defaultProps = {
+    error: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WordsTable);

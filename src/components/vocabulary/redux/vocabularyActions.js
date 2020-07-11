@@ -14,13 +14,31 @@ const wordsActions = {
 };
 
 const deleteWordByType = async (userId, token, word, type) => {
-    await passedWordsApi.putPassedWords(userId, token, word._id, {
-        difficulty: 'default',
-        optional: {
-            ...word.userWord.optional,
-            [type]: false,
-        },
-    });
+    if (type === 'learned' || type === 'difficult') {
+        await passedWordsApi.putPassedWords(userId, token, word._id, {
+            difficulty: 'default',
+            optional: {
+                ...word.userWord.optional,
+                [type]: false,
+            },
+        });
+    } else if (word.userWord.optional.deleted) {
+        await passedWordsApi.putPassedWords(userId, token, word._id, {
+            difficulty: 'default',
+            optional: {
+                ...word.userWord.optional,
+                deleted: false,
+            },
+        });
+    } else if (word.userWord.optional.easy) {
+        await passedWordsApi.putPassedWords(userId, token, word._id, {
+            difficulty: 'default',
+            optional: {
+                ...word.userWord.optional,
+                easy: false,
+            },
+        });
+    }
 };
 
 const updateUserWord = (word, type) => async (dispatch, getState) => {
