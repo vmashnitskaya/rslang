@@ -162,7 +162,7 @@ WordsTable.propTypes = {
     ).isRequired,
     updateUserWord: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.string.isRequired,
+    error: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
     aggregatedWords: PropTypes.arrayOf(
         PropTypes.shape({
@@ -190,6 +190,10 @@ WordsTable.propTypes = {
         wordsPerDay: PropTypes.number,
         optional: PropTypes.objectOf(PropTypes.bool),
     }).isRequired,
+};
+
+WordsTable.defaultProps = {
+    error: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WordsTable);
