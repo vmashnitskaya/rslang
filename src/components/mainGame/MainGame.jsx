@@ -46,6 +46,14 @@ const filterForNewAndLearnedWords = {
                 },
             ],
         },
+        {
+            $and: [
+                {
+                    'userWord.optional.easy': null,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
     ],
 };
 
