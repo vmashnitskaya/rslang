@@ -5,6 +5,9 @@ import AboutTeam from '../aboutTeam/index';
 import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
 import SavannahGame from '../savannah';
+import MainGame from '../mainGame/index';
+import SettingsPage from '../settingsPage';
+import AnagrammGame from '../anagrammGame';
 
 const pages = [
     {
@@ -13,6 +16,13 @@ const pages = [
         url: '/',
         exact: true,
         img: '',
+    },
+    {
+        component: MainGame,
+        title: 'Words learning',
+        url: '/learn',
+        exact: false,
+        img: '/assets/images/learn.jpg',
     },
     {
         component: AboutProject,
@@ -48,6 +58,19 @@ const pages = [
         url: '/Savannah',
         img: '/assets/images/draw.jpg',
         exact: true,
+    },
+        component: SettingsPage,
+        title: 'Settings',
+        url: '/settings',
+        img: '/assets/images/angry.jpg',
+        exact: true,
+    },
+    {
+        component: AnagrammGame,
+        title: 'Anagramm Game',
+        url: '/anagramm',
+        exact: true,
+        img: '/assets/images/angry.jpg',
     },
 ];
 

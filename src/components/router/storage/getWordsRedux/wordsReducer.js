@@ -13,7 +13,7 @@ const wordsReducer = (state = initialState, action) => {
 
     switch (type) {
         case wordsTypes.FETCH_WORDS_PENDING:
-            return { ...state, error: null, page: null, group: null, words: [], loading: true };
+            return { ...state, error: false, page: null, group: null, words: [], loading: true };
         case wordsTypes.FETCH_WORDS_SUCCESS:
             return {
                 ...state,
