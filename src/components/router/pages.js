@@ -59,6 +59,7 @@ const pages = [
         img: '/assets/images/draw.jpg',
         exact: true,
     },
+    {
         component: SettingsPage,
         title: 'Settings',
         url: '/settings',
