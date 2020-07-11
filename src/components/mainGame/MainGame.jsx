@@ -46,6 +46,14 @@ const filterForNewAndLearnedWords = {
                 },
             ],
         },
+        {
+            $and: [
+                {
+                    'userWord.optional.easy': null,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
     ],
 };
 
@@ -350,7 +358,7 @@ MainGame.propTypes = {
         })
     ).isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.string.isRequired,
+    error: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
     mainWords: PropTypes.arrayOf(
         PropTypes.shape({
@@ -374,13 +382,17 @@ MainGame.propTypes = {
     increaseCurrentWordNumber: PropTypes.func.isRequired,
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
-        optional: PropTypes.number,
+        optional: {
+            learnedWords: PropTypes.number,
+            optional: PropTypes.objectOf(PropTypes.string),
+        },
     }).isRequired,
     updateStatics: PropTypes.func.isRequired,
 };
 
 MainGame.defaultProps = {
     mainWords: [],
+    error: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainGame);
