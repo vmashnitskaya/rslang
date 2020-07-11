@@ -15,7 +15,17 @@ import { getToken, getUserId } from '../router/storage/selectors';
 
 const filterForDifficultWords = { 'userWord.optional.difficult': true };
 const filterForLearnedWords = { 'userWord.optional.learned': true };
-const filterForDeletedWords = { 'userWord.optional.deleted': true };
+const filterForDeletedWords = {
+    $or: [
+        {
+            'userWord.optional.deleted': true,
+        },
+
+        {
+            'userWord.optional.easy': true,
+        },
+    ],
+};
 
 const WordsTable = ({
     type,
