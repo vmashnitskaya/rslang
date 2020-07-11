@@ -17,13 +17,13 @@ const Audition = ({ words, fetchWords }) => {
     let classesOfButtons = '';
     let rightWordOnPage = '';
     let stylesForPicture = {};
-    let contentOfSkipButton = 'Не знаю';
+    let contentOfSkipButton = 'I don`t know';
     const newGameStats = {
         numberOfChosenRightWords: 0,
         numberOfChosenWrongWords: 0,
     };
     const [gameStats, setGameStats] = useState(newGameStats);
-    const [contentOnTheState, setContentOnTheState] = useState(<div>dd</div>);
+    const [contentOnTheState, setContentOnTheState] = useState(<div>Loading</div>);
     const numberOfQuestionsOnGame = 6;
     const numberOfAnswersOnGame = 6;
     const numberWordGroups = 5;
@@ -31,6 +31,7 @@ const Audition = ({ words, fetchWords }) => {
     const numberWordsOnThePage = 20;
     let gameData = {};
     let chosenRightWord = false;
+    let skipButton = {};
 
     const playAudioOfWord = () => {
         const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
@@ -95,7 +96,7 @@ const Audition = ({ words, fetchWords }) => {
                         )
                     })}
                 </div>
-                <Button variant="outlined" size="large" onClick={checkAnswer}>
+                <Button variant="outlined" size="large" onClick={skipButton}>
                     {contentOfSkipButton}
                 </Button>
             </>
@@ -121,10 +122,22 @@ const Audition = ({ words, fetchWords }) => {
         gameConfigsArray.questionIndex += 1;
         gameData = wordsData;
         chosenRightWord = false;
+        contentOfSkipButton = 'I don`t know';
+        stylesForPicture = {};
+        rightWordOnPage = '';
+        classesOfButtons = '';
         setGameConfigs(gameConfigsArray);
         playAudio(wordsData[`answer${gameConfigs.rightAnswerOfCurrentQuestion}`].audio);
         createNewContentOfPage(wordsData);
     };
+
+    skipButton = () => {
+        if (contentOfSkipButton === 'I don`t know') {
+            checkAnswer();
+        } else {
+            createQuestionOnGame();
+        }
+    }
 
     useEffect(() => {
         const findGroup = generateRandomNumber(0, numberWordGroups);
