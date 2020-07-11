@@ -11,13 +11,6 @@ const theme = createMuiTheme({
             main: green[300],
         },
     },
-    overrides: {
-        MuiTable: {
-            root: {
-                tableLayout: 'fixed',
-            },
-        },
-    },
 });
 
 export default theme;

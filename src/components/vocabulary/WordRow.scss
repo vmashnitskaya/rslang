@@ -1,0 +1,49 @@
+.word-cell-vocabulary {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    .word-vocabulary {
+        p {
+            margin: 4px;
+        }
+        .sound-vocabulary {
+            transform: translateY(6px);
+            outline: none;
+            cursor: pointer;
+        }
+        .translation-vocabulary {
+            font-size: 18px;
+        }
+        .text-example-vocabulary {
+            font-style: italic;
+        }
+        .text-meaning-vocabulary {
+            font-weight: 600;
+        }
+    }
+
+    .picture-vocabulary {
+        max-width: 20%;
+        height: 80px;
+        position: relative;
+        img {
+            display: block;
+            max-width: 120px;
+            height: 100%;
+        }
+    }
+}
+
+.restore-button {
+    height: 60%;
+    padding: 2px 4px;
+    max-width: 25%;
+    font-size: 12px;
+}
+
+@media (max-width: 755px) {
+    .word-row {
+        display: flex;
+        flex-direction: column;
+    }
+}
