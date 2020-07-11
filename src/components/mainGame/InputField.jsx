@@ -80,7 +80,7 @@ const InputField = ({
     useEffect(() => {
         setTimeout(() => {
             setIsIncorrectStatusShown(false);
-        }, 3000);
+        }, 1000);
     }, [isIncorrectStatusShown]);
 
     return (

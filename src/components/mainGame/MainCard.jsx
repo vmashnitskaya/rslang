@@ -130,6 +130,7 @@ const MainCard = ({
         wordObj.userWord ? wordObj.userWord.optional.repeat : false
     );
     const [isNewWord, setIsNewWord] = useState(!wordObj.userWord);
+    const [isAnswerDisabled, setIsAnswerDisabled] = useState(false);
 
     useEffect(() => {
         setIsDeletedDisabled(wordObj.userWord ? wordObj.userWord.optional.deleted : false);
@@ -140,18 +141,14 @@ const MainCard = ({
         }
         setIsRepeatDisabled(wordObj.userWord ? wordObj.userWord.optional.repeat : false);
         setInitialState('true');
+        setIsSoundEnabled(false);
+        setIsAnswerDisabled(false);
     }, [word, currentWordNumber]);
-
-    useEffect(() => {
-        if (isSoundEnabled) {
-            setIsSoundEnabled(false);
-        }
-    }, [isSoundEnabled, word]);
 
     const handleGuessedWordProvided = async (guessedWord) => {
         if (word === guessedWord.trim()) {
             setCorrectWordProvided(guessedWord);
-            if (isAutoSoundEnabled) {
+            if (isAutoSoundEnabled && !isSoundEnabled) {
                 setIsSoundEnabled(true);
             }
             handleSuccessAndErrors('correct');
@@ -206,6 +203,7 @@ const MainCard = ({
     };
 
     const handleAnswerShow = async () => {
+        setIsAnswerDisabled(true);
         await handleGuessedWordProvided(word);
     };
     const handleDeleteClick = async () => {
@@ -477,6 +475,7 @@ const MainCard = ({
                                     variant="contained"
                                     color="primary"
                                     onClick={handleAnswerShow}
+                                    disabled={isAnswerDisabled}
                                 >
                                     Answer
                                 </Button>
@@ -622,7 +621,10 @@ MainCard.propTypes = {
     isTranslationEnabled: PropTypes.bool.isRequired,
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
-        optional: PropTypes.number,
+        optional: {
+            learnedWords: PropTypes.number,
+            optional: PropTypes.objectOf(PropTypes.string),
+        },
     }).isRequired,
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
