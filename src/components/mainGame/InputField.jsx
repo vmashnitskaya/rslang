@@ -2,11 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, IconButton } from '@material-ui/core';
-import { connect } from 'react-redux';
 import CheckIcon from '@material-ui/icons/Check';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import clsx from 'clsx';
-import mainGameActions from './redux/mainGameActions';
 import './InputField.scss';
 
 const useStyles = makeStyles(() => ({
@@ -31,10 +29,10 @@ const InputField = ({
     onGuessedWordProvided,
     isIncorrectPlaceHolderShown,
     wordStatus,
-    setInitialState,
     isCorrectPlaceholderShown,
     handleNewWord,
     currentWordNumber,
+    wordsType,
 }) => {
     const [guessedWord, setGuessedWord] = useState('');
     const [isIncorrectStatusShown, setIsIncorrectStatusShown] = useState(false);
@@ -46,13 +44,13 @@ const InputField = ({
     useEffect(() => {
         setIsIncorrectStatusShown(false);
         setIsCorrectStatusShown(false);
-
+        setGuessedWord('');
         setTimeout(() => {
             if (inputRef.current) {
                 inputRef.current.focus();
             }
         });
-    }, [word, currentWordNumber]);
+    }, [word, currentWordNumber, wordsType]);
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -62,18 +60,19 @@ const InputField = ({
 
     const handleInputChanged = (event) => {
         setGuessedWord(event.target.value);
-        setInitialState('true');
     };
 
     useEffect(() => {
         if (isIncorrectPlaceHolderShown) {
             setIsIncorrectStatusShown(true);
+            setGuessedWord('');
         }
     }, [isIncorrectPlaceHolderShown]);
 
     useEffect(() => {
         if (isCorrectPlaceholderShown) {
             setIsCorrectStatusShown(true);
+            setGuessedWord('');
         }
     }, [isCorrectPlaceholderShown]);
 
@@ -110,7 +109,7 @@ const InputField = ({
                 onChange={handleInputChanged}
                 disabled={isCorrectStatusShown}
                 inputRef={inputRef}
-                value={isIncorrectStatusShown || isCorrectStatusShown ? '' : undefined}
+                value={guessedWord}
             />
             <span
                 className={clsx(
@@ -155,16 +154,10 @@ InputField.propTypes = {
     onGuessedWordProvided: PropTypes.func.isRequired,
     isIncorrectPlaceHolderShown: PropTypes.bool.isRequired,
     wordStatus: PropTypes.objectOf(PropTypes.string).isRequired,
-    setInitialState: PropTypes.func.isRequired,
     isCorrectPlaceholderShown: PropTypes.bool.isRequired,
     handleNewWord: PropTypes.func.isRequired,
     currentWordNumber: PropTypes.number.isRequired,
+    wordsType: PropTypes.string.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    setInitialState: (initialState) => {
-        dispatch(mainGameActions.setInitialState(initialState));
-    },
-});
-
-export default connect(null, mapDispatchToProps)(InputField);
+export default InputField;

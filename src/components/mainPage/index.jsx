@@ -109,7 +109,7 @@ MainPage.propTypes = {
     fetchStatistics: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     error: PropTypes.bool.isRequired,
-    settingsError: PropTypes.string.isRequired,
+    settingsError: PropTypes.bool.isRequired,
     settingsLoading: PropTypes.bool.isRequired,
     fetchSettings: PropTypes.func.isRequired,
 };
