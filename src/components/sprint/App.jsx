@@ -1,5 +1,5 @@
 /* eslint-disable no-debugger */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Box, Paper } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
@@ -70,16 +70,16 @@ export default function App({ userWordsOnly, complexity }) {
         }
     };
 
-    const handleKeyPress = (event) => {
-        debugger;
-        if (event.key === 'ArrowRight') {
-            handleAnswer(true);
-        }
-        debugger;
-        if (event.key === 'ArrowLeft') {
-            handleAnswer(false);
-        }
-    };
+    useEffect(() => {
+        document.getElementById('box').addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight') {
+                handleAnswer(true);
+            }
+            if (event.key === 'ArrowLeft') {
+                handleAnswer(false);
+            }
+        });
+    }, []);
 
     const onTimeOut = useCallback(() => {
         setEndGame(true);
@@ -129,22 +129,18 @@ export default function App({ userWordsOnly, complexity }) {
                                     audio={word.audio}
                                 />
                             )}
-                            <Box className="button_container">
+                            <Box className="button_container" id="box" tabIndex="0">
                                 <Button
                                     onClick={() => handleAnswer(false)}
-                                    onKeyPress={handleKeyPress}
                                     className="button_wrong"
                                     variant="contained"
-                                    tabIndex="0"
                                 >
                                     Неверно
                                 </Button>
                                 <Button
-                                    onKeyPress={handleKeyPress}
                                     onClick={() => handleAnswer(true)}
                                     className="button_right"
                                     variant="contained"
-                                    tabIndex="-1"
                                 >
                                     Верно
                                 </Button>

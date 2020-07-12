@@ -23,6 +23,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
     const [show, setShow] = useState(false);
     const [message, setMessage] = useState(null);
     const { words, error, loading } = useUserWord();
+    const [start, setStart] = useState(true);
 
     const handleClose = () => {
         onClose();
@@ -34,17 +35,22 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
             setMessage(
                 'Your words are not enought for this game. Please go to main game or use random words.'
             );
+            setStart(true);
         } else {
             onChooseUserWords(true);
             handleClose();
+            setStart(false);
         }
+        setShow(false);
     };
 
     const handleShow = () => {
+        setMessage(null);
         setShow(true);
     };
 
     const handleComplexityChange = (newComplexity) => {
+        setStart(false);
         onComplexityChange(newComplexity);
     };
 
@@ -110,6 +116,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                     color="primary"
                     className="start-page__button"
                     onClick={handleClose}
+                    disabled={start}
                 >
                     Start
                 </Button>
