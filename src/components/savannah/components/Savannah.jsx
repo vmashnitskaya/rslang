@@ -10,9 +10,12 @@ import StatisticsWindow from './StatisticsWindow';
 import Spinner from '../../spinner/Spinner';
 import ErrorHeandler from './ErrorHeandler';
 import utils from '../utils';
+import hooks from '../hooks';
 
 function Savannah({ gameState, clear, error }) {
     const [rightAnswers, setrightAnswers] = useState(0);
+
+    hooks.useUserWords();
 
     useEffect(() => {
         return () => {

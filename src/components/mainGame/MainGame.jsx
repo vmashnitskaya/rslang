@@ -163,14 +163,15 @@ const MainGame = ({
                 );
             }
         }
-        if (
-            statistics.optional[new Date().toISOString().slice(0, 10).replace(/-/g, '')] ===
-            settings.wordsPerDay - 1
-        ) {
+        const stats =
+            statistics.optional && statistics.optional.main
+                ? statistics.optional.main[statisticsActions.getDate()]
+                : null;
+        if (stats && stats.l === settings.wordsPerDay - 1) {
             setIsPopUpOpened(true);
             setIsNewWordWillBeShown(true);
         } else {
-            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
+            updateStatics();
             increaseCurrentWordNumber();
         }
     }, [settings.wordsPerDay, currentWordNumber, increaseCurrentWordNumber]);
@@ -180,7 +181,7 @@ const MainGame = ({
     };
     useEffect(() => {
         if (!isPopUpOpened && isNewWordWillBeShown) {
-            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
+            updateStatics();
             increaseCurrentWordNumber();
             setIsNewWordWillBeShown(false);
         }
@@ -320,8 +321,8 @@ const mapDispatchToProps = (dispatch) => ({
     increaseCurrentWordNumber: () => {
         dispatch(mainGameActions.increaseCurrentWordNumber());
     },
-    updateStatics: (date) => {
-        dispatch(statisticsActions.updateStatics(date));
+    updateStatics: () => {
+        dispatch(statisticsActions.updateStatics());
     },
 });
 
@@ -383,8 +384,10 @@ MainGame.propTypes = {
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
         optional: {
-            learnedWords: PropTypes.number,
-            optional: PropTypes.objectOf(PropTypes.string),
+            main: {
+                d: PropTypes.number.isRequired,
+                l: PropTypes.number.isRequired,
+            }.isRequired,
         },
     }).isRequired,
     updateStatics: PropTypes.func.isRequired,
