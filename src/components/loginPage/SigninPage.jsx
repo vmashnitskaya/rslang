@@ -13,17 +13,17 @@ import IntervalSection from './IntervalSection';
 import SettingsSection from './SettingsSection';
 import { getLogInMessage, getLogInError } from '../router/storage/selectors';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     logo: {
-        position: 'absolute',
         fontWeight: 600,
-        left: '70px',
-        top: '30px',
     },
     formText: {
         fontSize: '18px',
+        [theme.breakpoints.up('md')]: {
+            fontSize: '16px',
+        },
     },
-});
+}));
 
 const SigninPage = () => {
     const classes = useStyles();
@@ -47,9 +47,16 @@ const SigninPage = () => {
     return (
         <div className="login-container">
             <section className="signin-page">
-                <Typography align="center" variant="h4" color="primary" className={classes.logo}>
-                    RS Lang
-                </Typography>
+                <div className="logo">
+                    <Typography
+                        align="center"
+                        variant="h4"
+                        color="primary"
+                        className={classes.logo}
+                    >
+                        RS Lang
+                    </Typography>
+                </div>
                 <LoginPhrase />
                 <div className="link-to-sign-up">
                     <Typography align="center" color="primary" className={classes.formText}>

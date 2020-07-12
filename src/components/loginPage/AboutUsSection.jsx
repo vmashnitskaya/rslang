@@ -1,9 +1,20 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
+import { makeStyles } from '@material-ui/core/styles';
 import ReactPlayer from 'react-player/youtube';
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        fontSize: '18px',
+        [theme.breakpoints.down('md')]: {
+            fontSize: '16px',
+        },
+    },
+}));
+
 const AboutUsSection = () => {
+    const classes = useStyles();
     return (
         <section className="about-us-part">
             <Typography align="center" color="primary" variant="h5">
@@ -12,7 +23,7 @@ const AboutUsSection = () => {
             <div className="about-us-points">
                 <ul className="points">
                     <li>
-                        <Typography color="textSecondary">
+                        <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" /> Words learning goes together with{' '}
                             <Typography variant="span" color="primary">
                                 mini games
@@ -21,7 +32,7 @@ const AboutUsSection = () => {
                         </Typography>
                     </li>
                     <li>
-                        <Typography color="textSecondary">
+                        <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" />{' '}
                             <Typography variant="span" color="primary">
                                 Interval training
@@ -31,7 +42,7 @@ const AboutUsSection = () => {
                         </Typography>
                     </li>
                     <li>
-                        <Typography color="textSecondary">
+                        <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" />{' '}
                             <Typography variant="span" color="primary">
                                 Settings
@@ -42,7 +53,7 @@ const AboutUsSection = () => {
                         </Typography>
                     </li>
                     <li>
-                        <Typography color="textSecondary">
+                        <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" /> You can review you{' '}
                             <Typography variant="span" color="primary">
                                 vocabulary
@@ -52,7 +63,7 @@ const AboutUsSection = () => {
                         </Typography>
                     </li>
                     <li>
-                        <Typography color="textSecondary">
+                        <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" />{' '}
                             <Typography variant="span" color="primary">
                                 Statistics
@@ -63,14 +74,18 @@ const AboutUsSection = () => {
                     </li>
                 </ul>
                 <div className="video">
-                    <Typography color="textSecondary" align="center" gutterBottom>
+                    <Typography
+                        color="textSecondary"
+                        align="center"
+                        gutterBottom
+                        className={classes.root}
+                    >
                         Have not decided yet? Check the training process in video
                     </Typography>
                     <ReactPlayer
                         url="https://www.youtube.com/embed/5woDAZ9Pjw8"
                         controls
-                        width="120%"
-                        height="60%"
+                        width="100%"
                     />
                 </div>
             </div>

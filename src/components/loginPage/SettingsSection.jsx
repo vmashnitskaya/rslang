@@ -5,30 +5,31 @@ const SettingsSection = () => {
     return (
         <section className="unique">
             <Typography align="center" color="primary" variant="h5">
-                Custom your learning
+                Custom your learning with our tools
             </Typography>
             <div className="settings_vocabulary">
                 <div className="settings">
+                    <img src="/assets/images/angry.jpg" alt="settings" />
                     <Typography color="textSecondary" gutterBottom>
                         {' '}
                         <Typography variant="span" color="primary">
                             Settings
                         </Typography>{' '}
-                        make the learning process more specific
+                        make the learning more specific
                     </Typography>
-                    <img src="/assets/images/angry.jpg" alt="settings" />
                 </div>
                 <div className="vocabulary">
+                    <img src="/assets/images/angry.jpg" alt="vocabulary" />
                     <Typography color="textSecondary" gutterBottom>
                         {' '}
                         <Typography variant="span" color="primary">
                             Vocabulary
                         </Typography>{' '}
-                        helps to track your learned words
+                        helps to track learned words
                     </Typography>
-                    <img src="/assets/images/angry.jpg" alt="vocabulary" />
                 </div>
                 <div className="statistics">
+                    <img src="/assets/images/angry.jpg" alt="vocabulary" />
                     <Typography color="textSecondary" gutterBottom>
                         {' '}
                         <Typography variant="span" color="primary">
@@ -36,7 +37,6 @@ const SettingsSection = () => {
                         </Typography>{' '}
                         outlines the progress you achieved
                     </Typography>
-                    <img src="/assets/images/angry.jpg" alt="vocabulary" />
                 </div>
             </div>
         </section>
