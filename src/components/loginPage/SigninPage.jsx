@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Typography, Box } from '@material-ui/core';
@@ -30,13 +30,6 @@ const SigninPage = () => {
     const errorMessage = useSelector(getLogInError);
     const infoMessage = useSelector(getLogInMessage);
     const dispatch = useDispatch();
-    useEffect(() => {
-        const data = JSON.parse(localStorage.getItem('authData'));
-        if (data && data.token) {
-            dispatch(action.token.set(data.token));
-            dispatch(action.userId.set(data.userId));
-        }
-    });
 
     const onSignIn = async (email, password) => {
         await dispatch(action.user.logIn(email, password));

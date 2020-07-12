@@ -12,7 +12,10 @@ const getUserSettings = async (userId, token) => {
     );
     let content = '';
     if (rawResponse.status === 200) {
-        content = await rawResponse.json();
+        content = await rawResponse.json().then((r) => ({
+            wordsPerDay: r.wordsPerDay,
+            optional: r.optional,
+        }));
     } else if (rawResponse.status === 401) {
         return undefined;
     } else if (rawResponse.status === 404) {
@@ -37,7 +40,10 @@ const putUserSettings = async (userId, token, settings) => {
     );
     let content = '';
     if (rawResponse.status === 200) {
-        content = await rawResponse.json();
+        content = await rawResponse.json().then((r) => ({
+            wordsPerDay: r.wordsPerDay,
+            optional: r.optional,
+        }));
     } else if (rawResponse.status === 401) {
         return undefined;
     } else if (rawResponse.status === 404) {

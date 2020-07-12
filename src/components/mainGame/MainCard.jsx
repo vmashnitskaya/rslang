@@ -35,6 +35,7 @@ import passedWordsApi from '../router/storage/getPostPassedWordsRedux/passedWord
 import { getToken, getUserId } from '../router/storage/selectors';
 import Alert from './Alert';
 import mainGameSelectors from './redux/mainGameSelectors';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 
 import './MainCard.scss';
 
@@ -364,6 +365,11 @@ const MainCard = ({
             handleWordsTypeChanged(event.target.value);
         }
     };
+
+    const stats =
+        statistics.optional && statistics.optional.main
+            ? statistics.optional.main[statisticsActions.getDate()]
+            : null;
     return (
         <>
             <div className="card__wrapper">
@@ -401,15 +407,7 @@ const MainCard = ({
                 <div className={classes.chartWrapper}>
                     <LinearProgressWithLabel
                         className={classes.chart}
-                        learned={
-                            statistics.optional[
-                                new Date().toISOString().slice(0, 10).replace(/-/g, '')
-                            ]
-                                ? statistics.optional[
-                                      new Date().toISOString().slice(0, 10).replace(/-/g, '')
-                                  ]
-                                : 0
-                        }
+                        learned={stats ? stats.l : 0}
                         toLearn={wordsPerDay}
                     />
                 </div>
@@ -689,10 +687,12 @@ MainCard.propTypes = {
     isTranslationEnabled: PropTypes.bool.isRequired,
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
-        optional: PropTypes.shape({
-            learnedWords: PropTypes.number,
-            optional: PropTypes.objectOf(PropTypes.string),
-        }),
+        optional: {
+            main: {
+                d: PropTypes.number.isRequired,
+                l: PropTypes.number.isRequired,
+            }.isRequired,
+        },
     }).isRequired,
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,

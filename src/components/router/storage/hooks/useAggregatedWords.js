@@ -7,12 +7,10 @@ const useAggregatedWords = (params) => {
     const userId = useSelector(getUserId);
     const token = useSelector(getToken);
     const { group, filter, wordsPerPage } = params;
-    const [groupState] = useState(group);
-    const [filterState] = useState(filter);
-    const [wordsPerPageState] = useState(wordsPerPage);
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
+    const filterEncoded = encodeURIComponent(JSON.stringify(filter));
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,9 +19,9 @@ const useAggregatedWords = (params) => {
                 const content = await getAggregatedWords({
                     token,
                     userId,
-                    group: groupState,
-                    filter: filterState,
-                    wordsPerPage: wordsPerPageState,
+                    group,
+                    filter: filterEncoded,
+                    wordsPerPage,
                 });
                 setData(content);
                 setLoading(false);
@@ -33,7 +31,7 @@ const useAggregatedWords = (params) => {
             }
         };
         fetchData();
-    }, [userId, token, groupState, filterState, wordsPerPageState]);
+    }, [userId, token, filterEncoded, group, wordsPerPage]);
 
     return { data, error, loading };
 };
