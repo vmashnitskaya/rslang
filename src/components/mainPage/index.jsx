@@ -1,6 +1,6 @@
 import './styles.scss';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,16 +11,45 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import statisticsSelectors from '../router/storage/getPutStatisticsRedux/statisticsSelectors';
+import { getToken, getUserId } from '../router/storage/selectors';
+import settingsActions from '../router/storage/getSettingsRedux/settingsActions';
+import settingsSelectors from '../router/storage/getSettingsRedux/settingsSelectors';
+
+import Loading from './Loading';
+
 const useStyles = makeStyles({
     media: {
         height: 140,
     },
 });
 
-export default function MainPage({ routes }) {
+const MainPage = ({
+    routes,
+    userId,
+    token,
+    fetchStatistics,
+    loading,
+    error,
+    settingsError,
+    settingsLoading,
+    fetchSettings,
+}) => {
     const classes = useStyles();
 
-    return (
+    useEffect(() => {
+        fetchStatistics(userId, token);
+    }, [fetchStatistics]);
+
+    useEffect(() => {
+        fetchSettings(userId, token);
+    }, [fetchSettings]);
+
+    return loading || error || settingsError || settingsLoading ? (
+        <Loading error={error} />
+    ) : (
         <section className="main_page">
             {routes
                 .filter((i) => i.url !== '/')
@@ -46,7 +75,26 @@ export default function MainPage({ routes }) {
                 })}
         </section>
     );
-}
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    fetchStatistics: (userId, token) => {
+        dispatch(statisticsActions.fetchStatistics(userId, token));
+    },
+    fetchSettings: (userId, token) => {
+        dispatch(settingsActions.fetchSettings(userId, token));
+    },
+});
+
+const mapStateToProps = (state) => ({
+    statistics: statisticsSelectors.getStatistics(state),
+    loading: statisticsSelectors.getLoading(state),
+    error: statisticsSelectors.getError(state),
+    settingsError: settingsSelectors.getError(state),
+    settingsLoading: settingsSelectors.getLoading(state),
+    userId: getUserId(state),
+    token: getToken(state),
+});
 
 MainPage.propTypes = {
     routes: PropTypes.arrayOf(
@@ -56,4 +104,14 @@ MainPage.propTypes = {
             img: PropTypes.string.isRequired,
         })
     ).isRequired,
+    userId: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    fetchStatistics: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.bool.isRequired,
+    settingsError: PropTypes.string.isRequired,
+    settingsLoading: PropTypes.bool.isRequired,
+    fetchSettings: PropTypes.func.isRequired,
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

@@ -1,0 +1,22 @@
+span.correct-answer-hidden {
+    position: absolute;
+    left: 12px;
+    top: 13px;
+    font-size: 24px;
+    display: none;
+    font-family: "Roboto Mono", monospace;
+    &.show {
+        display: inline;
+    }
+    .green-status {
+        color: green;
+    }
+    .red-status {
+        color: red;
+    }
+    .correct-answer {
+        color: green;
+        text-decoration: underline;
+        font-family: "Roboto Mono", monospace;
+    }
+}
