@@ -1,5 +1,4 @@
-/* eslint-disable no-debugger */
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Box, Paper } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
@@ -69,17 +68,6 @@ export default function App({ userWordsOnly, complexity }) {
             setIsPopUpOpened(true);
         }
     };
-
-    useEffect(() => {
-        document.getElementById('box').addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowRight') {
-                handleAnswer(true);
-            }
-            if (event.key === 'ArrowLeft') {
-                handleAnswer(false);
-            }
-        });
-    }, []);
 
     const onTimeOut = useCallback(() => {
         setEndGame(true);
