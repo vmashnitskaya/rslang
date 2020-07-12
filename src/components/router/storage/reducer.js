@@ -22,9 +22,9 @@ const auth = (state = initAuthState, action) => {
         case types.CLEAR_TOKEN:
             return { ...state, token: null };
         case types.SET_USER_ID:
-            return { ...state, token: payload };
+            return { ...state, userId: payload };
         case types.CLEAR_USER_ID:
-            return { ...state, token: null };
+            return { ...state, userId: null };
         case types.CREATE_USER_SUCCESS:
             return { ...state, createSuccess: payload, createError: null };
         case types.CREATE_USER_ERROR:

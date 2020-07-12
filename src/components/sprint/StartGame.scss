@@ -1,0 +1,36 @@
+.start-page {
+
+    &_wrapper {
+        width: 100%;
+    }
+
+    &_content {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        height: 90vh;
+
+        &__name, &__rules {
+            font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+            align-content: center;
+            align-items: center;
+            margin: 10px;
+        }
+    }
+
+    &_game {
+        &__variant {
+            margin: 5px;
+            width: min(75%, 500px);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &__button {
+            margin: 0 10px;
+        }
+    }
+
+}
+

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import MainPage from '../mainPage/index';
 import AboutProject from '../aboutProject/index';
 import AboutTeam from '../aboutTeam/index';
+import Sprint from '../sprint/Sprint';
 import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
 import SavannahGame from '../savannah';
@@ -45,6 +46,13 @@ const pages = [
         url: '/vocabulary',
         exact: false,
         img: '/assets/images/scared.jpg',
+    },
+    {
+        component: Sprint,
+        title: 'Sprint',
+        url: '/sprint',
+        img: '/assets/images/sprint.png',
+        exact: false,
     },
     {
         component: SpeakItGame,
