@@ -12,18 +12,18 @@ const useStyles = makeStyles({
     },
 });
 
-const Alert = ({ onClose, children }) => {
+const Alert = ({ onClose, alertShown }) => {
     const classes = useStyles();
     return (
         <MuiAlert elevation={6} variant="filled" onClose={onClose} className={classes.root}>
-            {children}
+            {alertShown}
         </MuiAlert>
     );
 };
 
 Alert.propTypes = {
     onClose: PropTypes.func.isRequired,
-    children: PropTypes.string.isRequired,
+    alertShown: PropTypes.string.isRequired,
 };
 
 export default Alert;

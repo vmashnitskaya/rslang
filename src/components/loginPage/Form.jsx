@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Button, Box } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        width: 250,
+        fontSize: '18px',
+        [theme.breakpoints.down('md')]: {
+            fontSize: '18px',
+        },
+    },
+}));
 
 const Form = ({
     className,
@@ -11,6 +22,7 @@ const Form = ({
     onSubmit,
     onError,
 }) => {
+    const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -40,7 +52,7 @@ const Form = ({
         <form autoComplete="off" id={className} className={className} onSubmit={handleSubmit}>
             <Box display="flex" alignItems="center" flexDirection="column">
                 <TextField
-                    className={emailClassName}
+                    className={classes.root}
                     type="text"
                     name={emailClassName}
                     id={emailClassName}
@@ -51,7 +63,7 @@ const Form = ({
                     required
                 />
                 <TextField
-                    className={passwordClassName}
+                    className={classes.root}
                     type="password"
                     name={passwordClassName}
                     id={passwordClassName}

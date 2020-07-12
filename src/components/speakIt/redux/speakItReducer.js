@@ -61,6 +61,8 @@ const speakItReducer = (state = initialState, action) => {
                 ...state,
                 isGameStarted: payload,
             };
+        case speakItTypes.SET_INITIAL_STATE:
+            return initialState;
         default:
             return state;
     }
