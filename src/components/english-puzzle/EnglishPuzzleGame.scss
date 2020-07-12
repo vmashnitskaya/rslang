@@ -1,0 +1,55 @@
+$main-color: lighten(
+    $color: #b79884,
+    $amount: 25,
+);
+$contrast-color: lighten(
+    $color: #b79884,
+    $amount: 10,
+);
+$base-color: #eceff1;
+$base-duration: 500ms;
+
+.ep-page {
+    width: 1200px;
+    height: 100%;
+    margin: 70px auto;
+    .header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        &__drop-downs {
+            .dropdown {
+                option {
+                    &.passed {
+                        background-color: $base-color;
+                    }
+                }
+            }
+        }
+        &__checkboxes {
+            width: 150px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-left: -170px;
+        }
+    }
+    .game {
+        &__box {
+            width: 1200px;
+            height: 350px;
+        }
+        &__buttons {
+            display: flex;
+            margin-top: 15px;
+            justify-content: center;
+            button {
+                margin: 0 10px;
+                outline: none;
+                font-size: 14px;
+                cursor: pointer;
+            }
+        }
+    }
+}
