@@ -1,7 +1,6 @@
 const getAggregatedWords = async (params) => {
     const { userId, token, group, filter, wordsPerPage } = params;
-    const filterEncoded = encodeURIComponent(JSON.stringify(filter));
-    const paramsStr = `group=${group}&wordsPerPage=${wordsPerPage}&filter=${filterEncoded}`;
+    const paramsStr = `group=${group}&wordsPerPage=${wordsPerPage}&filter=${filter}`;
     const url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?${paramsStr}`;
 
     const rawResponse = await fetch(url, {

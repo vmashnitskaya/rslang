@@ -1,0 +1,25 @@
+$base-color: #eceff1;
+
+input[type="checkbox"] {
+    display: none;
+}
+label.checkbox-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border: 1px solid black;
+    border-radius: 2px;
+    user-select: none;
+    cursor: pointer;
+    &:hover {
+        background-color: darken($color: $base-color, $amount: 25);
+    }
+}
+input[type="checkbox"]:checked + label {
+    background-color: darken($color: $base-color, $amount: 10);
+    &:hover {
+        background-color: darken($color: $base-color, $amount: 25);
+    }
+}

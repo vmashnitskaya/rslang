@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { pagePropType } from './pages';
 
-function PageWrapper({ page, routes }) {
+const PageWrapper = ({ page, routes }) => {
     useEffect(() => {
         document.title = page.title;
     }, []);
 
     return <page.component routes={routes} />;
-}
+};
 
 PageWrapper.propTypes = {
     page: pagePropType.isRequired,

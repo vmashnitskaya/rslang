@@ -9,6 +9,10 @@ import {
     DialogTitle,
     Button,
     Snackbar,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
 } from '@material-ui/core';
 import MainCard from './MainCard';
 import Loading from './Loading';
@@ -38,6 +42,14 @@ const filterForNewAndLearnedWords = {
             $and: [
                 {
                     'userWord.optional.repeat': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+        {
+            $and: [
+                {
+                    'userWord.optional.easy': null,
                     'userWord.optional.deleted': null,
                 },
             ],
@@ -93,11 +105,14 @@ const MainGame = ({
     statistics,
     updateStatics,
     settings,
+    setInitialState,
 }) => {
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
     const [isNewWordWillBeShown, setIsNewWordWillBeShown] = useState(false);
     const [wordsType, setWordsType] = useState('new');
     const [alertShown, setAlertShown] = useState(false);
+    const [successAndErrors, setSuccessAndErrors] = useState([]);
+    const [countOfNewWords, setCountOfNewWords] = useState(0);
 
     useEffect(() => {
         if (settings.optional && wordsType && wordsType === 'new') {
@@ -116,9 +131,11 @@ const MainGame = ({
 
     useEffect(() => {
         if (aggregatedWords === null) {
+            setInitialState('true');
             setWordsType('new');
             setAlertShown(true);
         } else {
+            setInitialState('true');
             setMainWords(aggregatedWords);
             setCurrentWordNumber(0);
         }
@@ -149,14 +166,15 @@ const MainGame = ({
                 );
             }
         }
-        if (
-            statistics.optional[new Date().toISOString().slice(0, 10).replace(/-/g, '')] ===
-            settings.wordsPerDay - 1
-        ) {
+        const stats =
+            statistics.optional && statistics.optional.main
+                ? statistics.optional.main[statisticsActions.getDate()]
+                : null;
+        if (stats && stats.l === settings.wordsPerDay - 1) {
             setIsPopUpOpened(true);
             setIsNewWordWillBeShown(true);
         } else {
-            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
+            updateStatics();
             increaseCurrentWordNumber();
         }
     }, [settings.wordsPerDay, currentWordNumber, increaseCurrentWordNumber]);
@@ -166,13 +184,14 @@ const MainGame = ({
     };
     useEffect(() => {
         if (!isPopUpOpened && isNewWordWillBeShown) {
-            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
+            updateStatics();
             increaseCurrentWordNumber();
             setIsNewWordWillBeShown(false);
         }
     }, [isPopUpOpened, isNewWordWillBeShown]);
 
     const handleWordsTypeChanged = (type) => {
+        setInitialState('true');
         if (wordsType !== type && type === 'new') {
             setWordsType('new');
         } else if (wordsType !== type && type === 'mixed') {
@@ -184,6 +203,32 @@ const MainGame = ({
 
     const handleAlertClose = () => {
         setAlertShown(false);
+    };
+
+    const handleSuccessAndErrors = (result) => {
+        if (successAndErrors.length === currentWordNumber) {
+            setSuccessAndErrors((prevState) => [...prevState, result]);
+        }
+    };
+
+    const handleCountNewWords = () => {
+        setCountOfNewWords(countOfNewWords + 1);
+    };
+
+    const handleMostSuccesfullSequence = () => {
+        let result = 1;
+        let count = 0;
+        successAndErrors.slice(successAndErrors.indexOf('correct')).forEach((element, index) => {
+            if (element === successAndErrors[index + 1]) {
+                count += 1;
+            } else {
+                if (result < count) {
+                    result = count;
+                }
+                count = 0;
+            }
+        });
+        return result;
     };
 
     return loading || error || mainWords.length === 0 ? (
@@ -198,6 +243,8 @@ const MainGame = ({
                 currentWordNumber={currentWordNumber}
                 handleWordsTypeChanged={handleWordsTypeChanged}
                 wordsType={wordsType}
+                handleSuccessAndErrors={handleSuccessAndErrors}
+                handleCountNewWords={handleCountNewWords}
             />
             <Dialog
                 open={isPopUpOpened}
@@ -208,11 +255,39 @@ const MainGame = ({
                 <DialogTitle>Hooray!</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        You have achieved you goal and learned {settings.wordsPerDay} words.
+                        You have achieved you goal.
                         <span className="quote">
                             &ldquo;It always seems impossible until it&apos;s done.&ldquo;
                         </span>
                     </DialogContentText>
+                    <Table>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell align="left">Amount of learned words</TableCell>
+                                <TableCell align="center">{settings.wordsPerDay}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Percentage of sucessfull answers</TableCell>
+                                <TableCell align="center">
+                                    {(successAndErrors.filter((element) => element === 'correct')
+                                        .length *
+                                        100) /
+                                        settings.wordsPerDay}
+                                    %
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Amount of new words</TableCell>
+                                <TableCell align="center">{countOfNewWords - 1}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Most successfull sequence</TableCell>
+                                <TableCell align="center">
+                                    {handleMostSuccesfullSequence()}
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary" autoFocus>
@@ -247,8 +322,11 @@ const mapDispatchToProps = (dispatch) => ({
     increaseCurrentWordNumber: () => {
         dispatch(mainGameActions.increaseCurrentWordNumber());
     },
-    updateStatics: (date) => {
-        dispatch(statisticsActions.updateStatics(date));
+    updateStatics: () => {
+        dispatch(statisticsActions.updateStatics());
+    },
+    setInitialState: (initialState) => {
+        dispatch(mainGameActions.setInitialState(initialState));
     },
 });
 
@@ -267,7 +345,7 @@ const mapStateToProps = (state) => ({
 MainGame.propTypes = {
     aggregatedWords: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             word: PropTypes.string,
             audio: PropTypes.string,
             image: PropTypes.string,
@@ -285,11 +363,11 @@ MainGame.propTypes = {
         })
     ).isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.string.isRequired,
+    error: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
     mainWords: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             word: PropTypes.string,
             audio: PropTypes.string,
             image: PropTypes.string,
@@ -309,13 +387,20 @@ MainGame.propTypes = {
     increaseCurrentWordNumber: PropTypes.func.isRequired,
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
-        optional: PropTypes.number,
+        optional: {
+            main: {
+                d: PropTypes.number.isRequired,
+                l: PropTypes.number.isRequired,
+            }.isRequired,
+        },
     }).isRequired,
     updateStatics: PropTypes.func.isRequired,
+    setInitialState: PropTypes.func.isRequired,
 };
 
 MainGame.defaultProps = {
     mainWords: [],
+    error: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainGame);

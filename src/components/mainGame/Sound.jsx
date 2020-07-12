@@ -31,8 +31,8 @@ const Sound = ({
     const playSound = useCallback(
         (ref) =>
             new Promise((resolve) => {
-                ref.current.play();
-                ref.current.addEventListener('ended', resolve, { once: true });
+                if (ref.current) ref.current.play();
+                if (ref.current) ref.current.addEventListener('ended', resolve, { once: true });
             }),
         [isSoundEnabled]
     );
@@ -97,7 +97,7 @@ Sound.propTypes = {
     isAudioExampleEnabled: PropTypes.bool.isRequired,
     isAudioMeaningEnabled: PropTypes.bool.isRequired,
     isSoundEnabled: PropTypes.bool.isRequired,
-    handleSoundPerformed: PropTypes.bool.isRequired,
+    handleSoundPerformed: PropTypes.func.isRequired,
 };
 
 export default Sound;

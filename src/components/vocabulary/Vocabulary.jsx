@@ -16,7 +16,7 @@ const Vocabulary = () => {
                 pathname: '/vocabulary/difficult',
             },
             {
-                label: 'Deleted words',
+                label: 'Easy & Deleted words',
                 pathname: '/vocabulary/deleted',
             },
         ],

@@ -1,3 +1,3 @@
-import AboutProject from './components/AboutProject';
+import AboutProject from './AboutProject';
 
 export default AboutProject;

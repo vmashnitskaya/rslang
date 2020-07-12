@@ -17,8 +17,12 @@ const Loading = ({ error, settingsError }) => {
 };
 
 Loading.propTypes = {
-    error: PropTypes.bool.isRequired,
+    error: PropTypes.bool,
     settingsError: PropTypes.bool.isRequired,
+};
+
+Loading.defaultProps = {
+    error: false,
 };
 
 export default Loading;

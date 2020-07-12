@@ -1,9 +1,12 @@
 import { combineReducers } from 'redux';
 import types from './types';
 
+const token = localStorage.getItem('token');
+const userId = localStorage.getItem('userId');
+
 const initAuthState = {
-    userId: '',
-    token: '',
+    userId: userId || '',
+    token: token || '',
     createSuccess: null,
     createError: null,
     logInMessage: null,
@@ -19,9 +22,9 @@ const auth = (state = initAuthState, action) => {
         case types.CLEAR_TOKEN:
             return { ...state, token: null };
         case types.SET_USER_ID:
-            return { ...state, token: payload };
+            return { ...state, userId: payload };
         case types.CLEAR_USER_ID:
-            return { ...state, token: null };
+            return { ...state, userId: null };
         case types.CREATE_USER_SUCCESS:
             return { ...state, createSuccess: payload, createError: null };
         case types.CREATE_USER_ERROR:

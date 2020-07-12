@@ -12,7 +12,10 @@ const getUserStatistics = async (userId, token) => {
     );
     let content = '';
     if (rawResponse.status === 200) {
-        content = await rawResponse.json();
+        content = await rawResponse.json().then((r) => ({
+            learnedWords: r.learnedWords,
+            optional: r.optional,
+        }));
     } else if (rawResponse.status === 401) {
         return undefined;
     } else if (rawResponse.status === 404) {
@@ -37,7 +40,10 @@ const putUserStatistics = async (userId, token, statistics) => {
     );
     let content = '';
     if (rawResponse.status === 200) {
-        content = await rawResponse.json();
+        content = await rawResponse.json().then((r) => ({
+            learnedWords: r.learnedWords,
+            optional: r.optional,
+        }));
     } else if (rawResponse.status === 400) {
         return undefined;
     } else if (rawResponse.status === 401) {

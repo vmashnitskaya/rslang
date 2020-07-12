@@ -37,6 +37,9 @@ const speakItActions = {
         type: speakItTypes.SET_IS_GAME_STARTED,
         payload: guessedWord,
     }),
+    setInitialState: () => ({
+        type: speakItTypes.SET_INITIAL_STATE,
+    }),
 };
 
 export default speakItActions;

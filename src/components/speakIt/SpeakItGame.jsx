@@ -1,6 +1,14 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+    Button,
+    Radio,
+    RadioGroup,
+    FormControlLabel,
+    FormControl,
+    Snackbar,
+} from '@material-ui/core';
 import { connect } from 'react-redux';
 import ComplexityPoints from './ComplexityPoints';
 import CardsList from './CardsList';
@@ -15,8 +23,55 @@ import startImage from '../../../public/assets/images/start-image.jpg';
 import './SpeakItGame.scss';
 import wordsActions from '../router/storage/getWordsRedux/wordsActions';
 import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
+import { getToken, getUserId } from '../router/storage/selectors';
 import speakItActions from './redux/speakItActions';
 import speakItSelectors from './redux/speakItSelectors';
+import Alert from './Alert';
+import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
+import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
+
+const filterForRepeatWords = {
+    $or: [
+        {
+            $and: [
+                {
+                    'userWord.optional.difficult': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+        {
+            $and: [
+                {
+                    'userWord.optional.repeat': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+        {
+            $and: [
+                {
+                    'userWord.optional.learned': true,
+                    'userWord.optional.deleted': null,
+                },
+            ],
+        },
+    ],
+};
+
+const useStyles = makeStyles((theme) => ({
+    rootRadio: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginLeft: '-27px',
+    },
+    rootRadioOption: {
+        display: 'none',
+    },
+    label: {
+        color: theme.palette.primary.main,
+    },
+}));
 
 const SpeakItGame = ({
     words,
@@ -40,8 +95,32 @@ const SpeakItGame = ({
     addGuessedWord,
     isGameStarted,
     setIsGameStarted,
+    userId,
+    token,
+    aggregatedWords,
+    loadingAggr,
+    errorAggr,
+    fetchAggregatedWords,
+    setInitialState,
 }) => {
     const speechRecognitionRef = useRef();
+    const [wordsType, setWordsType] = useState('new');
+    const [alertShown, setAlertShown] = useState(false);
+
+    const classes = useStyles();
+
+    useEffect(() => {
+        setInitialState();
+    }, []);
+
+    useEffect(() => {
+        if (userId && token && wordsType === 'repeat') {
+            fetchAggregatedWords(userId, token, 20, filterForRepeatWords);
+        } else {
+            const page = Math.round(Math.random() * 29);
+            fetchWords(page, complexity);
+        }
+    }, [wordsType, fetchAggregatedWords, fetchWords]);
 
     const loadCards = useCallback(async (complexityNumber) => {
         const page = Math.round(Math.random() * 29);
@@ -49,20 +128,44 @@ const SpeakItGame = ({
     }, []);
 
     useEffect(() => {
-        setCards(
-            words
-                .slice(0, 10)
-                .map(({ word, audio, wordTranslate, image, transcription }) => ({
-                    word: word.toLowerCase(),
-                    audio,
-                    translation: wordTranslate,
-                    image,
-                    transcription,
-                }))
-                .sort(() => Math.random() - 0.5)
-        );
         setSelectedCard(null);
-    }, [words]);
+        setGuessedWords([]);
+        if (wordsType === 'repeat' && aggregatedWords.length && aggregatedWords.length > 10) {
+            setCards(
+                aggregatedWords
+                    .slice(0, 10)
+                    .map(({ word, audio, wordTranslate, image, transcription }) => ({
+                        word: word.toLowerCase(),
+                        audio,
+                        translation: wordTranslate,
+                        image,
+                        transcription,
+                    }))
+                    .sort(() => Math.random() - 0.5)
+            );
+            setSelectedCard(null);
+        } else if (
+            wordsType === 'repeat' &&
+            aggregatedWords.length &&
+            aggregatedWords.length < 10
+        ) {
+            setWordsType('new');
+            setAlertShown(true);
+        } else if (words) {
+            setCards(
+                words
+                    .slice(0, 10)
+                    .map(({ word, audio, wordTranslate, image, transcription }) => ({
+                        word: word.toLowerCase(),
+                        audio,
+                        translation: wordTranslate,
+                        image,
+                        transcription,
+                    }))
+                    .sort(() => Math.random() - 0.5)
+            );
+        }
+    }, [words, aggregatedWords]);
 
     const handleComplexityChange = (newComplexity) => {
         setComplexity(newComplexity);
@@ -88,7 +191,9 @@ const SpeakItGame = ({
 
     const handleStartGame = () => {
         setGameStarted(true);
-        setSelectedCard(null);
+        if (!guessedWords.length) {
+            setSelectedCard(null);
+        }
         setSpeechText('');
         const speechRecognition = speechRecognitionRef.current;
         if (speechRecognition) {
@@ -109,6 +214,12 @@ const SpeakItGame = ({
             }
         }
     };
+
+    useEffect(() => {
+        if (cards.length) {
+            setGuessedWords([]);
+        }
+    }, [cards]);
 
     const handlePopUpOpened = useCallback(() => {
         setPopUpOpened(true);
@@ -150,14 +261,49 @@ const SpeakItGame = ({
         setIsGameStarted(!isGameStarted);
     };
 
+    const handleRadioChange = (event) => {
+        if (wordsType && wordsType !== event.target.value) {
+            setWordsType(event.target.value);
+            setCards([]);
+        }
+    };
+    const handleAlertClose = () => {
+        setAlertShown(false);
+    };
+
     return !isGameStarted ? (
         <StartPage onStart={gandleGameStarted} />
     ) : (
         <div className="game-page">
+            <FormControl component="fieldset">
+                <RadioGroup
+                    aria-label="words"
+                    name="words"
+                    value={wordsType}
+                    onChange={handleRadioChange}
+                    className={classes.rootRadio}
+                >
+                    <FormControlLabel
+                        value="new"
+                        control={<Radio className={classes.rootRadioOption} />}
+                        label="New"
+                        labelPlacement="top"
+                        className={wordsType === 'new' ? classes.label : undefined}
+                    />
+                    <FormControlLabel
+                        value="repeat"
+                        control={<Radio className={classes.rootRadioOption} />}
+                        label="Repeat words"
+                        labelPlacement="top"
+                        className={wordsType === 'repeat' ? classes.label : undefined}
+                    />
+                </RadioGroup>
+            </FormControl>
             <ComplexityPoints
                 currentComplexity={complexity}
                 onComplexityChange={handleComplexityChange}
                 complexityArray={[0, 1, 2, 3, 4, 5]}
+                wordsType={wordsType}
             />
             {selectedCard ? (
                 <Image image={selectedCard.image} word={selectedCard.word} />
@@ -170,8 +316,8 @@ const SpeakItGame = ({
                 <Translation translation={selectedCard ? selectedCard.translation : undefined} />
             )}
 
-            {loading || error ? (
-                <Loading error={error} />
+            {loading || error || loadingAggr || errorAggr ? (
+                <Loading error={error} errorAggr={errorAggr} />
             ) : (
                 <CardsList
                     cards={cards}
@@ -222,6 +368,19 @@ const SpeakItGame = ({
                 onClose={handlePopUpClose}
                 onNewGame={handleNewGame}
             />
+            <Snackbar
+                open={Boolean(alertShown)}
+                autoHideDuration={3000}
+                onClose={handleAlertClose}
+                color="primary"
+            >
+                <Alert
+                    onClose={handleAlertClose}
+                    alertShown={
+                        alertShown ? "No words to repeat. Let's continue with new ones." : ''
+                    }
+                />
+            </Snackbar>
         </div>
     );
 };
@@ -257,6 +416,12 @@ const mapDispatchToProps = (dispatch) => ({
     setIsGameStarted: (isGameStarted) => {
         dispatch(speakItActions.setIsGameStarted(isGameStarted));
     },
+    fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
+        dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
+    },
+    setInitialState: () => {
+        dispatch(speakItActions.setInitialState());
+    },
 });
 
 const mapStateToProps = (state) => ({
@@ -271,6 +436,11 @@ const mapStateToProps = (state) => ({
     guessedWords: speakItSelectors.getGuessedWords(state),
     isPopUpOpened: speakItSelectors.getIsPopUpOpened(state),
     isGameStarted: speakItSelectors.getIsGameStarted(state),
+    userId: getUserId(state),
+    token: getToken(state),
+    aggregatedWords: aggregatedWordsSelectors.getAggregatedWords(state),
+    loadingAggr: aggregatedWordsSelectors.getLoading(state),
+    errorAggr: aggregatedWordsSelectors.getError(state),
 });
 
 SpeakItGame.propTypes = {
@@ -278,7 +448,7 @@ SpeakItGame.propTypes = {
         PropTypes.objectOf(PropTypes.PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
     ).isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.string,
+    error: PropTypes.bool,
     fetchWords: PropTypes.func.isRequired,
     complexity: PropTypes.number.isRequired,
     cards: PropTypes.arrayOf(
@@ -306,14 +476,40 @@ SpeakItGame.propTypes = {
     addGuessedWord: PropTypes.func.isRequired,
     isGameStarted: PropTypes.bool.isRequired,
     setIsGameStarted: PropTypes.func.isRequired,
+    userId: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    aggregatedWords: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+            word: PropTypes.string,
+            audio: PropTypes.string,
+            image: PropTypes.string,
+            transcription: PropTypes.string,
+            wordTranslate: PropTypes.string,
+            userWord: PropTypes.shape({
+                difficulty: PropTypes.string,
+                optional: PropTypes.shape({
+                    learned: PropTypes.bool,
+                    difficult: PropTypes.bool,
+                    deleted: PropTypes.bool,
+                    repeat: PropTypes.bool,
+                }),
+            }),
+        })
+    ).isRequired,
+    loadingAggr: PropTypes.bool.isRequired,
+    errorAggr: PropTypes.bool,
+    fetchAggregatedWords: PropTypes.func.isRequired,
+    setInitialState: PropTypes.func.isRequired,
 };
 
 SpeakItGame.defaultProps = {
-    error: null,
+    error: false,
     guessedWords: [],
     selectedCard: {},
     speechText: '',
     cards: [],
+    errorAggr: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpeakItGame);

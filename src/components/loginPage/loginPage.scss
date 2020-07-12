@@ -1,21 +1,264 @@
-body {
-    margin: 0;
-    padding: 0;
+.login-container {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 70px;
+}
+.logo {
+    position: absolute;
+    top: 30px;
+    left: 70px;
+}
 
-    a {
-        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-        text-decoration: none;
+a {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    text-decoration: none;
+    font-size: 18px;
+}
+.link-to-sign-up {
+    width: 70%;
+    p {
+        font-size: 18px;
     }
-    
-    .signin-page {
+}
+
+.signin-page {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 200px auto 0 auto;
+    min-height: 515px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.mini-games-part {
+    margin: 20px 0;
+    min-height: 580px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    .card {
+        width: 350px;
+    }
+}
+
+.about-us-points {
+    display: flex;
+    justify-content: space-around;
+    min-height: 550px;
+    margin: 20px 0;
+    ul.points {
         display: flex;
+        width: 50%;
         flex-direction: column;
-        justify-content: center;
-        margin: 0 auto;
-        height: 100vh;
+        align-items: stretch;
+        list-style-type: none;
+        margin: 0 20px 0 -40px;
+        p {
+            margin: 10px 0;
+        }
+    }
+    .video {
+        margin-top: 20px;
+    }
+}
+.interval {
+    margin: 60px 0;
+    min-height: 550px;
+    .interval_points {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        margin-top: 20px;
+        .interval_point {
+            display: flex;
+            flex-direction: column;
+            width: 350px;
+            margin: 20px;
+            p {
+                font-size: 18px;
+                text-align: center;
+            }
+            img {
+                display: block;
+                margin: 0 auto;
+                width: 90%;
+            }
+        }
+    }
+}
+.unique {
+    margin: 60px 0;
+    .settings_vocabulary {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        .settings,
+        .vocabulary,
+        .statistics {
+            min-width: 200px;
+            max-width: 300px;
+            margin: 20px;
+            p {
+                font-size: 18px;
+                text-align: center;
+            }
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .login-container {
         width: 100%;
-        background-image: linear-gradient(rgba(196, 196, 196, 0.377), rgba(165, 165, 165, 0.349)), url(./loginbg.jpg);
-        background-size: cover;
-        background-repeat: no-repeat;
+        box-sizing: border-box;
+        padding: 0 30px;
+    }
+    .logo {
+        left: 30px;
+    }
+
+    .signin-page {
+        min-height: 400px;
+    }
+    .about-us-points {
+        min-height: 530px;
+    }
+    .interval {
+        min-height: 480px;
+        .interval_points {
+            .interval_point {
+                width: 300px;
+                margin: 15px;
+                p {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    .mini-games-part {
+        margin: 20px 0;
+        min-height: 580px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    .unique {
+        min-height: 370px;
+        .settings_vocabulary {
+            .settings,
+            .vocabulary,
+            .statistics {
+                min-width: 200px;
+                max-width: 300px;
+                margin: 15px;
+                p {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 750px) {
+    .login-container {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 20px;
+    }
+    .logo {
+        left: 20px;
+    }
+
+    .signin-page {
+        min-height: 500px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        margin: 130px auto 30px auto;
+        .link-to-sign-up {
+            margin-top: 20px;
+            width: 80%;
+        }
+    }
+    .about-us-points {
+        min-height: 700px;
+        margin-bottom: 30px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        ul.points {
+            width: 100%;
+        }
+        .video {
+            width: 100%;
+        }
+    }
+    .interval {
+        min-height: 480px;
+        .interval_points {
+            .interval_point {
+                width: 380px;
+                margin: 15px 0;
+                p {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    .unique {
+        min-height: 370px;
+        .settings_vocabulary {
+            .settings,
+            .vocabulary,
+            .statistics {
+                min-width: 200px;
+                max-width: 300px;
+                margin: 15px 0;
+                p {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .signin-page {
+        margin: 130px auto 10px auto;
+        .link-to-sign-up {
+            width: 90%;
+        }
+    }
+    .about-us-points {
+        margin-bottom: 20px;
+    }
+    .interval {
+        .interval_points {
+            .interval_point {
+                width: 380px;
+                margin: 15px 0;
+                p {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    .unique {
+        min-height: 320px;
+        .settings_vocabulary {
+            .settings,
+            .vocabulary,
+            .statistics {
+                min-width: 200px;
+                max-width: 300px;
+                margin: 15px 0;
+                p {
+                    font-size: 16px;
+                }
+            }
+        }
     }
 }
