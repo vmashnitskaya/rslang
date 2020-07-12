@@ -72,7 +72,7 @@ const ResultGame = ({ open, unGuessedWords, guessedWords, onNewGame }) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={onNewGame} color="primary" autoFocus>
-                    New gane
+                    New game
                 </Button>
             </DialogActions>
         </Dialog>

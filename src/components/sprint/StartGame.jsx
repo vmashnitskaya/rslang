@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Box, Typography, AppBar, Toolbar, IconButton, Button, Dialog } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ComplexityPoints from '../speakIt/ComplexityPoints';
 import './StartGame.scss';
 import useUserWord from '../router/storage/hooks/useUserWords';
+import { getToken } from '../router/storage/selectors';
 import Loading from './Loading';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,6 +26,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
     const [message, setMessage] = useState(null);
     const { words, error, loading } = useUserWord();
     const [start, setStart] = useState(true);
+    const token = useSelector(getToken);
 
     const handleClose = () => {
         onClose();
@@ -57,7 +60,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
     return (
         <div className="start-page_wrapper">
             {loading && <Loading className="loader" />}
-            {error && <Typography>Something get`s wrong</Typography>}
+            {error && !!token && <Typography>Something get`s wrong</Typography>}
             <Dialog fullScreen open={open} onClose={handleClose}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
@@ -85,6 +88,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                             color="primary"
                             variant="contained"
                             onClick={handleUserWords}
+                            disabled={!token}
                         >
                             My words
                         </Button>
