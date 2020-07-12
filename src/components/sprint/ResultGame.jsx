@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,9 +12,17 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 import ResultCard from './ResultCard';
 
 const ResultGame = ({ open, unGuessedWords, guessedWords, onNewGame }) => {
+    const dispatch = useDispatch();
+    const totalWords = unGuessedWords.length + guessedWords.length;
+    useEffect(() => {
+        dispatch(
+            statisticsActions.updateStaticsMiniGame('sprint', totalWords, guessedWords.length)
+        );
+    }, [dispatch]);
     return (
         <Dialog open={open}>
             <DialogTitle>Results</DialogTitle>
