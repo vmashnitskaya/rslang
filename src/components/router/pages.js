@@ -6,6 +6,7 @@ import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
 import SavannahGame from '../savannah';
 import MainGame from '../mainGame/index';
+import EnglishPuzzle from '../english-puzzle';
 import SettingsPage from '../settingsPage';
 import AnagrammGame from '../anagrammGame';
 
@@ -53,7 +54,12 @@ const pages = [
         exact: true,
     },
     {
-        component: SavannahGame,
+        component: EnglishPuzzle,
+        title: 'English-Puzzle',
+        url: '/englishpuzzle',
+        img: '/assets/images/start-image.jpg',
+    },
+  {component: SavannahGame,
         title: 'Savannah',
         url: '/Savannah',
         img: '/assets/images/draw.jpg',
