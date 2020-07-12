@@ -1,30 +1,105 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line
+import store from '../../../rootReducer';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-// import { check } from 'prettier';
 import Alert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/styles';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import FilledInput from '@material-ui/core/FilledInput';
 
-const _api = 'https://afternoon-falls-25894.herokuapp.com/words?page=1&group=0';
 const linkImg = 'https://raw.githubusercontent.com/vmashnitskaya/rslang-data/master/data/';
 
-export default function ShuffleLettersBox() {
-    const [score, setScore] = useState(0);
-    const [mistakes, setMistakes] = useState(0);
+const useStyles = makeStyles({
+    root: {
+        maxWidth: 800,
+        marginTop: 90,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        textAlign: 'center',
+        marginBottom: '5px',
+    },
+    media: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        maxWidth: 350,
+        height: 300,
+        marginTop: 30,
+    },
 
-    const [turn, setTurn] = useState(0);
+    button: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingTop: 13,
+        paddingBottom: 13,
+    },
+
+    buttonBlock: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        paddingTop: 13,
+        paddingBottom: 13,
+        marginBottom: 13,
+    },
+});
+
+export default function ShuffleLettersBox() {
+    const classes = useStyles();
+
     const [isStarted, setIsStarted] = useState(false);
     const [resultVisible, setResultVisible] = useState(false);
+
+    const [levelDifficult, setLevel] = useState(null);
+    const [score, setScore] = useState(0);
+    const [mistakes, setMistakes] = useState(0);
+    const [turn, setTurn] = useState(0);
 
     const [gameWordsCollection, setGameWordsCollection] = useState([]);
     const [inputWord, setInputWord] = useState('');
     const [currentShuffledWord, setCurrentShuffledWord] = useState([]);
     const [showedImage, setShowedImage] = useState('');
-    const [alert, setAlert] = useState(false); //++++++
+    const [alert, setAlert] = useState(false);
+    const [wordsPerPage] = useState(20);
+
+    const globalStore = store.getState();
+    const { userId, token } = globalStore.navigation.auth;
+
+    const _url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?id=${userId}&group=${
+        levelDifficult - 1
+    }&wordsPerPage=${wordsPerPage}`;
 
     function randomizer(number) {
         const randomIndex = Math.floor(Math.random() * (number + 1));
         return randomIndex;
     }
+
+    function getLevel(event) {
+        const numberLevel = event.target.innerText;
+        setLevel(numberLevel);
+        return numberLevel;
+    }
+
+    const LevelBlock = () => {
+        const allLevels = 6;
+        const arrayBuuttonsLevel = [];
+        for (let i = 1; i <= allLevels; i += 1) {
+            const key = 'lvlblck';
+            const buttonLevel = (
+                <Button key={key + i} color="secondary" size="large" onClick={getLevel}>
+                    {i}
+                </Button>
+            );
+            arrayBuuttonsLevel.push(buttonLevel);
+        }
+        return arrayBuuttonsLevel;
+    };
 
     function shuffleObjCollection(arrayObjects) {
         let mixArray = JSON.parse(JSON.stringify(arrayObjects));
@@ -43,17 +118,19 @@ export default function ShuffleLettersBox() {
         return mixArray;
     }
 
-    // 1
     const checkWord = () => {
         if (gameWordsCollection[turn].word === inputWord) {
             setAlert(<Alert severity="success">Success</Alert>);
             return true;
         }
-        setAlert(<Alert severity="error">Error</Alert>);
+        setAlert(
+            <Alert severity="error">
+                Mistake! Сorrect answer &quot;{gameWordsCollection[turn].word}&quot;
+            </Alert>
+        );
         return false;
     };
 
-    // 2
     function updateScore() {
         const result = checkWord();
         if (result) {
@@ -69,18 +146,17 @@ export default function ShuffleLettersBox() {
         return shuffleWord;
     }
 
-    // 3
     const ModalWindow = () => {
         return (
-            <div>
-                <Paper>Общее количество баллов: {score}</Paper>
-                <Paper>Правильных ответов: {score / 100}</Paper>
-                <Paper>Ошибок: {mistakes}</Paper>
-            </div>
+            <Typography variant="h4">
+                <p>Total points: {score}</p>
+                <p>Correct answers: {score / 100}</p>
+                <p>Wrong answers: {mistakes}</p>
+                <ButtonPlayAgain />
+            </Typography>
         );
     };
 
-    // 4
     function checkEndGame(nextPlayerTurn) {
         if (nextPlayerTurn >= gameWordsCollection.length) {
             setIsStarted(false);
@@ -90,10 +166,8 @@ export default function ShuffleLettersBox() {
         return false;
     }
 
-    // 5
     function nextTurn() {
         updateScore();
-        // setScore(score);
         setInputWord('');
         const nextTurnIndex = turn + 1;
         const isGameEnded = checkEndGame(nextTurnIndex);
@@ -107,13 +181,16 @@ export default function ShuffleLettersBox() {
 
     const ButtonCheck = () => {
         return (
-            <IconButton
+            <Button
+                variant="contained"
+                color="primary"
+                size="large"
                 onClick={() => {
                     nextTurn();
                 }}
             >
-                Дальше
-            </IconButton>
+                Next word
+            </Button>
         );
     };
 
@@ -130,15 +207,24 @@ export default function ShuffleLettersBox() {
     async function startGame(url) {
         setDefaultGameState();
         setResultVisible(false);
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            method: 'GET',
+            withCredentials: true,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json',
+            },
+        });
         const wordsCollection = [];
-        const responseCollection = await response.json();
+        const responseJson = await response.json();
+        const responseCollection = responseJson[0].paginatedResults;
 
         for (let i = 0; i < responseCollection.length; i += 1) {
+            const { image } = responseCollection[i];
             const collectionWords = {
                 id: responseCollection[i].id,
                 word: responseCollection[i].word,
-                image: `${linkImg}${responseCollection[i].image.slice(6)}`,
+                image: image ? `${linkImg}${responseCollection[i].image.slice(6)}` : null,
                 wordTranslate: responseCollection[i].wordTranslate,
             };
             wordsCollection.push(collectionWords);
@@ -154,13 +240,30 @@ export default function ShuffleLettersBox() {
 
     const ButtonStartGame = () => {
         return (
-            <IconButton
+            <Button
+                variant="contained"
+                size="large"
+                color="primary"
                 onClick={() => {
-                    startGame(_api);
+                    startGame(_url);
                 }}
             >
-                Начать
-            </IconButton>
+                Start the game
+            </Button>
+        );
+    };
+
+    function playAgainHandler() {
+        setLevel(null);
+        setIsStarted(false);
+        setResultVisible(false);
+    }
+
+    const ButtonPlayAgain = () => {
+        return (
+            <Button variant="contained" size="large" color="primary" onClick={playAgainHandler}>
+                Play again
+            </Button>
         );
     };
 
@@ -172,14 +275,18 @@ export default function ShuffleLettersBox() {
         for (let i = 0; i < word.length; i += 1) {
             const key = 'yri';
             const currentButton = (
-                <IconButton
+                <Button
+                    variant="outlined"
+                    className={classes.button}
+                    size="small"
+                    color="primary"
                     key={i + key}
                     onClick={() => {
                         handler(word[i]);
                     }}
                 >
                     {word[i]}
-                </IconButton>
+                </Button>
             );
             buttonBlock.push(currentButton);
         }
@@ -191,48 +298,68 @@ export default function ShuffleLettersBox() {
     };
 
     return (
-        <div>
-            {!isStarted && (
-                <Paper>
+        <Card className={classes.root}>
+            {!isStarted && !resultVisible && (
+                <div>
                     <img
+                        width="150"
+                        height="110"
                         src="https://cdn.dribbble.com/users/89254/screenshots/2712352/rate-star.gif"
                         alt=""
                     />
-                    <ButtonStartGame />
-                </Paper>
+                    <Typography variant="h4">
+                        The rules of the game are simple: collect words from the letters presented
+                        and get points.
+                    </Typography>
+                    <Typography variant="h6"> Please select a difficulty level</Typography>
+                    <LevelBlock className={classes.root} />
+                    {levelDifficult && (
+                        <div>
+                            <Typography variant="h6">
+                                Level choosed: {levelDifficult}.To start the game, click start game
+                            </Typography>
+                            <ButtonStartGame className={classes.root} />
+                        </div>
+                    )}
+                </div>
             )}
-
             {isStarted && (
                 <div>
                     <Paper>
                         <img
+                            width="150"
+                            height="110"
                             src="https://cdn.dribbble.com/users/89254/screenshots/2712352/rate-star.gif"
                             alt=""
                         />
-                        <span>{score}</span>
+                        <Typography>{score}</Typography>
                     </Paper>
                     <Paper>{alert}</Paper>
+                    <CardActionArea>
+                        <CardMedia className={classes.media} image={showedImage} title="" />
+                    </CardActionArea>
                     <Paper>
-                        <img src={showedImage} alt="" />
-                    </Paper>
-                    <Paper>
-                        <input
-                            type="text"
-                            value={inputWord}
-                            onChange={(el) => {
-                                setInputWord(el.target.value);
-                            }}
-                        />
-                    </Paper>
-                    <Paper>
+                        <CardContent>
+                            <FilledInput
+                                id="filled-basic"
+                                label="Filled"
+                                variant="filled"
+                                type="text"
+                                required
+                                value={inputWord}
+                                onChange={(el) => {
+                                    setInputWord(el.target.value);
+                                }}
+                            />
+                        </CardContent>
                         <ButtonCheck />
                     </Paper>
-                    <Paper>
+                    <div className={classes.buttonBlock}>
                         <ButtonCollection word={currentShuffledWord} handler={addLetter} />
-                    </Paper>
+                    </div>
                 </div>
             )}
             {resultVisible && <ModalWindow />}
-        </div>
+        </Card>
     );
 }
