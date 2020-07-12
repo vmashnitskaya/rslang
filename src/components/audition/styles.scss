@@ -38,7 +38,6 @@ div.audition {
 }
 button.audition__button {
     &_disabled {
-        // text-decoration: line-through;
         color: gray;
         cursor: not-allowed;
         pointer-events: auto;
@@ -57,4 +56,11 @@ button.audition__button {
         text-decoration: none;
         color: black;
     }
+}
+
+.stats {
+    background-color: white;
+    box-shadow: 0 0 10px black;
+    padding: 20px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
