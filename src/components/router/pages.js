@@ -59,7 +59,8 @@ const pages = [
         url: '/englishpuzzle',
         img: '/assets/images/start-image.jpg',
     },
-  {component: SavannahGame,
+    {
+        component: SavannahGame,
         title: 'Savannah',
         url: '/Savannah',
         img: '/assets/images/draw.jpg',
