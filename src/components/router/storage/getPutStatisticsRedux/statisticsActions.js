@@ -67,8 +67,12 @@ const saveWordsPerDay = () => async (dispatch, getState) => {
 };
 
 const updateStaticsMiniGame = (game, totalWords, correctAnswers) => async (dispatch, getState) => {
-    dispatch(setMinigameStatistics(game, totalWords, correctAnswers));
-    await saveStatistics(getState);
+    const userId = getUserId(getState());
+    const token = getToken(getState());
+    if (userId && token) {
+        dispatch(setMinigameStatistics(game, totalWords, correctAnswers));
+        await saveStatistics(getState);
+    }
 };
 
 const getDate = () => `${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`;
