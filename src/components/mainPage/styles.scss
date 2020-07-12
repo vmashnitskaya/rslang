@@ -1,10 +1,56 @@
 .main_page{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
     padding-top: 80px;
+    display: grid;
+    grid-template-rows: 50vh auto;
 
-    a{
-        text-decoration: none;
+    .main_statistics{
+        display: grid;
+        grid-template-columns: 25% 73%;
+        grid-gap: 20px;
+        padding: 10px;
+
+        h3{
+            align-self: center;
+        }
+
+        &>div{
+            display: grid;
+            text-align: center;
+
+            &>*{
+                display: grid;
+                padding: 10px;
+                margin: 0;
+                grid-gap: 10px;
+            }
+            .week_statistics{
+                display: block;
+            }
+            h5, h4{
+                margin: 5px;
+            }
+            p{
+                margin: 5px;
+            }
+        }
+
+        .allweek{
+            display: grid;
+            grid-auto-flow: column;
+
+            div{
+                justify-self: center;
+            }
+        }
+    }
+    .links{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+
+        a{
+            text-decoration: none;
+        }
     }
 }
+
