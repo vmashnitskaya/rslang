@@ -345,7 +345,10 @@ const MainCard = ({
         }
     };
 
-    const stats = statistics.optional.main[statisticsActions.getDate()];
+    const stats =
+        statistics.optional && statistics.optional.main
+            ? statistics.optional.main[statisticsActions.getDate()]
+            : null;
     return (
         <>
             <div className="card__wrapper">

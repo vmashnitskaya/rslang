@@ -52,6 +52,7 @@ const settingsReducer = (state = initialState, action) => {
                         ...state.statistics,
                         learnedWords: state.statistics.learnedWords + increase,
                         optional: {
+                            ...state.statistics.optional,
                             main: {
                                 ...state.statistics.optional.main,
                                 [date]: {
@@ -72,6 +73,7 @@ const settingsReducer = (state = initialState, action) => {
                     ...state.statistics,
                     learnedWords: state.statistics.learnedWords + 1,
                     optional: {
+                        ...state.statistics.optional,
                         [payload.game]: {
                             ...state.statistics.optional[payload.game],
                             [statisticsActions.getDateAndTime()]: {

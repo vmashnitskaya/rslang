@@ -163,7 +163,10 @@ const MainGame = ({
                 );
             }
         }
-        const stats = statistics.optional.main[statisticsActions.getDate()];
+        const stats =
+            statistics.optional && statistics.optional.main
+                ? statistics.optional.main[statisticsActions.getDate()]
+                : null;
         if (stats && stats.l === settings.wordsPerDay - 1) {
             setIsPopUpOpened(true);
             setIsNewWordWillBeShown(true);

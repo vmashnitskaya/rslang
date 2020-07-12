@@ -2,11 +2,11 @@ import types from './types';
 import { createUser, loginUser } from '../../loginPage/authorizationApi';
 import { getToken, getUserId } from './selectors';
 import statisticsSelectors from './getPutStatisticsRedux/statisticsSelectors';
-import statisticsActions from './getPutStatisticsRedux/statisticsActions';
 import statisticsApi from './getPutStatisticsRedux/statisticsApi';
 import settingsSelectors from './getSettingsRedux/settingsSelectors';
-import settingsActions from './getSettingsRedux/settingsActions';
 import settingsApi from './getSettingsRedux/settingsApi';
+import settingsActions from './getSettingsRedux/settingsActions';
+import statisticsActions from './getPutStatisticsRedux/statisticsActions';
 
 const token = {
     set: (payload) => ({ type: types.SET_TOKEN, payload }),
@@ -28,6 +28,8 @@ const logIn = (email, password) => async (dispatch) => {
         localStorage.setItem('token', token);
         localStorage.setItem('userId', userId);
         dispatch(loggedIn(data));
+        dispatch(statisticsActions.fetchStatistics(userId, token));
+        dispatch(settingsActions.fetchSettings(userId, token));
     } catch (error) {
         dispatch(logInError(error.message));
     }
