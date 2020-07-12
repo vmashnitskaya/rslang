@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -11,9 +11,17 @@ import { getToken, getUserId } from './storage/selectors';
 import Loading from './Loading';
 import settingsSelectors from './storage/getSettingsRedux/settingsSelectors';
 import statisticsSelectors from './storage/getPutStatisticsRedux/statisticsSelectors';
+import action from './storage/actions';
 
-const Router = ({ token, loading, error, settingsError, settingsLoading }) => {
+const Router = ({ token, loading, error, settingsError, settingsLoading, auth }) => {
     const routes = pages.map((p) => ({ title: p.title, url: p.url, img: p.img }));
+
+    const [authDone, setAuthDone] = useState(false);
+
+    useEffect(() => {
+        auth();
+        setAuthDone(true);
+    }, []);
 
     return (
         <BrowserRouter>
@@ -21,7 +29,7 @@ const Router = ({ token, loading, error, settingsError, settingsLoading }) => {
                 <>
                     <Header pages={pages} />
                     <main>
-                        {loading || error || settingsError || settingsLoading ? (
+                        {!authDone || loading || error || settingsError || settingsLoading ? (
                             <Loading error={error} />
                         ) : (
                             <Switch>
@@ -58,6 +66,12 @@ const mapStateToProps = (state) => ({
     settingsLoading: settingsSelectors.getLoading(state),
 });
 
+const mapDispatchToProps = (dispatch) => ({
+    auth: () => {
+        dispatch(action.user.auth());
+    },
+});
+
 Router.defaultProps = {
     token: null,
 };
@@ -68,6 +82,7 @@ Router.propTypes = {
     error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     settingsError: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     settingsLoading: PropTypes.bool.isRequired,
+    auth: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Router);
+export default connect(mapStateToProps, mapDispatchToProps)(Router);

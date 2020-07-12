@@ -39,7 +39,7 @@ const fetchStatistics = (userId, token) => async (dispatch) => {
         if (statistics) {
             dispatch(fetchStatisticsSuccess(userId, token, statistics));
         } else {
-            setDafaultStatistics();
+            dispatch(setDafaultStatistics());
         }
     } catch (e) {
         dispatch(fetchStatisticsFailed(e.message));

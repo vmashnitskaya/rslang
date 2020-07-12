@@ -21,15 +21,31 @@ const userId = {
 const loggedIn = (payload) => ({ type: types.LOGGED_IN, payload });
 const logInError = (payload) => ({ type: types.LOGIN_ERROR, payload });
 
+const proceedUserInfo = (data) => async (dispatch) => {
+    dispatch(loggedIn(data));
+    dispatch(statisticsActions.fetchStatistics(data.userId, data.token));
+    dispatch(settingsActions.fetchSettings(data.userId, data.token));
+};
+
 const logIn = (email, password) => async (dispatch) => {
     try {
         const data = await loginUser({ email, password });
         const { token, userId } = data;
         localStorage.setItem('token', token);
         localStorage.setItem('userId', userId);
-        dispatch(loggedIn(data));
-        dispatch(statisticsActions.fetchStatistics(userId, token));
-        dispatch(settingsActions.fetchSettings(userId, token));
+        dispatch(proceedUserInfo(data));
+    } catch (error) {
+        dispatch(logInError(error.message));
+    }
+};
+
+const auth = () => async (dispatch, getState) => {
+    try {
+        const userId = getUserId(getState());
+        const token = getToken(getState());
+        if (token && userId) {
+            dispatch(proceedUserInfo({ token, userId }));
+        }
     } catch (error) {
         dispatch(logInError(error.message));
     }
@@ -46,7 +62,7 @@ const create = (user) => async (dispatch, getState) => {
         const id = getUserId(getState());
         const token = getToken(getState());
         localStorage.setItem('token', token);
-        localStorage.setItem('iserId', id);
+        localStorage.setItem('userId', id);
         const statistics = statisticsSelectors.getStatistics(getState());
         const settings = settingsSelectors.getSettings(getState());
         await Promise.all([
@@ -75,6 +91,7 @@ const user = {
     logInError,
     logIn,
     logOut,
+    auth,
 };
 
 const action = {
