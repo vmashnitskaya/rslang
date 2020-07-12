@@ -31,7 +31,23 @@ const PopUp = ({ currentIndex, onPopUpClose, onPopUpConfirm }) => {
 };
 
 PopUp.propTypes = {
-    currentIndex: PropTypes.number,
+    currentIndex: PropTypes.shape({
+        id: PropTypes.string,
+        word: PropTypes.string,
+        audio: PropTypes.string,
+        image: PropTypes.string,
+        transcription: PropTypes.string,
+        wordTranslate: PropTypes.string,
+        userWord: PropTypes.shape({
+            difficulty: PropTypes.string,
+            optional: PropTypes.shape({
+                learned: PropTypes.bool,
+                difficult: PropTypes.bool,
+                deleted: PropTypes.bool,
+                repeat: PropTypes.bool,
+            }),
+        }),
+    }),
     onPopUpClose: PropTypes.func.isRequired,
     onPopUpConfirm: PropTypes.func.isRequired,
 };

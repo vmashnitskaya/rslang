@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import './ComplexityPoints.scss';
 
-const ComplexityPoints = ({ complexityArray, onComplexityChange }) => {
+const ComplexityPoints = ({ complexityArray, onComplexityChange, wordsType }) => {
     const [value, setValue] = useState(0);
     const handleChange = (event) => {
         setValue(Number(event.target.value));
@@ -26,7 +26,7 @@ const ComplexityPoints = ({ complexityArray, onComplexityChange }) => {
                     key={complexity}
                     value={complexity}
                     className="point"
-                    control={<Radio color="primary" />}
+                    control={<Radio color="primary" disabled={wordsType === 'repeat'} />}
                 />
             ))}
         </RadioGroup>
@@ -36,6 +36,7 @@ const ComplexityPoints = ({ complexityArray, onComplexityChange }) => {
 ComplexityPoints.propTypes = {
     complexityArray: PropTypes.arrayOf(PropTypes.number).isRequired,
     onComplexityChange: PropTypes.func.isRequired,
+    wordsType: PropTypes.string.isRequired,
 };
 
 export default ComplexityPoints;

@@ -1,9 +1,12 @@
 import { combineReducers } from 'redux';
 import types from './types';
 
+const token = localStorage.getItem('token');
+const userId = localStorage.getItem('userId');
+
 const initAuthState = {
-    userId: '',
-    token: '',
+    userId: userId || '',
+    token: token || '',
     createSuccess: null,
     createError: null,
     logInMessage: null,

@@ -97,7 +97,7 @@ Sound.propTypes = {
     isAudioExampleEnabled: PropTypes.bool.isRequired,
     isAudioMeaningEnabled: PropTypes.bool.isRequired,
     isSoundEnabled: PropTypes.bool.isRequired,
-    handleSoundPerformed: PropTypes.bool.isRequired,
+    handleSoundPerformed: PropTypes.func.isRequired,
 };
 
 export default Sound;

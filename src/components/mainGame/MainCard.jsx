@@ -96,6 +96,8 @@ const MainCard = ({
     currentWordNumber,
     handleWordsTypeChanged,
     wordsType,
+    handleSuccessAndErrors,
+    handleCountNewWords,
 }) => {
     const {
         _id,
@@ -128,29 +130,38 @@ const MainCard = ({
         wordObj.userWord ? wordObj.userWord.optional.repeat : false
     );
     const [isNewWord, setIsNewWord] = useState(!wordObj.userWord);
+    const [isAnswerDisabled, setIsAnswerDisabled] = useState(false);
+    const [isEasyDisabled, setIsEasyDisabled] = useState(false);
 
     useEffect(() => {
         setIsDeletedDisabled(wordObj.userWord ? wordObj.userWord.optional.deleted : false);
         setIsDifficultDisabled(wordObj.userWord ? wordObj.userWord.optional.difficult : false);
         setIsNewWord(!wordObj.userWord);
+        if (!wordObj.userWord) {
+            handleCountNewWords();
+        }
         setIsRepeatDisabled(wordObj.userWord ? wordObj.userWord.optional.repeat : false);
         setInitialState('true');
+        setIsSoundEnabled(false);
+        setIsAnswerDisabled(false);
+        setIsEasyDisabled(false);
     }, [word, currentWordNumber]);
-
-    useEffect(() => {
-        if (isSoundEnabled) {
-            setIsSoundEnabled(false);
-        }
-    }, [isSoundEnabled, word]);
 
     const handleGuessedWordProvided = async (guessedWord) => {
         if (word === guessedWord.trim()) {
             setCorrectWordProvided(guessedWord);
-            if (isAutoSoundEnabled) {
+            if (isAutoSoundEnabled && !isSoundEnabled) {
                 setIsSoundEnabled(true);
             }
+            handleSuccessAndErrors('correct');
 
-            if (isDifficultDisabled || isDeletedDisabled || wordObj.userWord || isRepeatDisabled) {
+            if (
+                isDifficultDisabled ||
+                isDeletedDisabled ||
+                wordObj.userWord ||
+                isRepeatDisabled ||
+                isEasyDisabled
+            ) {
                 await passedWordsApi.putPassedWords(userId, token, _id, {
                     difficulty: 'default',
                     optional: {
@@ -170,6 +181,7 @@ const MainCard = ({
             }
         } else {
             setIncorrectWordProvided(guessedWord);
+            handleSuccessAndErrors('incorrect');
             addNewWord(
                 {
                     ...wordObj,
@@ -199,13 +211,14 @@ const MainCard = ({
     };
 
     const handleAnswerShow = async () => {
+        setIsAnswerDisabled(true);
         await handleGuessedWordProvided(word);
     };
     const handleDeleteClick = async () => {
         setIsDeletedDisabled(true);
         setAlertShown('deleted');
 
-        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled) {
+        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled || isEasyDisabled) {
             await passedWordsApi.putPassedWords(userId, token, _id, {
                 difficulty: 'default',
                 optional: {
@@ -226,10 +239,12 @@ const MainCard = ({
     };
 
     const handleDifficultClick = async () => {
+        setIsRepeatDisabled(true);
+        setIsEasyDisabled(true);
         setIsDifficultDisabled(true);
         setAlertShown('difficult');
 
-        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled) {
+        if (isDeletedDisabled || wordObj.userWord || isRepeatDisabled || isEasyDisabled) {
             await passedWordsApi.putPassedWords(userId, token, _id, {
                 difficulty: 'default',
                 optional: {
@@ -252,6 +267,8 @@ const MainCard = ({
     const handleRepeatClick = async () => {
         setAlertShown('repeat');
         setIsRepeatDisabled(true);
+        setIsEasyDisabled(true);
+        setIsDifficultDisabled(true);
         addNewWord(
             {
                 ...wordObj,
@@ -266,7 +283,13 @@ const MainCard = ({
             },
             currentWordNumber + 2
         );
-        if (isDifficultDisabled || isDeletedDisabled || wordObj.userWord || isRepeatDisabled) {
+        if (
+            isDifficultDisabled ||
+            isDeletedDisabled ||
+            wordObj.userWord ||
+            isRepeatDisabled ||
+            isEasyDisabled
+        ) {
             await passedWordsApi.putPassedWords(userId, token, _id, {
                 difficulty: 'default',
                 optional: {
@@ -286,8 +309,30 @@ const MainCard = ({
         }
     };
 
-    const handleEasyClick = () => {
+    const handleEasyClick = async () => {
+        setIsEasyDisabled(true);
+        setIsDifficultDisabled(true);
+        setIsRepeatDisabled(true);
         setAlertShown('easy');
+
+        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled || isDeletedDisabled) {
+            await passedWordsApi.putPassedWords(userId, token, _id, {
+                difficulty: 'default',
+                optional: {
+                    easy: true,
+                    difficult: isDifficultDisabled,
+                    repeat: isRepeatDisabled,
+                    learned: Boolean(wordObj.userWord),
+                },
+            });
+        } else {
+            await passedWordsApi.postPassedWords(userId, token, _id, {
+                difficulty: 'default',
+                optional: {
+                    easy: true,
+                },
+            });
+        }
     };
 
     const handleAlertClose = () => {
@@ -369,6 +414,7 @@ const MainCard = ({
                                                     variant="contained"
                                                     color="primary"
                                                     className={classes.icons}
+                                                    disabled={isEasyDisabled}
                                                 >
                                                     <MoodIcon fontSize="small" />
                                                 </IconButton>
@@ -470,6 +516,7 @@ const MainCard = ({
                                     variant="contained"
                                     color="primary"
                                     onClick={handleAnswerShow}
+                                    disabled={isAnswerDisabled}
                                 >
                                     Answer
                                 </Button>
@@ -527,7 +574,8 @@ const MainCard = ({
                     {alertShown === 'difficult' &&
                         'The word is added to difficult words. It will appear again in further trainings.'}
                     {alertShown === 'repeat' && 'The word will appear again in this training.'}
-                    {alertShown === 'easy' && 'Easy? We will not show it again for you.'}
+                    {alertShown === 'easy' &&
+                        'The word will not be shown again. You can resore it in vacabulary.'}
                 </Alert>
             </Snackbar>
         </>
@@ -615,7 +663,10 @@ MainCard.propTypes = {
     isTranslationEnabled: PropTypes.bool.isRequired,
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
-        optional: PropTypes.number,
+        optional: {
+            learnedWords: PropTypes.number,
+            optional: PropTypes.objectOf(PropTypes.string),
+        },
     }).isRequired,
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
@@ -623,6 +674,8 @@ MainCard.propTypes = {
     currentWordNumber: PropTypes.number,
     handleWordsTypeChanged: PropTypes.func.isRequired,
     wordsType: PropTypes.string.isRequired,
+    handleSuccessAndErrors: PropTypes.func.isRequired,
+    handleCountNewWords: PropTypes.func.isRequired,
 };
 
 MainCard.defaultProps = {

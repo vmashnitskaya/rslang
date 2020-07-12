@@ -1,5 +1,3 @@
-const getWords = (state, type) => state.vocabulary.words[type];
+const getWords = (state) => state.vocabulary.words;
 
-export default {
-    getWords,
-};
+export default { getWords };
