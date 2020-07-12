@@ -451,14 +451,14 @@ const EnglishPuzzleGame = ({
                                 control={<Radio className={classes.rootRadioOption} />}
                                 label="New"
                                 labelPlacement="top"
-                                className={wordsType === 'new' && classes.label}
+                                className={wordsType === 'new' ? classes.label : undefined}
                             />
                             <FormControlLabel
                                 value="repeat"
                                 control={<Radio className={classes.rootRadioOption} />}
                                 label="Repeat words"
                                 labelPlacement="top"
-                                className={wordsType === 'repeat' && classes.label}
+                                className={wordsType === 'repeat' ? classes.label : undefined}
                             />
                         </RadioGroup>
                     </FormControl>
@@ -656,9 +656,8 @@ EnglishPuzzleGame.propTypes = {
         PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
     ).isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.string,
+    error: PropTypes.bool,
     fetchWords: PropTypes.func.isRequired,
-
     pagination: PropTypes.shape({
         level: PropTypes.number,
         option: PropTypes.number,
