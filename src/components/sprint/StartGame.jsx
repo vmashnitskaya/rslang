@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Box, Typography, AppBar, Toolbar, IconButton, Button, Dialog } from '@material-ui/core';
+import { Box, Typography, AppBar, Toolbar, Button, Dialog } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ComplexityPoints from '../speakIt/ComplexityPoints';
 import './StartGame.scss';
@@ -61,15 +61,17 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
         <div className="start-page_wrapper">
             {loading && <Loading className="loader" />}
             {error && !!token && <Typography>Something get`s wrong</Typography>}
-            <Dialog fullScreen open={open} onClose={handleClose}>
+            <Dialog open={open} onClose={handleClose}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
-                        <IconButton
+                        <Button
                             edge="start"
                             color="inherit"
                             onClick={handleClose}
                             aria-label="close"
-                        />
+                        >
+                            Close
+                        </Button>
                         <Typography align="center" variant="h6" className={classes.title}>
                             Rules
                         </Typography>
@@ -108,6 +110,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                             Word complexity
                         </Typography>
                         <ComplexityPoints
+                            wordsType="words"
                             currentComplexity={complexity}
                             onComplexityChange={handleComplexityChange}
                             complexityArray={[0, 1, 2, 3, 4, 5]}
