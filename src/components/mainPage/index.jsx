@@ -108,7 +108,7 @@ MainPage.propTypes = {
     token: PropTypes.string.isRequired,
     fetchStatistics: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.bool.isRequired,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
     settingsError: PropTypes.string.isRequired,
     settingsLoading: PropTypes.bool.isRequired,
     fetchSettings: PropTypes.func.isRequired,

@@ -36,7 +36,6 @@ const words = {
             let correctWords = [];
             if (!userWords) {
                 correctWords = await wordsApi.fetchWords(page, group);
-                console.log(correctWords);
             } else {
                 const rawWords = vocabluarySelectors.getWords(getState(), 'learned').slice();
                 correctWords = utils.shuffle(rawWords).slice(0, 20);

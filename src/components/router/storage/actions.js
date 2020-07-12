@@ -2,8 +2,10 @@ import types from './types';
 import { createUser, loginUser } from '../../loginPage/authorizationApi';
 import { getToken, getUserId } from './selectors';
 import statisticsSelectors from './getPutStatisticsRedux/statisticsSelectors';
+import statisticsActions from './getPutStatisticsRedux/statisticsActions';
 import statisticsApi from './getPutStatisticsRedux/statisticsApi';
 import settingsSelectors from './getSettingsRedux/settingsSelectors';
+import settingsActions from './getSettingsRedux/settingsActions';
 import settingsApi from './getSettingsRedux/settingsApi';
 
 const token = {
@@ -57,6 +59,8 @@ const create = (user) => async (dispatch, getState) => {
 const logOut = (dispatch) => {
     dispatch(token.clear());
     dispatch(userId.clear());
+    dispatch(statisticsActions.setDafaultStatistics());
+    dispatch(settingsActions.setDafaultSettings());
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
 };
