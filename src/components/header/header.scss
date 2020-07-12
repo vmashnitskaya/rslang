@@ -9,13 +9,14 @@ header.header {
     align-items: center;
     justify-content: center;
 }
-
+.header__menu {
+    display: flex;
+    flex-wrap: nowrap;
+    color: #202020;
+    text-decoration: none;
+}
 .header__links {
     display: flex;
     list-style: none;
     margin: 0 24px;
-}
-
-.header__log-out {
-    margin-top: 6px;
 }
