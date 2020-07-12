@@ -29,6 +29,7 @@ import speakItSelectors from './redux/speakItSelectors';
 import Alert from './Alert';
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 
 const filterForRepeatWords = {
     $or: [
@@ -101,6 +102,7 @@ const SpeakItGame = ({
     loadingAggr,
     errorAggr,
     fetchAggregatedWords,
+    setStatistics,
 }) => {
     const speechRecognitionRef = useRef();
     const [wordsType, setWordsType] = useState('new');
@@ -248,6 +250,7 @@ const SpeakItGame = ({
 
     useEffect(() => {
         if (guessedWords.length === 10) {
+            setStatistics(10, 10);
             handlePopUpOpened();
         }
     }, [guessedWords, handlePopUpOpened]);
@@ -411,6 +414,8 @@ const mapDispatchToProps = (dispatch) => ({
     fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
         dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
     },
+    setStatistics: (total, correct) =>
+        dispatch(statisticsActions.updateStaticsMiniGame('speakit', total, correct)),
 });
 
 const mapStateToProps = (state) => ({
@@ -489,6 +494,7 @@ SpeakItGame.propTypes = {
     loadingAggr: PropTypes.bool.isRequired,
     errorAggr: PropTypes.bool.isRequired,
     fetchAggregatedWords: PropTypes.func.isRequired,
+    setStatistics: PropTypes.func.isRequired,
 };
 
 SpeakItGame.defaultProps = {

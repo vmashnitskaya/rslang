@@ -18,6 +18,7 @@ import puzzleSelectors from './redux/puzzleSelectors';
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 import ResultsPopUp from './ResultsPopUp';
 import './EnglishPuzzleGame.scss';
 
@@ -128,6 +129,7 @@ const EnglishPuzzleGame = ({
     errorAggr,
     fetchAggregatedWords,
     setDefaultState,
+    setStatistics,
 }) => {
     const { level, option } = pagination;
     const [wordsType, setWordsType] = useState('new');
@@ -347,6 +349,7 @@ const EnglishPuzzleGame = ({
     };
 
     const startNewLevel = () => {
+        setStatistics(10, 10);
         if (option < maxOption) {
             setPagination({ ...pagination, option: pagination.option + 1 });
         } else if (level < maxLevel) {
@@ -620,6 +623,8 @@ const mapDispatchToProps = (dispatch) => ({
     setDefaultState: () => {
         dispatch(puzzleActions.setDefaultState());
     },
+    setStatistics: (total, correct) =>
+        dispatch(statisticsActions.updateStaticsMiniGame('puzzle', total, correct)),
 });
 
 const mapStateToProps = (state) => ({
@@ -739,6 +744,7 @@ EnglishPuzzleGame.propTypes = {
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     setDefaultState: PropTypes.func.isRequired,
+    setStatistics: PropTypes.func.isRequired,
 };
 
 EnglishPuzzleGame.defaultProps = {
