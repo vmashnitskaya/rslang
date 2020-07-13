@@ -415,7 +415,7 @@ const EnglishPuzzleGame = ({
             <StartPage onClick={handleStartPageClose} minWindow={minWindow} />
         </div>
     ) : (
-        <>
+        <div className="puzzle-wrapper">
             <div className="ep-page">
                 <div className="header">
                     <div className="header__drop-downs">
@@ -552,7 +552,7 @@ const EnglishPuzzleGame = ({
                 onClose={onPopupClosed}
                 onNewGame={handleContinueGame}
             />
-        </>
+        </div>
     );
 };
 

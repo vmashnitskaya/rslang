@@ -1,3 +1,9 @@
+.login {
+    background: url("./login_bg.jpg") 100% 100% no-repeat;
+    background-position: 0% 0%;
+    padding-top: 200px;
+}
+
 .login-container {
     width: 100%;
     box-sizing: border-box;
@@ -160,6 +166,9 @@ a {
     }
 }
 @media screen and (max-width: 750px) {
+    .login {
+        padding-top: 130px;
+    }
     .login-container {
         width: 100%;
         box-sizing: border-box;
@@ -174,7 +183,7 @@ a {
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
-        margin: 130px auto 30px auto;
+        margin: 0 auto 30px auto;
         .link-to-sign-up {
             margin-top: 20px;
             width: 80%;
@@ -224,7 +233,6 @@ a {
 
 @media screen and (max-width: 370px) {
     .signin-page {
-        margin: 130px auto 10px auto;
         .link-to-sign-up {
             width: 90%;
         }

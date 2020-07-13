@@ -16,7 +16,10 @@ import statisticsSelectors from '../router/storage/getPutStatisticsRedux/statist
 
 const useStyles = makeStyles({
     media: {
-        height: 140,
+        height: 150,
+    },
+    root: {
+        maxWidth: 350,
     },
 });
 
@@ -30,7 +33,7 @@ const MainPage = ({ routes }) => {
                 .map((e) => {
                     return (
                         <Link to={e.url} key={`mpurl_${e.url}`}>
-                            <Card>
+                            <Card className={classes.root}>
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.media}
@@ -61,6 +64,8 @@ MainPage.propTypes = {
             title: PropTypes.string.isRequired,
             url: PropTypes.string.isRequired,
             img: PropTypes.string.isRequired,
+            exact: PropTypes.bool.isRequired,
+            game: PropTypes.bool.isRequired,
         })
     ).isRequired,
 };

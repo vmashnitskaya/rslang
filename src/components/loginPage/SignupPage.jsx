@@ -51,38 +51,45 @@ const SignupPage = () => {
         }
     }, [infoMessage, errorMessage]);
     return (
-        <div className="login-container">
-            <section className="signin-page">
-                <Typography align="center" variant="h4" color="primary" className={classes.logo}>
-                    RS Lang
-                </Typography>
-                <LoginPhrase />
-                <div className="link-to-sign-up">
-                    <Typography color="primary" align="center" className={classes.formText}>
-                        Have an acount?
+        <div className="login">
+            <div className="login-container">
+                <section className="signin-page">
+                    <Typography
+                        align="center"
+                        variant="h4"
+                        color="primary"
+                        className={classes.logo}
+                    >
+                        RS Lang
                     </Typography>
-                    <Box align="center" color="secondary">
-                        <Link to="/" className="sign-in">
-                            Sign in
-                        </Link>
-                    </Box>
-                    <Form
-                        className="form"
-                        emailClassName="sign-in"
-                        passwordClassName="password-for-sign-in"
-                        submitClassName="submit"
-                        submitText="Sign up"
-                        onSubmit={onSignUp}
-                        onError={(error) => dispatch(action.user.createError(error))}
-                    />
-                    {infoMessage && <Message className="info" text={infoMessage} />}
-                    {errorMessage && <Message className="error" text={errorMessage} />}
-                </div>
-            </section>
-            <AboutUsSection />
-            <MinigamesSection />
-            <IntervalSection />
-            <SettingsSection />
+                    <LoginPhrase />
+                    <div className="link-to-sign-up">
+                        <Typography color="primary" align="center" className={classes.formText}>
+                            Have an acount?
+                        </Typography>
+                        <Box align="center" color="secondary">
+                            <Link to="/" className="sign-in">
+                                Sign in
+                            </Link>
+                        </Box>
+                        <Form
+                            className="form"
+                            emailClassName="sign-in"
+                            passwordClassName="password-for-sign-in"
+                            submitClassName="submit"
+                            submitText="Sign up"
+                            onSubmit={onSignUp}
+                            onError={(error) => dispatch(action.user.createError(error))}
+                        />
+                        {infoMessage && <Message className="info" text={infoMessage} />}
+                        {errorMessage && <Message className="error" text={errorMessage} />}
+                    </div>
+                </section>
+                <AboutUsSection />
+                <MinigamesSection />
+                <IntervalSection />
+                <SettingsSection />
+            </div>
         </div>
     );
 };
