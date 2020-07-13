@@ -54,14 +54,6 @@ const SignupPage = () => {
         <div className="login">
             <div className="login-container">
                 <section className="signin-page">
-                    <Typography
-                        align="center"
-                        variant="h4"
-                        color="primary"
-                        className={classes.logo}
-                    >
-                        RS Lang
-                    </Typography>
                     <LoginPhrase />
                     <div className="link-to-sign-up">
                         <Typography color="primary" align="center" className={classes.formText}>
