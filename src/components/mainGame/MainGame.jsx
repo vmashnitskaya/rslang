@@ -171,7 +171,7 @@ const MainGame = ({
             setIsPopUpOpened(true);
             setIsNewWordWillBeShown(true);
         } else {
-            updateStatics();
+            updateStatics(true, 0);
             increaseCurrentWordNumber();
         }
     }, [settings.wordsPerDay, currentWordNumber, increaseCurrentWordNumber]);
@@ -181,7 +181,7 @@ const MainGame = ({
     };
     useEffect(() => {
         if (!isPopUpOpened && isNewWordWillBeShown) {
-            updateStatics();
+            updateStatics(true, 0);
             increaseCurrentWordNumber();
             setIsNewWordWillBeShown(false);
         }
@@ -321,8 +321,8 @@ const mapDispatchToProps = (dispatch) => ({
     increaseCurrentWordNumber: () => {
         dispatch(mainGameActions.increaseCurrentWordNumber());
     },
-    updateStatics: () => {
-        dispatch(statisticsActions.updateStatics());
+    updateStatics: (correct, sequence) => {
+        dispatch(statisticsActions.updateStatics(correct, sequence));
     },
 });
 

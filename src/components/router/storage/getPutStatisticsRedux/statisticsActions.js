@@ -22,9 +22,9 @@ const setDafaultStatistics = () => ({
     type: statisticsTypes.SET_DEFAULT_STATISTICS,
 });
 
-const increateLearnedWordsNumber = (wordsPerDay, increase) => ({
+const increateLearnedWordsNumber = (learned, wordsPerDay, correct, sequence) => ({
     type: statisticsTypes.ENCREASE_LEARNED_WORDS_NUMBER,
-    payload: { wordsPerDay, increase },
+    payload: { learned, wordsPerDay, correct, sequence },
 });
 
 const setMinigameStatistics = (game, totalWords, correctAnswers) => ({
@@ -54,15 +54,15 @@ const saveStatistics = async (getState) => {
     await statisticsApi.putUserStatistics(id, token, statistics);
 };
 
-const updateStatics = () => async (dispatch, getState) => {
+const updateStatics = (correct, sequence) => async (dispatch, getState) => {
     const { wordsPerDay } = settingsSelectros.getSettings(getState());
-    dispatch(increateLearnedWordsNumber(wordsPerDay, true));
+    dispatch(increateLearnedWordsNumber(1, wordsPerDay, correct ? 1 : 0, sequence || 0));
     await saveStatistics(getState);
 };
 
 const saveWordsPerDay = () => async (dispatch, getState) => {
     const { wordsPerDay } = settingsSelectros.getSettings(getState());
-    dispatch(increateLearnedWordsNumber(wordsPerDay, false));
+    dispatch(increateLearnedWordsNumber(0, wordsPerDay, 0, 0));
     await saveStatistics(getState);
 };
 

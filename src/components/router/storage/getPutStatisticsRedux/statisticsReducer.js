@@ -11,6 +11,8 @@ const initialState = {
                 [statisticsActions.getDate()]: {
                     d: 20,
                     l: 0,
+                    c: 0,
+                    s: 0,
                 },
             },
         },
@@ -42,29 +44,23 @@ const settingsReducer = (state = initialState, action) => {
                 statistics: initialState.statistics,
             };
         case statisticsTypes.ENCREASE_LEARNED_WORDS_NUMBER: {
+            const needUpdate = !!(payload.learned || payload.correct || payload.sequence);
             const date = statisticsActions.getDate();
             const curDay = state.statistics.optional.main[date];
-            const increase = payload.increase ? 1 : 0;
-            if (curDay) {
-                return {
-                    ...state,
-                    statistics: {
-                        ...state.statistics,
-                        learnedWords: state.statistics.learnedWords + increase,
-                        optional: {
-                            ...state.statistics.optional,
-                            main: {
-                                ...state.statistics.optional.main,
-                                [date]: {
-                                    d: payload.wordsPerDay,
-                                    l: curDay ? curDay.l + increase : increase,
-                                },
-                            },
-                        },
-                    },
-                };
+            const newState = { ...state };
+            if (payload.learned) {
+                newState.statistics.learnedWords += payload.learned;
             }
-            return state;
+            if (curDay || needUpdate) {
+                const newDate = {
+                    d: payload.wordsPerDay,
+                    l: curDay ? curDay.l + payload.learned : payload.learned,
+                    c: curDay ? curDay.c + payload.correct : payload.correct,
+                    s: curDay && curDay.s < payload.sequence ? payload.sequence : curDay.s,
+                };
+                newState.statistics.optional.main[date] = newDate;
+            }
+            return newState;
         }
         case statisticsTypes.SET_MINIGAMES_STATISTICS: {
             return {
