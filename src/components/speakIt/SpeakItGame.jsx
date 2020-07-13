@@ -273,30 +273,32 @@ const SpeakItGame = ({
         <StartPage onStart={gandleGameStarted} />
     ) : (
         <div className="game-page">
-            <FormControl component="fieldset">
-                <RadioGroup
-                    aria-label="words"
-                    name="words"
-                    value={wordsType}
-                    onChange={handleRadioChange}
-                    className={classes.rootRadio}
-                >
-                    <FormControlLabel
-                        value="new"
-                        control={<Radio className={classes.rootRadioOption} />}
-                        label="New"
-                        labelPlacement="top"
-                        className={wordsType === 'new' && classes.label}
-                    />
-                    <FormControlLabel
-                        value="repeat"
-                        control={<Radio className={classes.rootRadioOption} />}
-                        label="Repeat words"
-                        labelPlacement="top"
-                        className={wordsType === 'repeat' && classes.label}
-                    />
-                </RadioGroup>
-            </FormControl>
+            {token && userId && (
+                <FormControl component="fieldset">
+                    <RadioGroup
+                        aria-label="words"
+                        name="words"
+                        value={wordsType}
+                        onChange={handleRadioChange}
+                        className={classes.rootRadio}
+                    >
+                        <FormControlLabel
+                            value="new"
+                            control={<Radio className={classes.rootRadioOption} />}
+                            label="New"
+                            labelPlacement="top"
+                            className={wordsType === 'new' && classes.label}
+                        />
+                        <FormControlLabel
+                            value="repeat"
+                            control={<Radio className={classes.rootRadioOption} />}
+                            label="Repeat words"
+                            labelPlacement="top"
+                            className={wordsType === 'repeat' && classes.label}
+                        />
+                    </RadioGroup>
+                </FormControl>
+            )}
             <ComplexityPoints
                 currentComplexity={complexity}
                 onComplexityChange={handleComplexityChange}
