@@ -11,6 +11,7 @@ const initialState = {
                 [statisticsActions.getDate()]: {
                     d: 20,
                     l: 0,
+                    successAndErrors: [],
                 },
             },
         },
@@ -56,8 +57,32 @@ const settingsReducer = (state = initialState, action) => {
                             main: {
                                 ...state.statistics.optional.main,
                                 [date]: {
+                                    ...state.statistics.optional.main[date],
                                     d: payload.wordsPerDay,
                                     l: curDay ? curDay.l + increase : increase,
+                                },
+                            },
+                        },
+                    },
+                };
+            }
+            return state;
+        }
+        case statisticsTypes.SET_SUCCESS_AND_ERRORS: {
+            const date = statisticsActions.getDate();
+            const curDay = state.statistics.optional.main[date];
+            if (curDay) {
+                return {
+                    ...state,
+                    statistics: {
+                        ...state.statistics,
+                        optional: {
+                            ...state.statistics.optional,
+                            main: {
+                                ...state.statistics.optional.main,
+                                [date]: {
+                                    ...state.statistics.optional.main[date],
+                                    successAndErrors: payload,
                                 },
                             },
                         },

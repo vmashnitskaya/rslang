@@ -153,11 +153,11 @@ const MainCard = ({
 
     const handleGuessedWordProvided = async (guessedWord) => {
         if (word === guessedWord.trim()) {
+            handleSuccessAndErrors('c');
             setCorrectWordProvided(guessedWord);
             if (isAutoSoundEnabled && !isSoundEnabled) {
                 setIsSoundEnabled(true);
             }
-            handleSuccessAndErrors('correct');
             setAnswerShown(true);
             if (
                 isDifficultDisabled ||
@@ -186,7 +186,7 @@ const MainCard = ({
             }
         } else {
             setIncorrectWordProvided(guessedWord);
-            handleSuccessAndErrors('incorrect');
+            handleSuccessAndErrors('i');
             addNewWord(
                 {
                     ...wordObj,
