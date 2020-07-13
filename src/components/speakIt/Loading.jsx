@@ -5,7 +5,7 @@ import './Loading.scss';
 
 const Loading = ({ error, errorAggr }) => {
     return (
-        <div className="loader-wrapper">
+        <div className="loader-wrapper-speakit">
             <CircularProgress color="primary" />
             {(error || errorAggr) && (
                 <div className="error-message">
