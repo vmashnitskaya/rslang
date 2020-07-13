@@ -22,6 +22,7 @@ module.exports = (env, options) => {
         output: {
             filename: 'script.js',
             path: path.join(__dirname, '/dist'),
+            publicPath: '/',
         },
         resolve: {
             modules: ['node_modules'],
