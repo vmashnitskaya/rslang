@@ -39,16 +39,6 @@ const SigninPage = () => {
         <div className="login">
             <div className="login-container">
                 <section className="signin-page">
-                    <div className="logo">
-                        <Typography
-                            align="center"
-                            variant="h4"
-                            color="primary"
-                            className={classes.logo}
-                        >
-                            RS Lang
-                        </Typography>
-                    </div>
                     <LoginPhrase />
                     <div className="link-to-sign-up">
                         <Typography align="center" color="primary" className={classes.formText}>
