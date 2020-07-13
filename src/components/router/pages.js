@@ -83,7 +83,12 @@ const pages = [
         component: Audition,
         title: 'Audition',
         url: '/audition',
-        img: '',
+        img: '../../audition/assets/3360000,jpg',
+        exact: true,
+        userMenuPage: false,
+        auth: false,
+        minigame: true,
+        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
     },
     {
         component: SavannahGame,
