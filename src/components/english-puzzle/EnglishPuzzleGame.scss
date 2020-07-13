@@ -9,10 +9,19 @@ $contrast-color: lighten(
 $base-color: #eceff1;
 $base-duration: 500ms;
 
+.puzzle-wrapper {
+    width: 100%;
+    height: 100%;
+    background-image: url("./puzzle.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 70px 0;
+}
+
 .ep-page {
     width: 1200px;
     height: 100%;
-    margin: 70px auto;
+    margin: 0 auto;
     .header {
         display: flex;
         justify-content: space-between;
