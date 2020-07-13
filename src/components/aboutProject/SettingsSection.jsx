@@ -12,7 +12,7 @@ const SettingsSection = () => {
                     <img src="/assets/images/angry.jpg" alt="settings" />
                     <Typography color="textSecondary" gutterBottom>
                         {' '}
-                        <Typography variant="span" color="primary">
+                        <Typography variant="inherit" color="primary">
                             Settings
                         </Typography>{' '}
                         make the learning more specific
@@ -22,7 +22,7 @@ const SettingsSection = () => {
                     <img src="/assets/images/angry.jpg" alt="vocabulary" />
                     <Typography color="textSecondary" gutterBottom>
                         {' '}
-                        <Typography variant="span" color="primary">
+                        <Typography variant="inherit" color="primary">
                             Vocabulary
                         </Typography>{' '}
                         helps to track learned words
@@ -32,7 +32,7 @@ const SettingsSection = () => {
                     <img src="/assets/images/angry.jpg" alt="vocabulary" />
                     <Typography color="textSecondary" gutterBottom>
                         {' '}
-                        <Typography variant="span" color="primary">
+                        <Typography variant="inherit" color="primary">
                             Statistics
                         </Typography>{' '}
                         outlines the progress you achieved

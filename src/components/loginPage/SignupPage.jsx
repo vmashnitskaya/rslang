@@ -12,6 +12,7 @@ import IntervalSection from './IntervalSection';
 import SettingsSection from './SettingsSection';
 import { getCreateUserSuccess, getErrorMessage } from '../router/storage/selectors';
 import action from '../router/storage/actions';
+import './loginPage.scss';
 
 const useStyles = makeStyles({
     logo: {

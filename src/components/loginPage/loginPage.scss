@@ -1,12 +1,7 @@
 .login-container {
     width: 100%;
     box-sizing: border-box;
-    padding: 0 70px;
-}
-.logo {
-    position: absolute;
-    top: 30px;
-    left: 70px;
+    padding: 70px;
 }
 
 a {
@@ -24,10 +19,12 @@ a {
 .signin-page {
     display: flex;
     justify-content: space-evenly;
-    margin: 200px auto 0 auto;
-    min-height: 515px;
+    align-items: center;
+    height: calc(100vh - 70px);
     background-size: cover;
     background-repeat: no-repeat;
+    max-height: 800px;
+    min-height: 515px;
 }
 
 .mini-games-part {

@@ -11,12 +11,10 @@ import MinigamesSection from './MinigamesSection';
 import AboutUsSection from './AboutUsSection';
 import IntervalSection from './IntervalSection';
 import SettingsSection from './SettingsSection';
-import { getLogInMessage, getLogInError } from '../router/storage/selectors';
+import { /* getLogInMessage, */ getLogInError } from '../router/storage/selectors';
+import './loginPage.scss';
 
 const useStyles = makeStyles((theme) => ({
-    logo: {
-        fontWeight: 600,
-    },
     formText: {
         fontSize: '18px',
         [theme.breakpoints.up('md')]: {
@@ -28,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 const SigninPage = () => {
     const classes = useStyles();
     const errorMessage = useSelector(getLogInError);
-    const infoMessage = useSelector(getLogInMessage);
+    // const infoMessage = useSelector(getLogInMessage);
     const dispatch = useDispatch();
 
     const onSignIn = async (email, password) => {
@@ -40,16 +38,6 @@ const SigninPage = () => {
     return (
         <div className="login-container">
             <section className="signin-page">
-                <div className="logo">
-                    <Typography
-                        align="center"
-                        variant="h4"
-                        color="primary"
-                        className={classes.logo}
-                    >
-                        RS Lang
-                    </Typography>
-                </div>
                 <LoginPhrase />
                 <div className="link-to-sign-up">
                     <Typography align="center" color="primary" className={classes.formText}>
@@ -69,8 +57,8 @@ const SigninPage = () => {
                         onSubmit={onSignIn}
                         onError={onFormError}
                     />
-                    {infoMessage && <Message className="info" text={infoMessage} />}
-                    {errorMessage && <Message className="error" text={errorMessage} />}
+                    {/* {infoMessage ? <Message className="info" text={infoMessage} /> : null} */}
+                    {errorMessage ? <Message className="error" text={errorMessage} /> : null}
                 </div>
             </section>
             <AboutUsSection />
