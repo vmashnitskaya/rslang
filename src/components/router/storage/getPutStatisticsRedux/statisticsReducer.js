@@ -1,6 +1,16 @@
 import statisticsTypes from './statisticsTypes';
 import statisticsActions from './statisticsActions';
 
+const getInitialDateStaticstics = (dayWords) => ({
+    d: dayWords,
+    l: 0,
+    s: 0,
+    e: 0,
+    sq: 0,
+    msq: 0,
+    n: 0,
+});
+
 const initialState = {
     loading: false,
     error: false,
@@ -8,11 +18,7 @@ const initialState = {
         learnedWords: 0,
         optional: {
             main: {
-                [statisticsActions.getDate()]: {
-                    d: 20,
-                    l: 0,
-                    successAndErrors: [],
-                },
+                [statisticsActions.getDate()]: getInitialDateStaticstics(20),
             },
         },
     },
@@ -68,7 +74,40 @@ const settingsReducer = (state = initialState, action) => {
             }
             return state;
         }
-        case statisticsTypes.SET_SUCCESS_AND_ERRORS: {
+        case statisticsTypes.INC_SUCCESS: {
+            const date = statisticsActions.getDate();
+            const curDay = state.statistics.optional.main[date];
+            if (curDay) {
+                let { s, sq, msq } = curDay;
+                s += 1;
+                if (sq === msq) {
+                    msq += 1;
+                    sq = msq;
+                } else {
+                    sq += 1;
+                }
+                return {
+                    ...state,
+                    statistics: {
+                        ...state.statistics,
+                        optional: {
+                            ...state.statistics.optional,
+                            main: {
+                                ...state.statistics.optional.main,
+                                [date]: {
+                                    ...curDay,
+                                    s,
+                                    sq,
+                                    msq,
+                                },
+                            },
+                        },
+                    },
+                };
+            }
+            return state;
+        }
+        case statisticsTypes.INC_ERRORS: {
             const date = statisticsActions.getDate();
             const curDay = state.statistics.optional.main[date];
             if (curDay) {
@@ -81,8 +120,32 @@ const settingsReducer = (state = initialState, action) => {
                             main: {
                                 ...state.statistics.optional.main,
                                 [date]: {
-                                    ...state.statistics.optional.main[date],
-                                    successAndErrors: payload,
+                                    ...curDay,
+                                    e: curDay.e + 1,
+                                    sq: 0,
+                                },
+                            },
+                        },
+                    },
+                };
+            }
+            return state;
+        }
+        case statisticsTypes.INC_NEW_WORD: {
+            const date = statisticsActions.getDate();
+            const curDay = state.statistics.optional.main[date];
+            if (curDay) {
+                return {
+                    ...state,
+                    statistics: {
+                        ...state.statistics,
+                        optional: {
+                            ...state.statistics.optional,
+                            main: {
+                                ...state.statistics.optional.main,
+                                [date]: {
+                                    ...curDay,
+                                    n: curDay.n + 1,
                                 },
                             },
                         },

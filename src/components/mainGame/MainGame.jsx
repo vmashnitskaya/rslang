@@ -106,13 +106,11 @@ const MainGame = ({
     updateStatics,
     settings,
     setInitialState,
-    setSuccessAndErrors,
 }) => {
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
     const [isNewWordWillBeShown, setIsNewWordWillBeShown] = useState(false);
     const [wordsType, setWordsType] = useState('new');
     const [alertShown, setAlertShown] = useState(false);
-    const [countOfNewWords, setCountOfNewWords] = useState(0);
 
     useEffect(() => {
         if (settings.optional && wordsType && wordsType === 'new') {
@@ -205,41 +203,6 @@ const MainGame = ({
         setAlertShown(false);
     };
 
-    const handleSuccessAndErrors = (result) => {
-        const stats = statistics.optional.main[statisticsActions.getDate()];
-        if (!stats.successAndErrors[stats.l]) {
-            setSuccessAndErrors(
-                stats.successAndErrors ? [...stats.successAndErrors, result] : [result]
-            );
-        }
-    };
-
-    const handleCountNewWords = () => {
-        setCountOfNewWords(countOfNewWords + 1);
-    };
-
-    const handleMostSuccesfullSequence = () => {
-        const stats = statistics.optional.main[statisticsActions.getDate()];
-        let result = 1;
-        let count = 0;
-        if (stats.successAndErrors && stats.successAndErrors.length) {
-            stats.successAndErrors
-                .slice(stats.successAndErrors.indexOf('c'))
-                .forEach((element, index) => {
-                    if (element === stats.successAndErrors[index + 1]) {
-                        count += 1;
-                    } else {
-                        if (result < count) {
-                            result = count;
-                        }
-                        count = 0;
-                    }
-                });
-        }
-
-        return result;
-    };
-
     return loading || error || mainWords.length === 0 ? (
         <Loading error={error} settingsError={false} />
     ) : (
@@ -252,8 +215,6 @@ const MainGame = ({
                 currentWordNumber={currentWordNumber}
                 handleWordsTypeChanged={handleWordsTypeChanged}
                 wordsType={wordsType}
-                handleSuccessAndErrors={handleSuccessAndErrors}
-                handleCountNewWords={handleCountNewWords}
             />
             <Dialog
                 open={isPopUpOpened}
@@ -273,19 +234,16 @@ const MainGame = ({
                         <TableBody>
                             <TableRow>
                                 <TableCell align="left">Amount of learned words</TableCell>
-                                <TableCell align="center">{settings.wordsPerDay}</TableCell>
+                                <TableCell align="center">
+                                    {statistics.optional.main[statisticsActions.getDate()] &&
+                                        statistics.optional.main[statisticsActions.getDate()].l + 1}
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell align="left">Percentage of sucessfull answers</TableCell>
                                 <TableCell align="center">
-                                    {statistics.optional.main[statisticsActions.getDate()]
-                                        .successAndErrors &&
-                                        statistics.optional.main[statisticsActions.getDate()]
-                                            .successAndErrors.length &&
-                                        (statistics.optional.main[
-                                            statisticsActions.getDate()
-                                        ].successAndErrors.filter((element) => element === 'c')
-                                            .length *
+                                    {statistics.optional.main[statisticsActions.getDate()] &&
+                                        (statistics.optional.main[statisticsActions.getDate()].s *
                                             100) /
                                             settings.wordsPerDay}
                                     %
@@ -293,12 +251,16 @@ const MainGame = ({
                             </TableRow>
                             <TableRow>
                                 <TableCell align="left">Amount of new words</TableCell>
-                                <TableCell align="center">{countOfNewWords - 1}</TableCell>
+                                <TableCell align="center">
+                                    {statistics.optional.main[statisticsActions.getDate()] &&
+                                        statistics.optional.main[statisticsActions.getDate()].n}
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell align="left">Most successfull sequence</TableCell>
                                 <TableCell align="center">
-                                    {handleMostSuccesfullSequence()}
+                                    {statistics.optional.main[statisticsActions.getDate()] &&
+                                        statistics.optional.main[statisticsActions.getDate()].msq}
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -342,9 +304,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
     setInitialState: (initialState) => {
         dispatch(mainGameActions.setInitialState(initialState));
-    },
-    setSuccessAndErrors: (successAndErrors) => {
-        dispatch(statisticsActions.setSuccessAndErrors(successAndErrors));
     },
 });
 
@@ -409,13 +368,15 @@ MainGame.propTypes = {
             main: PropTypes.shape({
                 d: PropTypes.number.isRequired,
                 l: PropTypes.number.isRequired,
-                successAndErrors: PropTypes.arrayOf(PropTypes.string),
+                s: PropTypes.number.isRequired,
+                e: PropTypes.number.isRequired,
+                sq: PropTypes.number.isRequired,
+                msq: PropTypes.number.isRequired,
             }).isRequired,
         }),
     }).isRequired,
     updateStatics: PropTypes.func.isRequired,
     setInitialState: PropTypes.func.isRequired,
-    setSuccessAndErrors: PropTypes.func.isRequired,
 };
 
 MainGame.defaultProps = {
