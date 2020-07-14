@@ -3,7 +3,7 @@ div.audition {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 80vh;
+    height: 100vh;
     min-width: 100%;
     padding-top: 80px;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -34,6 +34,24 @@ div.audition {
     }
     & > * {
         margin-bottom: 20px;
+    }
+    &__background {
+        &_0 {
+            background: url("./assets/3360000.jpg");
+            background-size: cover;
+        }
+        &_1 {
+            background: url("./assets/3369337.jpg");
+            background-size: cover;
+        }
+        &_2 {
+            background: url("./assets/3592825.jpg");
+            background-size: cover;
+        }
+        &_3 {
+            background: url("./assets/3676697.jpg");
+            background-size: cover;
+        }
     }
 }
 button.audition__button {

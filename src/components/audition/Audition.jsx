@@ -13,6 +13,8 @@ import {
     numberWordGroups,
     numberPagesInGroup,
     numberWordsOnThePage,
+    numberOfBackgroundImages,
+    nameOfClassBackgroundPicture,
 } from './Constants';
 import playAudio from './audio';
 import './styles.scss';
@@ -29,6 +31,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
         numberOfChosenWrongWords: 0,
     };
     const [gameStats, setGameStats] = useState(newGameStats);
+    const [backgroundClass, setBackgroundClass] = useState('audition__background_1');
     let gameData = {};
     let chosenRightWord = false;
     let skipButton = {};
@@ -97,6 +100,15 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
         setContentOnTheState(content);
     };
 
+    const updateBackground = () => {
+        const currentIdPicture = parseInt(backgroundClass.match(/\d+/), 10);
+        let idPicture = generateRandomNumber(0, numberOfBackgroundImages);
+        while (currentIdPicture === idPicture) {
+            idPicture = generateRandomNumber(0, numberOfBackgroundImages);
+        }
+        setBackgroundClass(`${nameOfClassBackgroundPicture}${idPicture}`);
+    };
+
     const createQuestionOnGame = () => {
         const wordsData = {};
         const answersId = createArrayOfUniqueNumbers(
@@ -120,6 +132,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
         classesOfButtons = '';
         playAudio(wordsData[`answer${gameConfigs.rightAnswerOfCurrentQuestion}`].audio);
         createNewContentOfPage(wordsData);
+        updateBackground();
     };
 
     const ShowStartScreen = () => {
@@ -197,7 +210,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
     };
 
     return (
-        <Container maxWidth="md" className="audition">
+        <Container maxWidth="md" className={`audition ${backgroundClass}`}>
             <ContentOfThePage />
         </Container>
     );
