@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import wordsActions from '../router/storage/getWordsRedux/wordsActions';
 import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
@@ -15,6 +16,7 @@ import {
     numberWordsOnThePage,
     numberOfBackgroundImages,
     nameOfClassBackgroundPicture,
+    sizeOfSpiner,
 } from './Constants';
 import playAudio from './audio';
 import './styles.scss';
@@ -36,7 +38,9 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
     let chosenRightWord = false;
     let skipButton = {};
     let checkAnswer = {};
-    const [contentOnTheState, setContentOnTheState] = useState(<div>Loading</div>);
+    const [contentOnTheState, setContentOnTheState] = useState(
+        <CircularProgress size={sizeOfSpiner} />
+    );
 
     const playAudioOfWord = () => {
         const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;

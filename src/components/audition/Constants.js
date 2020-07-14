@@ -5,3 +5,4 @@ export const numberPagesInGroup = 30;
 export const numberWordsOnThePage = 20;
 export const numberOfBackgroundImages = 4;
 export const nameOfClassBackgroundPicture = 'audition__background_';
+export const sizeOfSpiner = 80;
