@@ -40,6 +40,7 @@ const settingsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
+                settings: initialState.settings,
             };
         default:
             return state;

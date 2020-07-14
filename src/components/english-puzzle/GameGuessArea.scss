@@ -1,0 +1,71 @@
+$base-color: #eceff1;
+.game {
+    &__box {
+        width: 1200px;
+        height: 350px;
+    }
+    &__guess-area {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        height: 35px;
+        background-color: transparent;
+        .guessed-word {
+            background-color: darken($color: $base-color, $amount: 10);
+            border: 1px solid black;
+            padding-top: 8px;
+            font-size: 12px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            outline: none;
+            span {
+                background-color: darken($color: $base-color, $amount: 10);
+            }
+            .text {
+                display: block;
+                font-size: 14px;
+                text-align: center;
+                position: relative;
+                background: transparent !important;
+            }
+            .r {
+                width: 1em;
+                height: 1em;
+                position: absolute;
+                top: 0.8em;
+                right: -0.6em;
+                -webkit-border-radius: 4em;
+                -moz-border-radius: 4em;
+                border-radius: 4em;
+                border-right: 1px solid black;
+            }
+            .l {
+                width: 0.5em;
+                height: 1em;
+                position: absolute;
+                top: 0.8em;
+                left: -0.1em;
+                -webkit-border-radius: 4em;
+                -moz-border-radius: 4em;
+                border-radius: 4em;
+                background-color: $base-color;
+                border-bottom-left-radius: 0;
+                border-top-left-radius: 0;
+                border-right: 1px solid black;
+            }
+        }
+    }
+    &__buttons {
+        display: flex;
+        margin-top: 15px;
+        justify-content: center;
+        button {
+            margin: 0 10px;
+            outline: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    }
+}
