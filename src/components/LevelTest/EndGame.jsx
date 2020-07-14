@@ -8,26 +8,27 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function EndGame({ score, open, setOpen }) {
+    console.log(score);
     const handleClose = () => {
         setOpen(false);
     };
     let message = '';
-    if (score >= 0 || score <= 15) {
-        message = `Your result ${score}/50 You have an Beginner Level. You should start our app from teh beginnig.`;
+    if (score >= 0 && score <= 15) {
+        message = `Your result ${score}/50 You have a Beginner Level. You should start our app from teh beginnig.`;
     }
-    if (score >= 16 || score <= 24) {
-        message = `Your result ${score}/50 You have an Elementary Level. Second level of difficalty would be perfect for you.`;
+    if (score >= 16 && score <= 24) {
+        message = `Your result ${score}/50 You have a Elementary Level. Second level of difficalty would be perfect for you.`;
     }
-    if (score >= 25 || score <= 32) {
-        message = `Your result ${score}/50 You have an Pre-Intermediate Level. Second and third levels of difficalty would be perfect for you.`;
+    if (score >= 25 && score <= 32) {
+        message = `Your result ${score}/50 You have a Pre-Intermediate Level. Second and third levels of difficalty would be perfect for you.`;
     }
-    if (score >= 33 || score <= 39) {
+    if (score >= 33 && score <= 39) {
         message = `Your result ${score}/50 You have an Intermediate Level. Third and fourth levels of difficalty would be perfect for you.`;
     }
-    if (score >= 40 || score <= 45) {
+    if (score >= 40 && score <= 45) {
         message = `Your result ${score}/50 You have an Upper Intermediate Level. Fourth and fifth levels of difficalty would be perfect for you.`;
     }
-    if (score >= 46 || score <= 50) {
+    if (score >= 46 && score <= 50) {
         message = `Your result ${score}/50 You have an Advaced Level. Wow it's great. Just enjoy our app.`;
     }
 
