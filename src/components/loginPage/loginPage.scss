@@ -1,12 +1,12 @@
+.login {
+    background: url("/assets/images/login_bg.jpg") 100% 100% no-repeat;
+    background-position: 0% 0%;
+}
+
 .login-container {
     width: 100%;
     box-sizing: border-box;
-    padding: 0 70px;
-}
-.logo {
-    position: absolute;
-    top: 30px;
-    left: 70px;
+    padding: 70px;
 }
 
 a {
@@ -24,10 +24,12 @@ a {
 .signin-page {
     display: flex;
     justify-content: space-evenly;
-    margin: 200px auto 0 auto;
-    min-height: 515px;
+    align-items: center;
+    height: calc(100vh - 70px);
     background-size: cover;
     background-repeat: no-repeat;
+    max-height: 800px;
+    min-height: 515px;
 }
 
 .mini-games-part {
@@ -163,6 +165,9 @@ a {
     }
 }
 @media screen and (max-width: 750px) {
+    .login {
+        padding-top: 130px;
+    }
     .login-container {
         width: 100%;
         box-sizing: border-box;
@@ -177,7 +182,7 @@ a {
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
-        margin: 130px auto 30px auto;
+        margin: 0 auto 30px auto;
         .link-to-sign-up {
             margin-top: 20px;
             width: 80%;
@@ -227,7 +232,6 @@ a {
 
 @media screen and (max-width: 370px) {
     .signin-page {
-        margin: 130px auto 10px auto;
         .link-to-sign-up {
             width: 90%;
         }

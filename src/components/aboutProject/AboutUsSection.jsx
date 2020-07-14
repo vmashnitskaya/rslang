@@ -25,7 +25,7 @@ const AboutUsSection = () => {
                     <li>
                         <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" /> Words learning goes together with{' '}
-                            <Typography variant="span" color="primary">
+                            <Typography variant="inherit" color="primary">
                                 mini games
                             </Typography>{' '}
                             which significantly changes usual learning process.
@@ -34,7 +34,7 @@ const AboutUsSection = () => {
                     <li>
                         <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" />{' '}
-                            <Typography variant="span" color="primary">
+                            <Typography variant="inherit" color="primary">
                                 Interval training
                             </Typography>{' '}
                             allows you to repeat already learned words and constantly maintain your
@@ -44,7 +44,7 @@ const AboutUsSection = () => {
                     <li>
                         <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" />{' '}
-                            <Typography variant="span" color="primary">
+                            <Typography variant="inherit" color="primary">
                                 Settings
                             </Typography>{' '}
                             will allow you to custom your learning process. You can choose how many
@@ -55,7 +55,7 @@ const AboutUsSection = () => {
                     <li>
                         <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" /> You can review you{' '}
-                            <Typography variant="span" color="primary">
+                            <Typography variant="inherit" color="primary">
                                 vocabulary
                             </Typography>{' '}
                             of Learned, Difficult, Easy & Deleted words at any time and repeat
@@ -65,7 +65,7 @@ const AboutUsSection = () => {
                     <li>
                         <Typography color="textSecondary" className={classes.root}>
                             <CheckIcon color="primary" />{' '}
-                            <Typography variant="span" color="primary">
+                            <Typography variant="inherit" color="primary">
                                 Statistics
                             </Typography>{' '}
                             page will allow you to review you progress in words lerning and mini

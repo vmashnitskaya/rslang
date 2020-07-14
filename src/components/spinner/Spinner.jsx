@@ -5,7 +5,7 @@ import './styles.scss';
 
 const Spinner = () => (
     <div className="spinner-bg">
-        <CircularProgress size="100px" color="secondary" />
+        <CircularProgress size="100px" color="primary" />
     </div>
 );
 

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Box, Paper } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
@@ -31,18 +31,24 @@ export default function App({ userWordsOnly, complexity }) {
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
     const [guessedWords, setGuessedWords] = useState([]);
     const [unGuessedWords, setUnGuessedWords] = useState([]);
+    const [gameWords, setGameWords] = useState([]);
 
-    const gameWords = shuffle(words).map((w) => {
-        const answer = Math.random() >= 0.5;
-        if (answer) {
-            Object.assign(w, { gameTranslate: w.wordTranslate });
-        } else {
-            const fileredWords = words.filter((word) => word.word !== w.word);
-            const randomWord = fileredWords[Math.floor(Math.random() * fileredWords.length)];
-            Object.assign(w, { gameTranslate: randomWord.wordTranslate });
-        }
-        return w;
-    });
+    useEffect(() => {
+        setGameWords(
+            shuffle(words).map((w) => {
+                const answer = Math.random() >= 0.5;
+                if (answer) {
+                    Object.assign(w, { gameTranslate: w.wordTranslate });
+                } else {
+                    const fileredWords = words.filter((word) => word.word !== w.word);
+                    const randomWord =
+                        fileredWords[Math.floor(Math.random() * fileredWords.length)];
+                    Object.assign(w, { gameTranslate: randomWord.wordTranslate });
+                }
+                return w;
+            })
+        );
+    }, [words]);
 
     const word = gameWords[currentWordIndex];
 
@@ -123,14 +129,14 @@ export default function App({ userWordsOnly, complexity }) {
                                     className="button_wrong"
                                     variant="contained"
                                 >
-                                    Неверно
+                                    Incorrect
                                 </Button>
                                 <Button
                                     onClick={() => handleAnswer(true)}
                                     className="button_right"
                                     variant="contained"
                                 >
-                                    Верно
+                                    Correct
                                 </Button>
                                 <ResultGame
                                     open={isPopUpOpened}

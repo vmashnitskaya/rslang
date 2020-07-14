@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Card, CardActionArea, CardContent, CardMedia } from '@material-ui/core';
-import minigames from './minigames';
+import { Link } from 'react-router-dom';
+import pages from '../router/pages';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,11 +21,11 @@ const MinigamesSection = () => {
                 Learning of new words is combined with mini-games. Check them out!
             </Typography>
             <div className="mini-games-part">
-                {minigames
+                {pages
                     .filter((element) => element.minigame)
                     .map((element) => {
                         return (
-                            <div className="card">
+                            <Link to={element.url} className="card" key={element.url}>
                                 <Card className={classes.root}>
                                     <CardActionArea>
                                         <CardMedia
@@ -46,7 +47,7 @@ const MinigamesSection = () => {
                                         </CardContent>
                                     </CardActionArea>
                                 </Card>
-                            </div>
+                            </Link>
                         );
                     })}
             </div>

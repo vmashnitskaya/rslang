@@ -4,14 +4,23 @@
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    height: 100%;
     padding-top: 200px;
-    h1 {
+    height: calc(100vh - 200px);
+    background-image: url("/assets/images/puzzle.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    h2 {
         font-size: 40px;
+        opacity: 0.8;
+        letter-spacing: 13px;
+        font-weight: 300;
+        text-align: center;
     }
     p {
         font-size: 20px;
         margin: 0;
+        font-size: 22px;
     }
     .start-page__button {
         font-size: 20px;

@@ -11,12 +11,10 @@ import MinigamesSection from './MinigamesSection';
 import AboutUsSection from './AboutUsSection';
 import IntervalSection from './IntervalSection';
 import SettingsSection from './SettingsSection';
-import { getLogInMessage, getLogInError } from '../router/storage/selectors';
+import { /* getLogInMessage, */ getLogInError } from '../router/storage/selectors';
+import './loginPage.scss';
 
 const useStyles = makeStyles((theme) => ({
-    logo: {
-        fontWeight: 600,
-    },
     formText: {
         fontSize: '18px',
         [theme.breakpoints.up('md')]: {
@@ -28,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 const SigninPage = () => {
     const classes = useStyles();
     const errorMessage = useSelector(getLogInError);
-    const infoMessage = useSelector(getLogInMessage);
+    // const infoMessage = useSelector(getLogInMessage);
     const dispatch = useDispatch();
 
     const onSignIn = async (email, password) => {
@@ -38,45 +36,37 @@ const SigninPage = () => {
         dispatch(action.user.logInError(text));
     };
     return (
-        <div className="login-container">
-            <section className="signin-page">
-                <div className="logo">
-                    <Typography
-                        align="center"
-                        variant="h4"
-                        color="primary"
-                        className={classes.logo}
-                    >
-                        RS Lang
-                    </Typography>
-                </div>
-                <LoginPhrase />
-                <div className="link-to-sign-up">
-                    <Typography align="center" color="primary" className={classes.formText}>
-                        Do not have an account?
-                    </Typography>
-                    <Box align="center" color="secondary">
-                        <Link to="/sign-up" className="sign-up">
-                            Sign up
-                        </Link>
-                    </Box>
-                    <Form
-                        className="form"
-                        emailClassName="login"
-                        passwordClassName="password-for-sign-in"
-                        submitClassName="submit"
-                        submitText="Sign in"
-                        onSubmit={onSignIn}
-                        onError={onFormError}
-                    />
-                    {infoMessage && <Message className="info" text={infoMessage} />}
-                    {errorMessage && <Message className="error" text={errorMessage} />}
-                </div>
-            </section>
-            <AboutUsSection />
-            <MinigamesSection />
-            <IntervalSection />
-            <SettingsSection />
+        <div className="login">
+            <div className="login-container">
+                <section className="signin-page">
+                    <LoginPhrase />
+                    <div className="link-to-sign-up">
+                        <Typography align="center" color="primary" className={classes.formText}>
+                            Do not have an account?
+                        </Typography>
+                        <Box align="center" color="secondary">
+                            <Link to="/sign-up" className="sign-up">
+                                Sign up
+                            </Link>
+                        </Box>
+                        <Form
+                            className="form"
+                            emailClassName="login"
+                            passwordClassName="password-for-sign-in"
+                            submitClassName="submit"
+                            submitText="Sign in"
+                            onSubmit={onSignIn}
+                            onError={onFormError}
+                        />
+                        {/* {infoMessage && <Message className="info" text={infoMessage} />} */}
+                        {errorMessage && <Message className="error" text={errorMessage} />}
+                    </div>
+                </section>
+                <AboutUsSection />
+                <MinigamesSection />
+                <IntervalSection />
+                <SettingsSection />
+            </div>
         </div>
     );
 };

@@ -11,7 +11,7 @@ const IntervalSection = () => {
                 <div className="interval_point">
                     <Typography color="textSecondary" gutterBottom>
                         Decide whether the word was{' '}
-                        <Typography variant="span" color="primary">
+                        <Typography variant="inherit" color="primary">
                             easy or difficult
                         </Typography>{' '}
                         for you during training.
@@ -21,7 +21,7 @@ const IntervalSection = () => {
                 <div className="interval_point">
                     <Typography color="textSecondary" gutterBottom>
                         Click on{' '}
-                        <Typography variant="span" color="primary">
+                        <Typography variant="inherit" color="primary">
                             Repeat icon
                         </Typography>{' '}
                         and the word will be repeated in the training.
@@ -31,7 +31,7 @@ const IntervalSection = () => {
                 <div className="interval_point">
                     <Typography color="textSecondary" gutterBottom>
                         Click on{' '}
-                        <Typography variant="span" color="primary">
+                        <Typography variant="inherit" color="primary">
                             Delete button
                         </Typography>{' '}
                         so that the word is not repeated again in further trainings.
@@ -41,7 +41,7 @@ const IntervalSection = () => {
                 <div className="interval_point">
                     <Typography color="textSecondary" gutterBottom>
                         Custom words selection by click on{' '}
-                        <Typography variant="span" color="primary">
+                        <Typography variant="inherit" color="primary">
                             New, Mixed or Repeat words.
                         </Typography>{' '}
                     </Typography>
@@ -50,7 +50,7 @@ const IntervalSection = () => {
                 <div className="interval_point">
                     <Typography color="textSecondary" gutterBottom>
                         If you have made the{' '}
-                        <Typography variant="span" color="primary">
+                        <Typography variant="inherit" color="primary">
                             mistake
                         </Typography>{' '}
                         , the word will be repeated in current training.
