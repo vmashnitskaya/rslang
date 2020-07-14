@@ -26,7 +26,7 @@ const questions = [
     },
     {
         question: '_______________ 20 desks in the classroom.',
-        answers: ['This is', 'There are', 'They are', 'There are'],
+        answers: ['This is', 'There is', 'They are', 'There are'],
         correctAnswer: 'There are',
     },
     {

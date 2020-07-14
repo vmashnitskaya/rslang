@@ -6,6 +6,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
+import { Box } from '@material-ui/core';
+import EndGame from './EndGame';
 import questions from './questions';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,48 +21,68 @@ const useStyles = makeStyles((theme) => ({
 
 export default function QuestionForm() {
     const classes = useStyles();
-    const [value, setValue] = useState('');
-    const [error, setError] = useState(false);
-    // const [point, setPoint] = useState(0);
+    const [fieldsValues, setFieldsValues] = useState({});
+    const [end, setEnd] = useState(false);
+    const [score, setScore] = useState(0);
 
-    const handleRadioChange = (event) => {
-        setValue(event.target.value);
-        setError(false);
+    const handleRadioChange = (event, id, correct) => {
+        const newFields = { ...fieldsValues, [id]: { current: event.target.value, correct } };
+        setFieldsValues(newFields);
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if (value === questions[0].correctAnswer) {
-            setError(false);
-            // setPoint(1);
-        } else if (value === 'worst') {
-            setError(true);
-        } else {
-            setError(true);
-        }
+        const newScore = Object.entries(fieldsValues).filter(
+            (entry) => entry[1].current === entry[1].correct
+        ).length;
+        setScore(newScore);
+        setEnd(true);
     };
 
     return (
-        <form className="form" onSubmit={handleSubmit}>
-            <FormControl component="fieldset" error={error} className={classes.formControl}>
-                <FormLabel component="legend">{questions[0].question}</FormLabel>
-                <RadioGroup
-                    aria-label="quiz"
-                    name="quiz"
-                    value={value}
-                    onChange={handleRadioChange}
-                >
-                    <FormControlLabel value="Aaaaaa" control={<Radio />} label="Aaaaaa" />
-                    <FormControlLabel value="worst" control={<Radio />} label="The worst." />
-                    <FormControlLabel value="worst" control={<Radio />} label="The worst." />
-                    <FormControlLabel value="worst" control={<Radio />} label="The worst." />
-                    <br />
-                </RadioGroup>
-                <Button type="submit" variant="outlined" color="primary" className={classes.button}>
-                    End Test
-                </Button>
-            </FormControl>
-        </form>
+        <Box>
+            <form onSubmit={handleSubmit}>
+                <Box className="form">
+                    {questions.map((q) => (
+                        <FormControl component="fieldset" className={classes.formControl}>
+                            <FormLabel component="legend">{q.question}</FormLabel>
+                            <RadioGroup
+                                aria-label="quiz"
+                                name="quiz"
+                                onChange={(e) =>
+                                    handleRadioChange(e, JSON.stringify(q), q.correctAnswer)
+                                }
+                            >
+                                <FormControlLabel
+                                    value={q.answers[0]}
+                                    control={<Radio />}
+                                    label={q.answers[0]}
+                                />
+                                <FormControlLabel
+                                    value={q.answers[1]}
+                                    control={<Radio />}
+                                    label={q.answers[1]}
+                                />
+                                <FormControlLabel
+                                    value={q.answers[2]}
+                                    control={<Radio />}
+                                    label={q.answers[2]}
+                                />
+                                <FormControlLabel
+                                    value={q.answers[3]}
+                                    control={<Radio />}
+                                    label={q.answers[3]}
+                                />
+                                <br />
+                            </RadioGroup>
+                        </FormControl>
+                    ))}
+                    <Button type="submit" variant="contained" color="primary">
+                        End Test
+                    </Button>
+                </Box>
+            </form>
+            {end && <EndGame score={score} open={end} setOpen={setEnd} />}
+        </Box>
     );
 }
