@@ -152,7 +152,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
 
     checkAnswer = (event) => {
         if (classesOfButtons !== 'audition__button_disabled') {
-            const chosenWord = event.target.textContent;
+            const chosenWord = event ? event.target.textContent : 'Hmm...';
             const currentRightIdOfWord = gameConfigs.rightAnswerOfCurrentQuestion;
             const rightWord = gameData[`answer${currentRightIdOfWord}`].word;
             const rightWordTranslation = gameData[`answer${currentRightIdOfWord}`].wordTranslate;
