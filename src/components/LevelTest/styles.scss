@@ -1,0 +1,13 @@
+.test {
+    display: flex;
+    flex-direction: column;
+    margin: 80px auto;
+
+    &__header {
+        margin: 0 auto;
+    }
+
+    &__description {
+        margin-left: 3%;
+    }
+}
