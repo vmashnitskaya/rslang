@@ -336,7 +336,7 @@ MainGame.propTypes = {
                 }),
             }),
         })
-    ).isRequired,
+    ),
     loading: PropTypes.bool.isRequired,
     error: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
@@ -364,12 +364,12 @@ MainGame.propTypes = {
         learnedWords: PropTypes.number,
         optional: PropTypes.shape({
             main: PropTypes.shape({
-                d: PropTypes.number.isRequired,
-                l: PropTypes.number.isRequired,
-                s: PropTypes.number.isRequired,
-                e: PropTypes.number.isRequired,
-                sq: PropTypes.number.isRequired,
-                msq: PropTypes.number.isRequired,
+                d: PropTypes.number,
+                l: PropTypes.number,
+                s: PropTypes.number,
+                e: PropTypes.number,
+                sq: PropTypes.number,
+                msq: PropTypes.number,
             }).isRequired,
         }),
     }).isRequired,
@@ -380,6 +380,7 @@ MainGame.propTypes = {
 MainGame.defaultProps = {
     mainWords: [],
     error: false,
+    aggregatedWords: [],
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainGame);

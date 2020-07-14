@@ -707,12 +707,12 @@ MainCard.propTypes = {
     isTranslationEnabled: PropTypes.bool.isRequired,
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
-        optional: {
-            main: {
+        optional: PropTypes.shape({
+            main: PropTypes.shape({
                 d: PropTypes.number.isRequired,
                 l: PropTypes.number.isRequired,
-            }.isRequired,
-        },
+            }).isRequired,
+        }),
     }).isRequired,
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
