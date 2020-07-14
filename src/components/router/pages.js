@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
-import MainPage from '../mainPage/index';
-import AboutProject from '../aboutProject/index';
-import AboutTeam from '../aboutTeam/index';
+import MainPage from '../mainPage';
+import AboutProject from '../aboutProject';
+import AboutTeam from '../aboutTeam';
 import Sprint from '../sprint/Sprint';
-import SpeakItGame from '../speakIt/index';
+import SpeakItGame from '../speakIt';
 import Vocabulary from '../vocabulary';
 import SavannahGame from '../savannah';
-import MainGame from '../mainGame/index';
+import MainGame from '../mainGame';
 import EnglishPuzzle from '../english-puzzle';
 import SettingsPage from '../settingsPage';
 import AnagrammGame from '../anagrammGame';
+import Statistics from '../statistics';
 
 const pages = [
     {
@@ -86,6 +87,13 @@ const pages = [
         title: 'Anagramm Game',
         url: '/anagramm',
         exact: true,
+        img: '/assets/images/angry.jpg',
+    },
+    {
+        component: Statistics,
+        title: 'Statistics',
+        url: '/statistics',
+        exact: false,
         img: '/assets/images/angry.jpg',
     },
 ];

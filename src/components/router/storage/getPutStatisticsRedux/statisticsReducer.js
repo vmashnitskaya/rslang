@@ -56,7 +56,7 @@ const settingsReducer = (state = initialState, action) => {
                     d: payload.wordsPerDay,
                     l: curDay ? curDay.l + payload.learned : payload.learned,
                     c: curDay ? curDay.c + payload.correct : payload.correct,
-                    s: curDay && curDay.s < payload.sequence ? payload.sequence : curDay.s,
+                    s: curDay && curDay.s > payload.sequence ? curDay.s : payload.sequence,
                 };
                 newState.statistics.optional.main[date] = newDate;
             }

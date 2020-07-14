@@ -71,7 +71,17 @@ const updateStaticsMiniGame = (game, totalWords, correctAnswers) => async (dispa
     await saveStatistics(getState);
 };
 
-const getDate = () => `${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`;
+const convertDate = (date) => {
+    const hoursDif =
+        date.getHours() - date.getUTCHours() < 0
+            ? 24 + (date.getHours() - date.getUTCHours())
+            : date.getHours() - date.getUTCHours();
+    date.setHours(date.getHours() + hoursDif);
+    return `${date.toISOString().slice(0, 10).replace(/-/g, '')}`;
+};
+
+const getDate = () => convertDate(new Date());
+
 const getDateAndTime = () => `${new Date().toISOString().slice(0, 16).replace(/-|T|:/g, '')}`;
 
 export default {
@@ -82,4 +92,5 @@ export default {
     setDafaultStatistics,
     getDate,
     getDateAndTime,
+    convertDate,
 };
