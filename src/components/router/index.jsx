@@ -25,7 +25,7 @@ const Router = ({ token, loading, error, settingsError, settingsLoading, auth })
 
     const router = (
         <Switch>
-            {!token ? (
+            {token ? (
                 <Route exact path="/">
                     <SigninPage className="app" />
                 </Route>
