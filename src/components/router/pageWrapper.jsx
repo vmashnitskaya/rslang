@@ -17,7 +17,7 @@ PageWrapper.propTypes = {
             title: PropTypes.string.isRequired,
             url: PropTypes.string.isRequired,
             img: PropTypes.string.isRequired,
-            userMenuPage: PropTypes.bool.isRequired,
+            mainPage: PropTypes.bool.isRequired,
         })
     ).isRequired,
 };

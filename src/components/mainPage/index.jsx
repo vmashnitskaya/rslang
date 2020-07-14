@@ -30,7 +30,7 @@ const MainPage = ({ routes }) => {
             </div>
             <div className="links">
                 {routes
-                    .filter((i) => i.url !== '/' && !i.userMenuPage)
+                    .filter((i) => i.mainPage)
                     .map((e) => {
                         return (
                             <Link to={e.url} key={`mpurl_${e.url}`}>
@@ -66,7 +66,7 @@ MainPage.propTypes = {
             title: PropTypes.string.isRequired,
             url: PropTypes.string.isRequired,
             img: PropTypes.string.isRequired,
-            userMenuPage: PropTypes.bool.isRequired,
+            mainPage: PropTypes.bool.isRequired,
         })
     ).isRequired,
 };

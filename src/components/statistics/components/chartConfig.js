@@ -61,7 +61,3 @@ const chartConfig = () => {
 };
 
 export default chartConfig;
-
-// function createConfig() {
-
-// }

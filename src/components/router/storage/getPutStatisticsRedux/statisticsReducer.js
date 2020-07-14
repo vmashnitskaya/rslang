@@ -135,7 +135,6 @@ const settingsReducer = (state = initialState, action) => {
                 ...state,
                 statistics: {
                     ...state.statistics,
-                    learnedWords: state.statistics.learnedWords + 1,
                     optional: {
                         ...state.statistics.optional,
                         [payload.game]: {

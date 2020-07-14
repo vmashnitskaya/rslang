@@ -95,18 +95,25 @@ const mainGameStats = (state) => {
 
 const miniGameStats = (state) => {
     const stats = statSelectors.getStatistics(state).optional;
-    const resultArr = statUtils.miniGames.map((e) => {
+    const gamesArr = Object.keys(statUtils.miniGames).map((e) => ({
+        name: statUtils.miniGames[e].name,
+        alias: statUtils.miniGames[e].alias,
+    }));
+    const resultArr = gamesArr.map((e) => {
         const gameStats = stats[e.alias] ? stats[e.alias] : {};
         const games = Object.keys(gameStats)
             .map((e) => ({
                 date: getDateFromKey(e),
                 key: e,
             }))
-            .sort((a, b) => a.date < b.date)[0];
+            .sort((a, b) => a.date < b.date);
         const totalGames = games.length;
         let correct = 0;
         let wrong = 0;
         let totalWords = 0;
+        if (games.length === 0) {
+            return null;
+        }
         const daysArr = [
             {
                 date: games[0].date,
@@ -128,7 +135,7 @@ const miniGameStats = (state) => {
                 day.date.getMonth() !== games[i].date.getMonth()
             ) {
                 day = {
-                    date: games[0].date,
+                    date: games[i].date,
                     totalGames: 0,
                     totalWords: 0,
                     correct: 0,
@@ -158,7 +165,7 @@ const miniGameStats = (state) => {
         };
         return rootObj;
     });
-    return resultArr;
+    return resultArr.filter((e) => e);
 };
 
 export default {

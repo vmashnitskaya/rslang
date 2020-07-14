@@ -19,7 +19,7 @@ const Router = ({ token, loading, error, settingsError, settingsLoading, auth })
         title: p.title,
         url: p.url,
         img: p.img,
-        userMenuPage: p.userMenuPage,
+        mainPage: p.mainPage,
     }));
     const [authDone, setAuthDone] = useState(false);
 
