@@ -75,21 +75,13 @@ const pages = [
         minigame: true,
         description: 'Training of pronunciation words correctly. Images and examples are provided.',
     },
-
-    {
-        component: AnagrammGame,
-        title: 'Anagramm Game',
-        url: '/anagrammgame',
-        img: '',
-        exact: true,
-    },
-
     {
         component: EnglishPuzzle,
         title: 'English-Puzzle',
         url: '/englishpuzzle',
         exact: true,
         userMenuPage: false,
+        mainPage: true,
         auth: false,
         minigame: true,
         description: 'Create sentences with words. Additional hints can be used for help.',
@@ -106,12 +98,6 @@ const pages = [
         auth: false,
         minigame: true,
         description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-    },
-    {
-        component: EnglishPuzzle,
-        title: 'English-Puzzle',
-        url: '/englishpuzzle',
-        img: '/assets/images/start-image.jpg',
     },
     {
         component: SavannahGame,

@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import wordsActions from '../router/storage/getWordsRedux/wordsActions';
 import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import statisticsUtils from '../router/storage/getPutStatisticsRedux/statisticsUtils';
 import { generateRandomNumber, createArrayOfUniqueNumbers } from './number';
 import {
     numberOfQuestionsOnGame,
@@ -223,7 +224,13 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
 const mapDispatchToProps = (dispatch) => ({
     fetchWords: (page, group) => dispatch(wordsActions.fetchWords(page, group)),
     setStatistics: (total, correct) =>
-        dispatch(statisticsActions.updateStaticsMiniGame('aud', total, correct)),
+        dispatch(
+            statisticsActions.updateStaticsMiniGame(
+                statisticsUtils.miniGames.audition.alias,
+                total,
+                correct
+            )
+        ),
 });
 
 const mapStateToProps = (state) => ({
