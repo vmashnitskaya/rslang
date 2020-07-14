@@ -22,14 +22,25 @@ const setDafaultStatistics = () => ({
     type: statisticsTypes.SET_DEFAULT_STATISTICS,
 });
 
-const increateLearnedWordsNumber = (learned, wordsPerDay, correct, sequence) => ({
+const increateLearnedWordsNumber = (wordsPerDay, increase) => ({
     type: statisticsTypes.ENCREASE_LEARNED_WORDS_NUMBER,
-    payload: { learned, wordsPerDay, correct, sequence },
+    payload: { wordsPerDay, increase },
 });
 
 const setMinigameStatistics = (game, totalWords, correctAnswers) => ({
     type: statisticsTypes.SET_MINIGAMES_STATISTICS,
     payload: { game, totalWords, correctAnswers },
+});
+
+const incSuccess = () => ({
+    type: statisticsTypes.INC_SUCCESS,
+});
+
+const incErrors = () => ({
+    type: statisticsTypes.INC_ERRORS,
+});
+const incNewWords = () => ({
+    type: statisticsTypes.INC_NEW_WORD,
 });
 
 const fetchStatistics = (userId, token) => async (dispatch) => {
@@ -54,34 +65,28 @@ const saveStatistics = async (getState) => {
     await statisticsApi.putUserStatistics(id, token, statistics);
 };
 
-const updateStatics = (correct, sequence) => async (dispatch, getState) => {
+const updateStatics = () => async (dispatch, getState) => {
     const { wordsPerDay } = settingsSelectros.getSettings(getState());
-    dispatch(increateLearnedWordsNumber(1, wordsPerDay, correct ? 1 : 0, sequence || 0));
+    dispatch(increateLearnedWordsNumber(wordsPerDay, true));
     await saveStatistics(getState);
 };
 
 const saveWordsPerDay = () => async (dispatch, getState) => {
     const { wordsPerDay } = settingsSelectros.getSettings(getState());
-    dispatch(increateLearnedWordsNumber(0, wordsPerDay, 0, 0));
+    dispatch(increateLearnedWordsNumber(wordsPerDay, false));
     await saveStatistics(getState);
 };
 
 const updateStaticsMiniGame = (game, totalWords, correctAnswers) => async (dispatch, getState) => {
-    dispatch(setMinigameStatistics(game, totalWords, correctAnswers));
-    await saveStatistics(getState);
+    const userId = getUserId(getState());
+    const token = getToken(getState());
+    if (userId && token) {
+        dispatch(setMinigameStatistics(game, totalWords, correctAnswers));
+        await saveStatistics(getState);
+    }
 };
 
-const convertDate = (date) => {
-    const hoursDif =
-        date.getHours() - date.getUTCHours() < 0
-            ? 24 + (date.getHours() - date.getUTCHours())
-            : date.getHours() - date.getUTCHours();
-    date.setHours(date.getHours() + hoursDif);
-    return `${date.toISOString().slice(0, 10).replace(/-/g, '')}`;
-};
-
-const getDate = () => convertDate(new Date());
-
+const getDate = () => `${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`;
 const getDateAndTime = () => `${new Date().toISOString().slice(0, 16).replace(/-|T|:/g, '')}`;
 
 export default {
@@ -92,5 +97,7 @@ export default {
     setDafaultStatistics,
     getDate,
     getDateAndTime,
-    convertDate,
+    incSuccess,
+    incErrors,
+    incNewWords,
 };

@@ -1,6 +1,16 @@
 import statisticsTypes from './statisticsTypes';
 import statisticsActions from './statisticsActions';
 
+const getInitialDateStaticstics = (dayWords) => ({
+    d: dayWords,
+    l: 0,
+    s: 0,
+    e: 0,
+    sq: 0,
+    msq: 0,
+    n: 0,
+});
+
 const initialState = {
     loading: false,
     error: false,
@@ -8,12 +18,7 @@ const initialState = {
         learnedWords: 0,
         optional: {
             main: {
-                [statisticsActions.getDate()]: {
-                    d: 20,
-                    l: 0,
-                    c: 0,
-                    s: 0,
-                },
+                [statisticsActions.getDate()]: getInitialDateStaticstics(20),
             },
         },
     },
@@ -44,23 +49,110 @@ const settingsReducer = (state = initialState, action) => {
                 statistics: initialState.statistics,
             };
         case statisticsTypes.ENCREASE_LEARNED_WORDS_NUMBER: {
-            const needUpdate = !!(payload.learned || payload.correct || payload.sequence);
             const date = statisticsActions.getDate();
             const curDay = state.statistics.optional.main[date];
-            const newState = { ...state };
-            if (payload.learned) {
-                newState.statistics.learnedWords += payload.learned;
-            }
-            if (curDay || needUpdate) {
-                const newDate = {
-                    d: payload.wordsPerDay,
-                    l: curDay ? curDay.l + payload.learned : payload.learned,
-                    c: curDay ? curDay.c + payload.correct : payload.correct,
-                    s: curDay && curDay.s > payload.sequence ? curDay.s : payload.sequence,
+            const increase = payload.increase ? 1 : 0;
+            if (curDay) {
+                return {
+                    ...state,
+                    statistics: {
+                        ...state.statistics,
+                        learnedWords: state.statistics.learnedWords + increase,
+                        optional: {
+                            ...state.statistics.optional,
+                            main: {
+                                ...state.statistics.optional.main,
+                                [date]: {
+                                    ...state.statistics.optional.main[date],
+                                    d: payload.wordsPerDay,
+                                    l: curDay ? curDay.l + increase : increase,
+                                },
+                            },
+                        },
+                    },
                 };
-                newState.statistics.optional.main[date] = newDate;
             }
-            return newState;
+            return state;
+        }
+        case statisticsTypes.INC_SUCCESS: {
+            const date = statisticsActions.getDate();
+            const curDay = state.statistics.optional.main[date];
+            if (curDay) {
+                let { s, sq, msq } = curDay;
+                s += 1;
+                if (sq === msq) {
+                    msq += 1;
+                    sq = msq;
+                } else {
+                    sq += 1;
+                }
+                return {
+                    ...state,
+                    statistics: {
+                        ...state.statistics,
+                        optional: {
+                            ...state.statistics.optional,
+                            main: {
+                                ...state.statistics.optional.main,
+                                [date]: {
+                                    ...curDay,
+                                    s,
+                                    sq,
+                                    msq,
+                                },
+                            },
+                        },
+                    },
+                };
+            }
+            return state;
+        }
+        case statisticsTypes.INC_ERRORS: {
+            const date = statisticsActions.getDate();
+            const curDay = state.statistics.optional.main[date];
+            if (curDay) {
+                return {
+                    ...state,
+                    statistics: {
+                        ...state.statistics,
+                        optional: {
+                            ...state.statistics.optional,
+                            main: {
+                                ...state.statistics.optional.main,
+                                [date]: {
+                                    ...curDay,
+                                    e: curDay.e + 1,
+                                    sq: 0,
+                                },
+                            },
+                        },
+                    },
+                };
+            }
+            return state;
+        }
+        case statisticsTypes.INC_NEW_WORD: {
+            const date = statisticsActions.getDate();
+            const curDay = state.statistics.optional.main[date];
+            if (curDay) {
+                return {
+                    ...state,
+                    statistics: {
+                        ...state.statistics,
+                        optional: {
+                            ...state.statistics.optional,
+                            main: {
+                                ...state.statistics.optional.main,
+                                [date]: {
+                                    ...curDay,
+                                    n: curDay.n + 1,
+                                },
+                            },
+                        },
+                    },
+                };
+            }
+            return state;
         }
         case statisticsTypes.SET_MINIGAMES_STATISTICS: {
             return {
