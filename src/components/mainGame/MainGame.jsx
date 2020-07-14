@@ -164,15 +164,11 @@ const MainGame = ({
                 );
             }
         }
-        const stats =
-            statistics.optional && statistics.optional.main
-                ? statistics.optional.main[statisticsActions.getDate()]
-                : null;
-        if (stats && stats.l === settings.wordsPerDay - 1) {
+        if (statistics.l === settings.wordsPerDay - 1) {
             setIsPopUpOpened(true);
             setIsNewWordWillBeShown(true);
         } else {
-            updateStatics(true, 0);
+            updateStatics();
             increaseCurrentWordNumber();
         }
     }, [settings.wordsPerDay, currentWordNumber, increaseCurrentWordNumber]);
@@ -182,7 +178,7 @@ const MainGame = ({
     };
     useEffect(() => {
         if (!isPopUpOpened && isNewWordWillBeShown) {
-            updateStatics(true, 0);
+            updateStatics();
             increaseCurrentWordNumber();
             setIsNewWordWillBeShown(false);
         }
@@ -234,34 +230,21 @@ const MainGame = ({
                         <TableBody>
                             <TableRow>
                                 <TableCell align="left">Amount of learned words</TableCell>
-                                <TableCell align="center">
-                                    {statistics.optional.main[statisticsActions.getDate()] &&
-                                        statistics.optional.main[statisticsActions.getDate()].l + 1}
-                                </TableCell>
+                                <TableCell align="center">{statistics.l + 1}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell align="left">Percentage of sucessfull answers</TableCell>
                                 <TableCell align="center">
-                                    {statistics.optional.main[statisticsActions.getDate()] &&
-                                        (statistics.optional.main[statisticsActions.getDate()].s *
-                                            100) /
-                                            settings.wordsPerDay}
-                                    %
+                                    {(statistics.s * 100) / settings.wordsPerDay}%
                                 </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell align="left">Amount of new words</TableCell>
-                                <TableCell align="center">
-                                    {statistics.optional.main[statisticsActions.getDate()] &&
-                                        statistics.optional.main[statisticsActions.getDate()].n}
-                                </TableCell>
+                                <TableCell align="center">{statistics.n}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell align="left">Most successfull sequence</TableCell>
-                                <TableCell align="center">
-                                    {statistics.optional.main[statisticsActions.getDate()] &&
-                                        statistics.optional.main[statisticsActions.getDate()].msq}
-                                </TableCell>
+                                <TableCell align="center">{statistics.msq}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -285,7 +268,6 @@ const MainGame = ({
         </>
     );
 };
-
 const mapDispatchToProps = (dispatch) => ({
     fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
         dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
@@ -299,14 +281,13 @@ const mapDispatchToProps = (dispatch) => ({
     increaseCurrentWordNumber: () => {
         dispatch(mainGameActions.increaseCurrentWordNumber());
     },
-    updateStatics: (correct, sequence) => {
-        dispatch(statisticsActions.updateStatics(correct, sequence));
+    updateStatics: () => {
+        dispatch(statisticsActions.updateStatics());
     },
     setInitialState: (initialState) => {
         dispatch(mainGameActions.setInitialState(initialState));
     },
 });
-
 const mapStateToProps = (state) => ({
     aggregatedWords: aggregatedWordsSelectors.getAggregatedWords(state),
     loading: aggregatedWordsSelectors.getLoading(state),
@@ -316,9 +297,8 @@ const mapStateToProps = (state) => ({
     token: getToken(state),
     settings: settingsSelectors.getSettings(state),
     currentWordNumber: mainGameSelectors.getCurrentWordNumber(state),
-    statistics: statisticsSelectors.getStatistics(state),
+    statistics: statisticsSelectors.getTodayMainGameStatistics(state),
 });
-
 MainGame.propTypes = {
     aggregatedWords: PropTypes.arrayOf(
         PropTypes.shape({
@@ -363,25 +343,19 @@ MainGame.propTypes = {
     setCurrentWordNumber: PropTypes.func.isRequired,
     increaseCurrentWordNumber: PropTypes.func.isRequired,
     statistics: PropTypes.shape({
-        learnedWords: PropTypes.number,
-        optional: PropTypes.shape({
-            main: PropTypes.shape({
-                d: PropTypes.number.isRequired,
-                l: PropTypes.number.isRequired,
-                s: PropTypes.number.isRequired,
-                e: PropTypes.number.isRequired,
-                sq: PropTypes.number.isRequired,
-                msq: PropTypes.number.isRequired,
-            }).isRequired,
-        }),
+        d: PropTypes.number.isRequired,
+        l: PropTypes.number.isRequired,
+        s: PropTypes.number.isRequired,
+        e: PropTypes.number.isRequired,
+        sq: PropTypes.number.isRequired,
+        msq: PropTypes.number.isRequired,
+        n: PropTypes.number.isRequired,
     }).isRequired,
     updateStatics: PropTypes.func.isRequired,
     setInitialState: PropTypes.func.isRequired,
 };
-
 MainGame.defaultProps = {
     mainWords: [],
     error: false,
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(MainGame);

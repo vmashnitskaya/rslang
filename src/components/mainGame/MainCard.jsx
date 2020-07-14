@@ -377,10 +377,6 @@ const MainCard = ({
         }
     };
 
-    const stats =
-        statistics.optional && statistics.optional.main
-            ? statistics.optional.main[statisticsActions.getDate()]
-            : null;
     return (
         <>
             <div className="card__wrapper">
@@ -418,7 +414,7 @@ const MainCard = ({
                 <div className={classes.chartWrapper}>
                     <LinearProgressWithLabel
                         className={classes.chart}
-                        learned={stats ? stats.l : 0}
+                        learned={statistics.l}
                         toLearn={wordsPerDay}
                     />
                 </div>
@@ -617,7 +613,6 @@ const MainCard = ({
         </>
     );
 };
-
 const mapDispatchToProps = (dispatch) => ({
     setAutoSoundEnabled: (isAutoSoundEnabled) => {
         dispatch(mainGameActions.setAutoSoundEnabled(isAutoSoundEnabled));
@@ -647,7 +642,6 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(statisticsActions.incNewWords());
     },
 });
-
 const mapStateToProps = (state) => ({
     isAutoSoundEnabled: mainGameSelectors.getIsAutoSoundEnabled(state),
     wordStatus: mainGameSelectors.getWordStatus(state),
@@ -655,7 +649,6 @@ const mapStateToProps = (state) => ({
     userId: getUserId(state),
     token: getToken(state),
 });
-
 MainCard.propTypes = {
     wordObj: PropTypes.shape({
         _id: PropTypes.string,
@@ -706,13 +699,13 @@ MainCard.propTypes = {
     setIsTranslationEnabled: PropTypes.func.isRequired,
     isTranslationEnabled: PropTypes.bool.isRequired,
     statistics: PropTypes.shape({
-        learnedWords: PropTypes.number,
-        optional: {
-            main: {
-                d: PropTypes.number.isRequired,
-                l: PropTypes.number.isRequired,
-            }.isRequired,
-        },
+        d: PropTypes.number.isRequired,
+        l: PropTypes.number.isRequired,
+        s: PropTypes.number.isRequired,
+        e: PropTypes.number.isRequired,
+        sq: PropTypes.number.isRequired,
+        msq: PropTypes.number.isRequired,
+        n: PropTypes.number.isRequired,
     }).isRequired,
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
@@ -725,7 +718,6 @@ MainCard.propTypes = {
     incSuccess: PropTypes.func.isRequired,
     incErrors: PropTypes.func.isRequired,
 };
-
 MainCard.defaultProps = {
     wordObj: {
         _id: '',
@@ -743,5 +735,4 @@ MainCard.defaultProps = {
     },
     currentWordNumber: 0,
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(MainCard);

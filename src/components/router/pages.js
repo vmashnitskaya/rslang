@@ -138,8 +138,12 @@ const pages = [
         component: Statistics,
         title: 'Statistics',
         url: '/statistics',
+        img: '/assets/images/happy.jpg',
         exact: false,
-        img: '/assets/images/angry.jpg',
+        userMenuPage: true,
+        auth: true,
+        minigame: false,
+        description: '',
     },
 ];
 
