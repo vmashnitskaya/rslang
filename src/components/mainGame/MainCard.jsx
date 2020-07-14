@@ -562,7 +562,7 @@ const MainCard = ({
                                     onClick={handleAnswerShow}
                                     disabled={isAnswerDisabled || answerShown}
                                 >
-                                    Answer
+                                    Show&nbsp;Answer
                                 </Button>
                             )}
                             {optional.isShowDelete && (

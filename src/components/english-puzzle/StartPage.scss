@@ -10,12 +10,17 @@
     background-size: cover;
     background-repeat: no-repeat;
     overflow: hidden;
-    h1 {
+    h2 {
         font-size: 40px;
+        opacity: 0.8;
+        letter-spacing: 13px;
+        font-weight: 300;
+        text-align: center;
     }
     p {
         font-size: 20px;
         margin: 0;
+        font-size: 22px;
     }
     .start-page__button {
         font-size: 20px;
