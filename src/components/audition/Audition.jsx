@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import wordsActions from '../router/storage/getWordsRedux/wordsActions';
 import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 import { generateRandomNumber, createArrayOfUniqueNumbers } from './number';
 import {
     numberOfQuestionsOnGame,
@@ -17,7 +18,7 @@ import playAudio from './audio';
 import './styles.scss';
 import './assets/sound.svg';
 
-const Audition = ({ words, fetchWords }) => {
+const Audition = ({ words, fetchWords, setStatistics }) => {
     let gameConfigs = {};
     let classesOfButtons = '';
     let rightWordOnPage = '';
@@ -41,6 +42,11 @@ const Audition = ({ words, fetchWords }) => {
     };
 
     const showStatistics = () => {
+        const numberLearnedWords = Object.keys(gameStats).reduce(
+            (acc, key) => acc + gameStats[key],
+            0
+        );
+        setStatistics(numberLearnedWords, gameStats, gameStats.numberOfChosenRightWords);
         return (
             <div className="stats">
                 <h2>Game over</h2>
@@ -198,9 +204,9 @@ const Audition = ({ words, fetchWords }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchWords: (page, group) => {
-        dispatch(wordsActions.fetchWords(page, group));
-    },
+    fetchWords: (page, group) => dispatch(wordsActions.fetchWords(page, group)),
+    setStatistics: (total, correct) =>
+        dispatch(statisticsActions.updateStaticsMiniGame('aud', total, correct)),
 });
 
 const mapStateToProps = (state) => ({
@@ -210,6 +216,7 @@ const mapStateToProps = (state) => ({
 Audition.propTypes = {
     words: PropTypes.arrayOf(PropTypes.object).isRequired,
     fetchWords: PropTypes.func.isRequired,
+    setStatistics: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Audition);
