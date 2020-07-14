@@ -50,7 +50,7 @@ const pages = [
         component: Sprint,
         title: 'Sprint',
         url: '/sprint',
-        img: '/assets/images/sprint.png',
+        img: '/assets/images/sprint.jpg',
         exact: false,
         userMenuPage: false,
         auth: false,
