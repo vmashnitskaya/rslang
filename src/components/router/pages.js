@@ -11,6 +11,7 @@ import MainGame from '../mainGame/index';
 import EnglishPuzzle from '../english-puzzle';
 import SettingsPage from '../settingsPage';
 import AnagrammGame from '../anagrammGame';
+import LevelTest from '../LevelTest/LevelTest';
 
 const pages = [
     {
@@ -133,6 +134,17 @@ const pages = [
         component: AboutTeam,
         title: 'About Team',
         url: '/aboutteam',
+        img: '/assets/images/happy.jpg',
+        exact: true,
+        userMenuPage: false,
+        auth: false,
+        minigame: false,
+        description: '',
+    },
+    {
+        component: LevelTest,
+        title: 'Level Test',
+        url: '/levelTest',
         img: '/assets/images/happy.jpg',
         exact: true,
         userMenuPage: false,
