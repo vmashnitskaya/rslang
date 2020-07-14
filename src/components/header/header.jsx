@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuIcon from '@material-ui/icons/Menu';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, IconButton, Button } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import Sidebar from '../sidebar';
 import { pagePropType } from '../router/pages';
-import action from '../router/storage/actions';
 import './header.scss';
+import HeaderMenu from './headerMenu';
 
-const Header = ({ pages }) => {
+const Header = ({ pages, auth }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const dispatch = useDispatch();
+    const location = useLocation();
+    const [isLoginPages, setIsLoginPages] = useState(
+        location.pathname === '/' || location.pathname === '/sign-up'
+    );
+    useEffect(() => {
+        setIsLoginPages(location.pathname === '/' || location.pathname === '/sign-up');
+    }, [location]);
+
+    let control = null;
+    if (auth) {
+        control = <HeaderMenu pages={pages} />;
+    } else if (!isLoginPages) {
+        control = (
+            <div className="btn">
+                <Button variant="contained" color="secondary">
+                    <Link to="/">Sign in</Link>
+                </Button>
+            </div>
+        );
+    }
+
     return (
         <div>
             <AppBar position="fixed" className="header">
@@ -31,28 +46,15 @@ const Header = ({ pages }) => {
                     </IconButton>
                     <Typography variant="h6">RS Lang</Typography>
                 </Toolbar>
-                <nav className="header__nav">
-                    <ul className="header__links">
-                        <li className="header__log-out">
-                            <Button color="inherit" onClick={() => action.user.logOut(dispatch)}>
-                                Log Out
-                            </Button>
-                        </li>
-                        <li>
-                            <IconButton aria-label="account of current user" color="inherit">
-                                <AccountCircle />
-                            </IconButton>
-                        </li>
-                    </ul>
-                </nav>
+                {control}
             </AppBar>
-            <Sidebar pages={pages} isOpen={isOpen} setIsOpen={setIsOpen} />
+            <Sidebar pages={pages} isOpen={isOpen} setIsOpen={setIsOpen} auth={auth} />
         </div>
     );
 };
 
 Header.propTypes = {
     pages: PropTypes.arrayOf(pagePropType).isRequired,
+    auth: PropTypes.bool.isRequired,
 };
-
 export default Header;

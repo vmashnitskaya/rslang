@@ -1,6 +1,7 @@
 import statisticsTypes from './statisticsTypes';
 import statisticsApi from './statisticsApi';
 import statisticsSelectors from './statisticsSelectors';
+import settingsSelectros from '../getSettingsRedux/settingsSelectors';
 import { getUserId, getToken } from '../selectors';
 
 const fetchStatisticsPending = () => ({
@@ -21,9 +22,14 @@ const setDafaultStatistics = () => ({
     type: statisticsTypes.SET_DEFAULT_STATISTICS,
 });
 
-const increateLearnedWordsNumber = (date) => ({
+const increateLearnedWordsNumber = (wordsPerDay, increase) => ({
     type: statisticsTypes.ENCREASE_LEARNED_WORDS_NUMBER,
-    payload: date,
+    payload: { wordsPerDay, increase },
+});
+
+const setMinigameStatistics = (game, totalWords, correctAnswers) => ({
+    type: statisticsTypes.SET_MINIGAMES_STATISTICS,
+    payload: { game, totalWords, correctAnswers },
 });
 
 const fetchStatistics = (userId, token) => async (dispatch) => {
@@ -33,20 +39,51 @@ const fetchStatistics = (userId, token) => async (dispatch) => {
         if (statistics) {
             dispatch(fetchStatisticsSuccess(userId, token, statistics));
         } else {
-            setDafaultStatistics();
+            dispatch(setDafaultStatistics());
         }
     } catch (e) {
         dispatch(fetchStatisticsFailed(e.message));
     }
 };
 
-const updateStatics = (date) => async (dispatch, getState) => {
-    dispatch(increateLearnedWordsNumber(date));
+const saveStatistics = async (getState) => {
     const id = getUserId(getState());
     const token = getToken(getState());
-    const { id: statisticsId, ...statistics } = statisticsSelectors.getStatistics(getState());
+    const statistics = statisticsSelectors.getStatistics(getState());
 
     await statisticsApi.putUserStatistics(id, token, statistics);
 };
 
-export default { fetchStatistics, updateStatics };
+const updateStatics = () => async (dispatch, getState) => {
+    const { wordsPerDay } = settingsSelectros.getSettings(getState());
+    dispatch(increateLearnedWordsNumber(wordsPerDay, true));
+    await saveStatistics(getState);
+};
+
+const saveWordsPerDay = () => async (dispatch, getState) => {
+    const { wordsPerDay } = settingsSelectros.getSettings(getState());
+    dispatch(increateLearnedWordsNumber(wordsPerDay, false));
+    await saveStatistics(getState);
+};
+
+const updateStaticsMiniGame = (game, totalWords, correctAnswers) => async (dispatch, getState) => {
+    const userId = getUserId(getState());
+    const token = getToken(getState());
+    if (userId && token) {
+        dispatch(setMinigameStatistics(game, totalWords, correctAnswers));
+        await saveStatistics(getState);
+    }
+};
+
+const getDate = () => `${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`;
+const getDateAndTime = () => `${new Date().toISOString().slice(0, 16).replace(/-|T|:/g, '')}`;
+
+export default {
+    fetchStatistics,
+    updateStatics,
+    saveWordsPerDay,
+    updateStaticsMiniGame,
+    setDafaultStatistics,
+    getDate,
+    getDateAndTime,
+};

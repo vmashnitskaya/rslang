@@ -16,11 +16,13 @@ import {
 } from '@material-ui/core';
 import ResultCard from './ResultCard';
 import actions from '../storage/actions';
+import statisticsActions from '../../router/storage/getPutStatisticsRedux/statisticsActions';
 import selectors from '../storage/selectors';
 import utils from '../utils';
 
-function StatisticsWindow({ results, clear }) {
+function StatisticsWindow({ results, clear, setStatistics }) {
     useEffect(() => {
+        setStatistics(results.length, results.filter((e) => e.correct).length);
         const audio = new Audio();
         audio.preload = 'auto';
         audio.src = '/assets/audio/savannah/show_result.mp3';
@@ -104,6 +106,8 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(actions.gameState.set(utils.gameState.NOT_STARTED));
         dispatch(actions.gameResults.clear());
     },
+    setStatistics: (total, correct) =>
+        dispatch(statisticsActions.updateStaticsMiniGame('sav', total, correct)),
 });
 
 const mapStateToProps = (state) => ({
@@ -123,6 +127,7 @@ StatisticsWindow.propTypes = {
         })
     ).isRequired,
     clear: PropTypes.func.isRequired,
+    setStatistics: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatisticsWindow);

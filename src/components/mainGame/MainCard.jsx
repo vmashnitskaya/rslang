@@ -35,6 +35,7 @@ import passedWordsApi from '../router/storage/getPostPassedWordsRedux/passedWord
 import { getToken, getUserId } from '../router/storage/selectors';
 import Alert from './Alert';
 import mainGameSelectors from './redux/mainGameSelectors';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 
 import './MainCard.scss';
 
@@ -83,7 +84,6 @@ const MainCard = ({
     wordStatus,
     setIncorrectWordProvided,
     setCorrectWordProvided,
-    setInitialState,
     isAutoSoundEnabled,
     setAutoSoundEnabled,
     handleNewWord,
@@ -98,6 +98,7 @@ const MainCard = ({
     wordsType,
     handleSuccessAndErrors,
     handleCountNewWords,
+    setInitialState,
 }) => {
     const {
         _id,
@@ -132,6 +133,7 @@ const MainCard = ({
     const [isNewWord, setIsNewWord] = useState(!wordObj.userWord);
     const [isAnswerDisabled, setIsAnswerDisabled] = useState(false);
     const [isEasyDisabled, setIsEasyDisabled] = useState(false);
+    const [answerShown, setAnswerShown] = useState(false);
 
     useEffect(() => {
         setIsDeletedDisabled(wordObj.userWord ? wordObj.userWord.optional.deleted : false);
@@ -141,10 +143,12 @@ const MainCard = ({
             handleCountNewWords();
         }
         setIsRepeatDisabled(wordObj.userWord ? wordObj.userWord.optional.repeat : false);
-        setInitialState('true');
+
         setIsSoundEnabled(false);
         setIsAnswerDisabled(false);
         setIsEasyDisabled(false);
+        setAnswerShown(false);
+        setInitialState('true');
     }, [word, currentWordNumber]);
 
     const handleGuessedWordProvided = async (guessedWord) => {
@@ -154,7 +158,7 @@ const MainCard = ({
                 setIsSoundEnabled(true);
             }
             handleSuccessAndErrors('correct');
-
+            setAnswerShown(true);
             if (
                 isDifficultDisabled ||
                 isDeletedDisabled ||
@@ -168,6 +172,7 @@ const MainCard = ({
                         difficult: isDifficultDisabled,
                         deleted: isDeletedDisabled,
                         repeat: isRepeatDisabled,
+                        easy: isEasyDisabled,
                         learned: true,
                     },
                 });
@@ -218,14 +223,21 @@ const MainCard = ({
         setIsDeletedDisabled(true);
         setAlertShown('deleted');
 
-        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled || isEasyDisabled) {
+        if (
+            isDifficultDisabled ||
+            wordObj.userWord ||
+            isRepeatDisabled ||
+            isEasyDisabled ||
+            answerShown
+        ) {
             await passedWordsApi.putPassedWords(userId, token, _id, {
                 difficulty: 'default',
                 optional: {
                     deleted: true,
                     difficult: isDifficultDisabled,
                     repeat: isRepeatDisabled,
-                    learned: Boolean(wordObj.userWord),
+                    learned: !!(Boolean(wordObj.userWord) || answerShown),
+                    easy: isEasyDisabled,
                 },
             });
         } else {
@@ -239,19 +251,24 @@ const MainCard = ({
     };
 
     const handleDifficultClick = async () => {
-        setIsRepeatDisabled(true);
-        setIsEasyDisabled(true);
         setIsDifficultDisabled(true);
         setAlertShown('difficult');
 
-        if (isDeletedDisabled || wordObj.userWord || isRepeatDisabled || isEasyDisabled) {
+        if (
+            isDeletedDisabled ||
+            wordObj.userWord ||
+            isRepeatDisabled ||
+            isEasyDisabled ||
+            answerShown
+        ) {
             await passedWordsApi.putPassedWords(userId, token, _id, {
                 difficulty: 'default',
                 optional: {
                     difficult: true,
                     deleted: isDeletedDisabled,
                     repeat: isRepeatDisabled,
-                    learned: Boolean(wordObj.userWord),
+                    learned: !!(Boolean(wordObj.userWord) || answerShown),
+                    easy: isEasyDisabled,
                 },
             });
         } else {
@@ -267,8 +284,6 @@ const MainCard = ({
     const handleRepeatClick = async () => {
         setAlertShown('repeat');
         setIsRepeatDisabled(true);
-        setIsEasyDisabled(true);
-        setIsDifficultDisabled(true);
         addNewWord(
             {
                 ...wordObj,
@@ -278,6 +293,7 @@ const MainCard = ({
                         difficult: isDifficultDisabled,
                         deleted: isDeletedDisabled,
                         repeat: true,
+                        easy: isEasyDisabled,
                     },
                 },
             },
@@ -288,7 +304,8 @@ const MainCard = ({
             isDeletedDisabled ||
             wordObj.userWord ||
             isRepeatDisabled ||
-            isEasyDisabled
+            isEasyDisabled ||
+            answerShown
         ) {
             await passedWordsApi.putPassedWords(userId, token, _id, {
                 difficulty: 'default',
@@ -296,7 +313,7 @@ const MainCard = ({
                     difficult: isDifficultDisabled,
                     deleted: isDeletedDisabled,
                     repeat: true,
-                    learned: true,
+                    learned: !!(Boolean(wordObj.userWord) || answerShown),
                 },
             });
         } else {
@@ -311,18 +328,23 @@ const MainCard = ({
 
     const handleEasyClick = async () => {
         setIsEasyDisabled(true);
-        setIsDifficultDisabled(true);
-        setIsRepeatDisabled(true);
         setAlertShown('easy');
 
-        if (isDifficultDisabled || wordObj.userWord || isRepeatDisabled || isDeletedDisabled) {
+        if (
+            isDifficultDisabled ||
+            wordObj.userWord ||
+            isRepeatDisabled ||
+            isDeletedDisabled ||
+            answerShown
+        ) {
             await passedWordsApi.putPassedWords(userId, token, _id, {
                 difficulty: 'default',
                 optional: {
                     easy: true,
                     difficult: isDifficultDisabled,
                     repeat: isRepeatDisabled,
-                    learned: Boolean(wordObj.userWord),
+                    learned: !!(Boolean(wordObj.userWord) || answerShown),
+                    deleted: isDeletedDisabled,
                 },
             });
         } else {
@@ -343,6 +365,11 @@ const MainCard = ({
             handleWordsTypeChanged(event.target.value);
         }
     };
+
+    const stats =
+        statistics.optional && statistics.optional.main
+            ? statistics.optional.main[statisticsActions.getDate()]
+            : null;
     return (
         <>
             <div className="card__wrapper">
@@ -359,36 +386,28 @@ const MainCard = ({
                             control={<Radio className={classes.rootRadioOption} />}
                             label="New"
                             labelPlacement="top"
-                            className={wordsType === 'new' && classes.label}
+                            className={wordsType === 'new' ? classes.label : undefined}
                         />
                         <FormControlLabel
                             value="mixed"
                             control={<Radio className={classes.rootRadioOption} />}
                             label="Mixed"
                             labelPlacement="top"
-                            className={wordsType === 'mixed' && classes.label}
+                            className={wordsType === 'mixed' ? classes.label : undefined}
                         />
                         <FormControlLabel
                             value="repeat"
                             control={<Radio className={classes.rootRadioOption} />}
                             label="Repeat words"
                             labelPlacement="top"
-                            className={wordsType === 'repeat' && classes.label}
+                            className={wordsType === 'repeat' ? classes.label : undefined}
                         />
                     </RadioGroup>
                 </FormControl>
                 <div className={classes.chartWrapper}>
                     <LinearProgressWithLabel
                         className={classes.chart}
-                        learned={
-                            statistics.optional[
-                                new Date().toISOString().slice(0, 10).replace(/-/g, '')
-                            ]
-                                ? statistics.optional[
-                                      new Date().toISOString().slice(0, 10).replace(/-/g, '')
-                                  ]
-                                : 0
-                        }
+                        learned={stats ? stats.l : 0}
                         toLearn={wordsPerDay}
                     />
                 </div>
@@ -407,14 +426,18 @@ const MainCard = ({
                                             title="Easy"
                                             placement="top"
                                             TransitionComponent={Zoom}
-                                            onClick={handleEasyClick}
                                         >
                                             <span>
                                                 <IconButton
                                                     variant="contained"
                                                     color="primary"
                                                     className={classes.icons}
-                                                    disabled={isEasyDisabled}
+                                                    disabled={
+                                                        isEasyDisabled ||
+                                                        isDifficultDisabled ||
+                                                        isRepeatDisabled
+                                                    }
+                                                    onClick={handleEasyClick}
                                                 >
                                                     <MoodIcon fontSize="small" />
                                                 </IconButton>
@@ -424,14 +447,18 @@ const MainCard = ({
                                             title="Difficult"
                                             placement="top"
                                             TransitionComponent={Zoom}
-                                            onClick={handleDifficultClick}
                                         >
                                             <span>
                                                 <IconButton
                                                     variant="contained"
                                                     color="primary"
                                                     className={classes.icons}
-                                                    disabled={isDifficultDisabled}
+                                                    disabled={
+                                                        isEasyDisabled ||
+                                                        isDifficultDisabled ||
+                                                        isRepeatDisabled
+                                                    }
+                                                    onClick={handleDifficultClick}
                                                 >
                                                     <MoodBadIcon fontSize="small" />
                                                 </IconButton>
@@ -441,13 +468,18 @@ const MainCard = ({
                                             title="Repeat in this round"
                                             placement="top"
                                             TransitionComponent={Zoom}
-                                            onClick={handleRepeatClick}
                                         >
                                             <IconButton
                                                 variant="contained"
                                                 color="primary"
                                                 className={classes.icons}
-                                                disabled={isRepeatDisabled}
+                                                disabled={
+                                                    isEasyDisabled ||
+                                                    isDifficultDisabled ||
+                                                    isRepeatDisabled ||
+                                                    isDeletedDisabled
+                                                }
+                                                onClick={handleRepeatClick}
                                             >
                                                 <LoopIcon fontSize="small" />
                                             </IconButton>
@@ -483,6 +515,7 @@ const MainCard = ({
                                 wordStatus={wordStatus}
                                 handleNewWord={handleNewWord}
                                 currentWordNumber={currentWordNumber}
+                                wordsType={wordsType}
                             />
 
                             {optional.isShowTextMeaning && (
@@ -516,7 +549,7 @@ const MainCard = ({
                                     variant="contained"
                                     color="primary"
                                     onClick={handleAnswerShow}
-                                    disabled={isAnswerDisabled}
+                                    disabled={isAnswerDisabled || answerShown}
                                 >
                                     Answer
                                 </Button>
@@ -526,7 +559,7 @@ const MainCard = ({
                                     variant="outlined"
                                     color="primary"
                                     onClick={handleDeleteClick}
-                                    disabled={isDeletedDisabled}
+                                    disabled={isDeletedDisabled || isRepeatDisabled}
                                 >
                                     Delete
                                 </Button>
@@ -568,15 +601,7 @@ const MainCard = ({
                 onClose={handleAlertClose}
                 color="primary"
             >
-                <Alert onClose={handleAlertClose}>
-                    {alertShown === 'deleted' &&
-                        'The word is added to deleted words. It will not appear again in training.'}
-                    {alertShown === 'difficult' &&
-                        'The word is added to difficult words. It will appear again in further trainings.'}
-                    {alertShown === 'repeat' && 'The word will appear again in this training.'}
-                    {alertShown === 'easy' &&
-                        'The word will not be shown again. You can resore it in vacabulary.'}
-                </Alert>
+                <Alert onClose={handleAlertClose} alertShown={alertShown} />
             </Snackbar>
         </>
     );
@@ -592,14 +617,14 @@ const mapDispatchToProps = (dispatch) => ({
     setIncorrectWordProvided: (isIncorrectWordProvided) => {
         dispatch(mainGameActions.setIncorrectWordProvided(isIncorrectWordProvided));
     },
-    setInitialState: (initialState) => {
-        dispatch(mainGameActions.setInitialState(initialState));
-    },
     setIsTranslationEnabled: (isTranslationEnabled) => {
         dispatch(mainGameActions.setIsTranslationEnabled(isTranslationEnabled));
     },
     addNewWord: (newWord, currentNumber) => {
         dispatch(mainGameActions.addNewWord(newWord, currentNumber));
+    },
+    setInitialState: (initialState) => {
+        dispatch(mainGameActions.setInitialState(initialState));
     },
 });
 
@@ -657,15 +682,16 @@ MainCard.propTypes = {
         correctWord: PropTypes.string,
         incorrectWord: PropTypes.string,
     }).isRequired,
-    setInitialState: PropTypes.func.isRequired,
     handleNewWord: PropTypes.func.isRequired,
     setIsTranslationEnabled: PropTypes.func.isRequired,
     isTranslationEnabled: PropTypes.bool.isRequired,
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
         optional: {
-            learnedWords: PropTypes.number,
-            optional: PropTypes.objectOf(PropTypes.string),
+            main: {
+                d: PropTypes.number.isRequired,
+                l: PropTypes.number.isRequired,
+            }.isRequired,
         },
     }).isRequired,
     userId: PropTypes.string.isRequired,
@@ -676,6 +702,7 @@ MainCard.propTypes = {
     wordsType: PropTypes.string.isRequired,
     handleSuccessAndErrors: PropTypes.func.isRequired,
     handleCountNewWords: PropTypes.func.isRequired,
+    setInitialState: PropTypes.func.isRequired,
 };
 
 MainCard.defaultProps = {

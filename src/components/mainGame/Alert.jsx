@@ -12,18 +12,28 @@ const useStyles = makeStyles({
     },
 });
 
-const Alert = ({ onClose, children }) => {
+const Alert = ({ onClose, alertShown }) => {
     const classes = useStyles();
     return (
         <MuiAlert elevation={6} variant="filled" onClose={onClose} className={classes.root}>
-            {children}
+            {alertShown === 'deleted' &&
+                'The word is added to deleted words. It will not appear again in training.'}
+            {alertShown === 'difficult' &&
+                'The word is added to difficult words. It will appear again in further trainings.'}
+            {alertShown === 'repeat' && 'The word will appear again in this training.'}
+            {alertShown === 'easy' &&
+                'The word will not be shown again. You can resore it in vacabulary.'}
         </MuiAlert>
     );
 };
 
 Alert.propTypes = {
     onClose: PropTypes.func.isRequired,
-    children: PropTypes.string.isRequired,
+    alertShown: PropTypes.string,
+};
+
+Alert.defaultProps = {
+    alertShown: '',
 };
 
 export default Alert;

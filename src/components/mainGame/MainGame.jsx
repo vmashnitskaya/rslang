@@ -105,6 +105,7 @@ const MainGame = ({
     statistics,
     updateStatics,
     settings,
+    setInitialState,
 }) => {
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
     const [isNewWordWillBeShown, setIsNewWordWillBeShown] = useState(false);
@@ -130,9 +131,11 @@ const MainGame = ({
 
     useEffect(() => {
         if (aggregatedWords === null) {
+            setInitialState('true');
             setWordsType('new');
             setAlertShown(true);
         } else {
+            setInitialState('true');
             setMainWords(aggregatedWords);
             setCurrentWordNumber(0);
         }
@@ -163,14 +166,15 @@ const MainGame = ({
                 );
             }
         }
-        if (
-            statistics.optional[new Date().toISOString().slice(0, 10).replace(/-/g, '')] ===
-            settings.wordsPerDay - 1
-        ) {
+        const stats =
+            statistics.optional && statistics.optional.main
+                ? statistics.optional.main[statisticsActions.getDate()]
+                : null;
+        if (stats && stats.l === settings.wordsPerDay - 1) {
             setIsPopUpOpened(true);
             setIsNewWordWillBeShown(true);
         } else {
-            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
+            updateStatics();
             increaseCurrentWordNumber();
         }
     }, [settings.wordsPerDay, currentWordNumber, increaseCurrentWordNumber]);
@@ -180,13 +184,14 @@ const MainGame = ({
     };
     useEffect(() => {
         if (!isPopUpOpened && isNewWordWillBeShown) {
-            updateStatics(new Date().toISOString().slice(0, 10).replace(/-/g, ''));
+            updateStatics();
             increaseCurrentWordNumber();
             setIsNewWordWillBeShown(false);
         }
     }, [isPopUpOpened, isNewWordWillBeShown]);
 
     const handleWordsTypeChanged = (type) => {
+        setInitialState('true');
         if (wordsType !== type && type === 'new') {
             setWordsType('new');
         } else if (wordsType !== type && type === 'mixed') {
@@ -254,38 +259,35 @@ const MainGame = ({
                         <span className="quote">
                             &ldquo;It always seems impossible until it&apos;s done.&ldquo;
                         </span>
-                        <Table>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell align="left">Amount of learned words</TableCell>
-                                    <TableCell align="center">{settings.wordsPerDay}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell align="left">
-                                        Percentage of sucessfull answers
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        {(successAndErrors.filter(
-                                            (element) => element === 'correct'
-                                        ).length *
-                                            100) /
-                                            settings.wordsPerDay}{' '}
-                                        %
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell align="left">Amount of new words</TableCell>
-                                    <TableCell align="center">{countOfNewWords - 1}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell align="left">Most successfull sequence</TableCell>
-                                    <TableCell align="center">
-                                        {handleMostSuccesfullSequence()}
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
                     </DialogContentText>
+                    <Table>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell align="left">Amount of learned words</TableCell>
+                                <TableCell align="center">{settings.wordsPerDay}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Percentage of sucessfull answers</TableCell>
+                                <TableCell align="center">
+                                    {(successAndErrors.filter((element) => element === 'correct')
+                                        .length *
+                                        100) /
+                                        settings.wordsPerDay}
+                                    %
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Amount of new words</TableCell>
+                                <TableCell align="center">{countOfNewWords - 1}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell align="left">Most successfull sequence</TableCell>
+                                <TableCell align="center">
+                                    {handleMostSuccesfullSequence()}
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary" autoFocus>
@@ -320,8 +322,11 @@ const mapDispatchToProps = (dispatch) => ({
     increaseCurrentWordNumber: () => {
         dispatch(mainGameActions.increaseCurrentWordNumber());
     },
-    updateStatics: (date) => {
-        dispatch(statisticsActions.updateStatics(date));
+    updateStatics: () => {
+        dispatch(statisticsActions.updateStatics());
+    },
+    setInitialState: (initialState) => {
+        dispatch(mainGameActions.setInitialState(initialState));
     },
 });
 
@@ -340,7 +345,7 @@ const mapStateToProps = (state) => ({
 MainGame.propTypes = {
     aggregatedWords: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             word: PropTypes.string,
             audio: PropTypes.string,
             image: PropTypes.string,
@@ -362,7 +367,7 @@ MainGame.propTypes = {
     fetchAggregatedWords: PropTypes.func.isRequired,
     mainWords: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.string,
+            _id: PropTypes.string,
             word: PropTypes.string,
             audio: PropTypes.string,
             image: PropTypes.string,
@@ -383,11 +388,14 @@ MainGame.propTypes = {
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
         optional: {
-            learnedWords: PropTypes.number,
-            optional: PropTypes.objectOf(PropTypes.string),
+            main: {
+                d: PropTypes.number.isRequired,
+                l: PropTypes.number.isRequired,
+            }.isRequired,
         },
     }).isRequired,
     updateStatics: PropTypes.func.isRequired,
+    setInitialState: PropTypes.func.isRequired,
 };
 
 MainGame.defaultProps = {

@@ -11,6 +11,7 @@ import settings from './components/router/storage/getSettingsRedux/settingsReduc
 import mainGame from './components/mainGame/redux/mainGameReducer';
 import statistics from './components/router/storage/getPutStatisticsRedux/statisticsReducer';
 import aggregatedWords from './components/router/storage/getAggregatedWordsRedux/aggregatedWordsReducer';
+import puzzle from './components/english-puzzle/redux/puzzleReducer';
 
 const reducer = combineReducers({
     navigation,
@@ -21,6 +22,7 @@ const reducer = combineReducers({
     statistics,
     aggregatedWords,
     speakIt,
+    puzzle,
     savannah,
 });
 

@@ -1,5 +1,6 @@
 import settingsTypes from './settingsTypes';
 import settingsApi from './settingsApi';
+import statisticsActions from '../getPutStatisticsRedux/statisticsActions';
 
 const fetchSettingsPending = () => ({
     type: settingsTypes.FETCH_SETTINGS_PENDING,
@@ -28,9 +29,10 @@ const fetchSettings = (userId, token) => async (dispatch) => {
         } else {
             dispatch(setDafaultSettings());
         }
+        dispatch(statisticsActions.saveWordsPerDay());
     } catch (e) {
         dispatch(fetchSettingsFailed(e.message));
     }
 };
 
-export default { fetchSettings };
+export default { fetchSettings, setDafaultSettings };
