@@ -46,7 +46,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
             (acc, key) => acc + gameStats[key],
             0
         );
-        setStatistics(numberLearnedWords, gameStats, gameStats.numberOfChosenRightWords);
+        setStatistics(numberLearnedWords, gameStats.numberOfChosenRightWords);
         return (
             <div className="stats">
                 <h2>Game over</h2>
