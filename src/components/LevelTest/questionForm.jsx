@@ -44,7 +44,11 @@ export default function QuestionForm() {
             <form onSubmit={handleSubmit}>
                 <Box className="form">
                     {questions.map((q) => (
-                        <FormControl component="fieldset" className={classes.formControl}>
+                        <FormControl
+                            component="fieldset"
+                            className={classes.formControl}
+                            key={JSON.stringify(q)}
+                        >
                             <FormLabel component="legend">{q.question}</FormLabel>
                             <RadioGroup
                                 aria-label="quiz"
