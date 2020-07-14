@@ -33,7 +33,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
         numberOfChosenWrongWords: 0,
     };
     const [gameStats, setGameStats] = useState(newGameStats);
-    const [backgroundClass, setBackgroundClass] = useState('audition__background_1');
+    const [backgroundClass, setBackgroundClass] = useState('1');
     let gameData = {};
     let chosenRightWord = false;
     let skipButton = {};
