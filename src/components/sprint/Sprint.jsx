@@ -21,6 +21,7 @@ const Sprint = () => {
                         onClose={onStart}
                         onChooseUserWords={onUserWords}
                         onComplexityChange={onComplexityChange}
+                        complexity={complexity}
                     />
                     {started && (
                         <App
