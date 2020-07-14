@@ -14,6 +14,10 @@ main {
             justify-content: center;
             align-items: center;
             width: 95%;
+
+            .end-game-icon {
+                float: left;
+            }
             .score_container {
                 margin: 0 auto;
                 display: flex;

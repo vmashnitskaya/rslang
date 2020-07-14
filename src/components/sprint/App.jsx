@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { Button, Box, Paper } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
+import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import Timer from './Timer';
 import WordContent from './WordContent';
-import './styles.scss';
 import useAggregatedWords from '../router/storage/hooks/useAggregatedWords';
 import ResultGame from './ResultGame';
 import Loading from './Loading';
 import { POINT_FOR_RIGHT_ANSWER, BONUS_POINTS, MAX_STRICK } from './constants';
+import './styles.scss';
 
 const shuffle = (array) => array.sort(() => Math.random() - 0.5);
 
@@ -99,6 +100,16 @@ export default function App({ userWordsOnly, complexity }) {
             {!loading && (
                 <Box className="wrapper">
                     <Box className="sprint-game">
+                        <Box>
+                            <Button
+                                onClick={() => {
+                                    setEndGame(true);
+                                    setIsPopUpOpened(true);
+                                }}
+                            >
+                                <CloseRoundedIcon fontSize="large" className="end-game-icon" />
+                            </Button>
+                        </Box>
                         <Box className="score_container">
                             {word && !endGame && <Timer onTimeOut={onTimeOut} />}
                             <Box>
