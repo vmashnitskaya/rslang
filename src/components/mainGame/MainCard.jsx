@@ -151,7 +151,8 @@ const MainCard = ({
 
     const handleGuessedWordProvided = async (guessedWord) => {
         const { optional } = word;
-        const learningDates = optional ? JSON.parse(optional.learningDates) || [] : [];
+        const learningDates =
+            optional && optional.learningDates ? JSON.parse(optional.learningDates) : [];
         const nextDay = intervalLearning(learningDates);
         if (word === guessedWord.trim()) {
             setCorrectWordProvided(guessedWord);
