@@ -17,7 +17,7 @@ const WeeklyAchivmentsWidget = ({ weeklyAchivments, wordsPerDay }) => {
             </div>
             <div className="allweek">
                 {weeklyAchivments.map((e) => (
-                    <div>
+                    <div key={`wstatwidday_${e.day}`}>
                         {e.value ? <CheckIcon /> : <ClearIcon />}
                         <p>{e.day}</p>
                     </div>
@@ -37,6 +37,7 @@ WeeklyAchivmentsWidget.propTypes = {
         PropTypes.exact({
             day: PropTypes.string.isRequired,
             value: PropTypes.bool.isRequired,
+            today: PropTypes.bool.isRequired,
         })
     ).isRequired,
     wordsPerDay: PropTypes.number.isRequired,
