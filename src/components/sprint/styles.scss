@@ -7,6 +7,8 @@ main {
         height: 100%;
         width: 100%;
         background-image: url(../../../public/assets/images/sprint-bg.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
 
         .sprint-game {
             height: 100vh;

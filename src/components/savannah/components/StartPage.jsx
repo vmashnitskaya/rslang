@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, ButtonGroup } from '@material-ui/core';
 import actions from '../storage/actions';
 import selectors from '../storage/selectors';
+import aggregatedWordsSelectors from '../../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 
 function StartPage({ settings, userHaveWords, fetchWords, setGroup, setUserWords }) {
     const buttons = [];
@@ -18,6 +19,12 @@ function StartPage({ settings, userHaveWords, fetchWords, setGroup, setUserWords
             </Button>
         );
     }
+
+    useEffect(() => {
+        if (userHaveWords) {
+            setUserWords();
+        }
+    }, [userHaveWords]);
 
     return (
         <div className="start_page">
@@ -84,7 +91,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
     settings: selectors.gameSettings(state),
-    userHaveWords: selectors.userHaveWords(state),
+    userHaveWords: aggregatedWordsSelectors.getWordsCount(state) >= 20,
 });
 
 StartPage.propTypes = {

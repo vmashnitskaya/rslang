@@ -2,7 +2,7 @@ import types from './types';
 import wordsApi from '../../router/storage/getWordsRedux/wordsApi';
 import utils from '../utils';
 import selectors from './selectors';
-import vocabluarySelectors from '../../vocabulary/redux/vocabularySelectors';
+import aggregatedWordsSelectors from '../../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 
 const gamePlan = {
     set: (payload) => ({ type: types.SET_GAME_PLAN, payload }),
@@ -36,9 +36,8 @@ const words = {
             let correctWords = [];
             if (!userWords) {
                 correctWords = await wordsApi.fetchWords(page, group);
-                console.log(correctWords);
             } else {
-                const rawWords = vocabluarySelectors.getWords(getState(), 'learned').slice();
+                const rawWords = aggregatedWordsSelectors.getAggregatedWords(getState()).slice();
                 correctWords = utils.shuffle(rawWords).slice(0, 20);
             }
             if (!correctWords || correctWords.length < 20) {

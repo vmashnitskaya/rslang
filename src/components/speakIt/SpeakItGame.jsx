@@ -101,12 +101,17 @@ const SpeakItGame = ({
     loadingAggr,
     errorAggr,
     fetchAggregatedWords,
+    setInitialState,
 }) => {
     const speechRecognitionRef = useRef();
     const [wordsType, setWordsType] = useState('new');
     const [alertShown, setAlertShown] = useState(false);
 
     const classes = useStyles();
+
+    useEffect(() => {
+        setInitialState();
+    }, []);
 
     useEffect(() => {
         if (userId && token && wordsType === 'repeat') {
@@ -283,14 +288,14 @@ const SpeakItGame = ({
                         control={<Radio className={classes.rootRadioOption} />}
                         label="New"
                         labelPlacement="top"
-                        className={wordsType === 'new' && classes.label}
+                        className={wordsType === 'new' ? classes.label : undefined}
                     />
                     <FormControlLabel
                         value="repeat"
                         control={<Radio className={classes.rootRadioOption} />}
                         label="Repeat words"
                         labelPlacement="top"
-                        className={wordsType === 'repeat' && classes.label}
+                        className={wordsType === 'repeat' ? classes.label : undefined}
                     />
                 </RadioGroup>
             </FormControl>
@@ -369,9 +374,12 @@ const SpeakItGame = ({
                 onClose={handleAlertClose}
                 color="primary"
             >
-                <Alert onClose={handleAlertClose}>
-                    {alertShown && "No words to repeat. Let's continue with new ones."}
-                </Alert>
+                <Alert
+                    onClose={handleAlertClose}
+                    alertShown={
+                        alertShown ? "No words to repeat. Let's continue with new ones." : ''
+                    }
+                />
             </Snackbar>
         </div>
     );
@@ -410,6 +418,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
         dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
+    },
+    setInitialState: () => {
+        dispatch(speakItActions.setInitialState());
     },
 });
 
@@ -487,8 +498,9 @@ SpeakItGame.propTypes = {
         })
     ).isRequired,
     loadingAggr: PropTypes.bool.isRequired,
-    errorAggr: PropTypes.bool.isRequired,
+    errorAggr: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
+    setInitialState: PropTypes.func.isRequired,
 };
 
 SpeakItGame.defaultProps = {
@@ -497,6 +509,7 @@ SpeakItGame.defaultProps = {
     selectedCard: {},
     speechText: '',
     cards: [],
+    errorAggr: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpeakItGame);
