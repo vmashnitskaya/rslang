@@ -349,7 +349,7 @@ const EnglishPuzzleGame = ({
     };
 
     const startNewLevel = () => {
-        setStatistics(10, 10);
+        setStatistics(10);
         if (option < maxOption) {
             setPagination({ ...pagination, option: pagination.option + 1 });
         } else if (level < maxLevel) {
@@ -625,8 +625,8 @@ const mapDispatchToProps = (dispatch) => ({
     setDefaultState: () => {
         dispatch(puzzleActions.setDefaultState());
     },
-    setStatistics: (total, correct) =>
-        dispatch(statisticsActions.updateStaticsMiniGame('puzzle', total, correct)),
+    setStatistics: (correct) =>
+        dispatch(statisticsActions.updateStaticsMiniGame('puzzle', 10, correct)),
 });
 
 const mapStateToProps = (state) => ({

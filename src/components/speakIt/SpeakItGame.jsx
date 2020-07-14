@@ -250,7 +250,7 @@ const SpeakItGame = ({
 
     useEffect(() => {
         if (guessedWords.length === 10) {
-            setStatistics(10, 10);
+            setStatistics(10);
             handlePopUpOpened();
         }
     }, [guessedWords, handlePopUpOpened]);
@@ -416,8 +416,8 @@ const mapDispatchToProps = (dispatch) => ({
     fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
         dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
     },
-    setStatistics: (total, correct) =>
-        dispatch(statisticsActions.updateStaticsMiniGame('speakit', total, correct)),
+    setStatistics: (correct) =>
+        dispatch(statisticsActions.updateStaticsMiniGame('speakit', 10, correct)),
 });
 
 const mapStateToProps = (state) => ({
