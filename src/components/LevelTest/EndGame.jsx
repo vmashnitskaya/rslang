@@ -8,7 +8,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function EndGame({ score, open, setOpen }) {
-    console.log(score);
     const handleClose = () => {
         setOpen(false);
     };
