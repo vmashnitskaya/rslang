@@ -82,7 +82,7 @@ const ResultGame = ({ open, unGuessedWords, guessedWords, onNewGame }) => {
 ResultGame.propTypes = {
     open: PropTypes.bool.isRequired,
     unGuessedWords: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-    guessedWords: PropTypes.arrayOf(PropTypes.string).isRequired,
+    guessedWords: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
     onNewGame: PropTypes.func.isRequired,
 };
 

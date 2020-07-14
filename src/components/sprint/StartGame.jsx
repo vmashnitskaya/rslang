@@ -107,6 +107,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                             currentComplexity={complexity}
                             onComplexityChange={handleComplexityChange}
                             complexityArray={[0, 1, 2, 3, 4, 5]}
+                            wordsType=""
                         />
                     </Box>
                 )}
