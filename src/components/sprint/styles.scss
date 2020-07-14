@@ -6,7 +6,9 @@ main {
         margin: 0 auto;
         height: 100%;
         width: 100%;
-        background-image: url(../../../public/assets/images/sprint-bg.jpg);
+        background-image: url("/assets/images/sprint.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
         .sprint-game {
             height: 100vh;
             display: flex;

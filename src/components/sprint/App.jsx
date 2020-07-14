@@ -123,14 +123,14 @@ export default function App({ userWordsOnly, complexity }) {
                                     className="button_wrong"
                                     variant="contained"
                                 >
-                                    Неверно
+                                    Incorrect
                                 </Button>
                                 <Button
                                     onClick={() => handleAnswer(true)}
                                     className="button_right"
                                     variant="contained"
                                 >
-                                    Верно
+                                    Correct
                                 </Button>
                                 <ResultGame
                                     open={isPopUpOpened}
