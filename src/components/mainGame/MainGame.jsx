@@ -111,8 +111,6 @@ const MainGame = ({
     const [isNewWordWillBeShown, setIsNewWordWillBeShown] = useState(false);
     const [wordsType, setWordsType] = useState('new');
     const [alertShown, setAlertShown] = useState(false);
-    const [successAndErrors, setSuccessAndErrors] = useState([]);
-    const [countOfNewWords, setCountOfNewWords] = useState(0);
 
     useEffect(() => {
         if (settings.optional && wordsType && wordsType === 'new') {
@@ -205,32 +203,6 @@ const MainGame = ({
         setAlertShown(false);
     };
 
-    const handleSuccessAndErrors = (result) => {
-        if (successAndErrors.length === currentWordNumber) {
-            setSuccessAndErrors((prevState) => [...prevState, result]);
-        }
-    };
-
-    const handleCountNewWords = () => {
-        setCountOfNewWords(countOfNewWords + 1);
-    };
-
-    const handleMostSuccesfullSequence = () => {
-        let result = 1;
-        let count = 0;
-        successAndErrors.slice(successAndErrors.indexOf('correct')).forEach((element, index) => {
-            if (element === successAndErrors[index + 1]) {
-                count += 1;
-            } else {
-                if (result < count) {
-                    result = count;
-                }
-                count = 0;
-            }
-        });
-        return result;
-    };
-
     return loading || error || mainWords.length === 0 ? (
         <Loading error={error} settingsError={false} />
     ) : (
@@ -243,8 +215,6 @@ const MainGame = ({
                 currentWordNumber={currentWordNumber}
                 handleWordsTypeChanged={handleWordsTypeChanged}
                 wordsType={wordsType}
-                handleSuccessAndErrors={handleSuccessAndErrors}
-                handleCountNewWords={handleCountNewWords}
             />
             <Dialog
                 open={isPopUpOpened}
@@ -264,26 +234,33 @@ const MainGame = ({
                         <TableBody>
                             <TableRow>
                                 <TableCell align="left">Amount of learned words</TableCell>
-                                <TableCell align="center">{settings.wordsPerDay}</TableCell>
+                                <TableCell align="center">
+                                    {statistics.optional.main[statisticsActions.getDate()] &&
+                                        statistics.optional.main[statisticsActions.getDate()].l + 1}
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell align="left">Percentage of sucessfull answers</TableCell>
                                 <TableCell align="center">
-                                    {(successAndErrors.filter((element) => element === 'correct')
-                                        .length *
-                                        100) /
-                                        settings.wordsPerDay}
+                                    {statistics.optional.main[statisticsActions.getDate()] &&
+                                        (statistics.optional.main[statisticsActions.getDate()].s *
+                                            100) /
+                                            settings.wordsPerDay}
                                     %
                                 </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell align="left">Amount of new words</TableCell>
-                                <TableCell align="center">{countOfNewWords - 1}</TableCell>
+                                <TableCell align="center">
+                                    {statistics.optional.main[statisticsActions.getDate()] &&
+                                        statistics.optional.main[statisticsActions.getDate()].n}
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell align="left">Most successfull sequence</TableCell>
                                 <TableCell align="center">
-                                    {handleMostSuccesfullSequence()}
+                                    {statistics.optional.main[statisticsActions.getDate()] &&
+                                        statistics.optional.main[statisticsActions.getDate()].msq}
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -387,12 +364,16 @@ MainGame.propTypes = {
     increaseCurrentWordNumber: PropTypes.func.isRequired,
     statistics: PropTypes.shape({
         learnedWords: PropTypes.number,
-        optional: {
-            main: {
+        optional: PropTypes.shape({
+            main: PropTypes.shape({
                 d: PropTypes.number.isRequired,
                 l: PropTypes.number.isRequired,
-            }.isRequired,
-        },
+                s: PropTypes.number.isRequired,
+                e: PropTypes.number.isRequired,
+                sq: PropTypes.number.isRequired,
+                msq: PropTypes.number.isRequired,
+            }).isRequired,
+        }),
     }).isRequired,
     updateStatics: PropTypes.func.isRequired,
     setInitialState: PropTypes.func.isRequired,

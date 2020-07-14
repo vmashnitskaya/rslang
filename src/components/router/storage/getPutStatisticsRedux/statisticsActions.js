@@ -32,6 +32,17 @@ const setMinigameStatistics = (game, totalWords, correctAnswers) => ({
     payload: { game, totalWords, correctAnswers },
 });
 
+const incSuccess = () => ({
+    type: statisticsTypes.INC_SUCCESS,
+});
+
+const incErrors = () => ({
+    type: statisticsTypes.INC_ERRORS,
+});
+const incNewWords = () => ({
+    type: statisticsTypes.INC_NEW_WORD,
+});
+
 const fetchStatistics = (userId, token) => async (dispatch) => {
     try {
         dispatch(fetchStatisticsPending());
@@ -86,4 +97,7 @@ export default {
     setDafaultStatistics,
     getDate,
     getDateAndTime,
+    incSuccess,
+    incErrors,
+    incNewWords,
 };

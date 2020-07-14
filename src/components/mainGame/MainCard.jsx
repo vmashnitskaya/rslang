@@ -96,9 +96,10 @@ const MainCard = ({
     currentWordNumber,
     handleWordsTypeChanged,
     wordsType,
-    handleSuccessAndErrors,
-    handleCountNewWords,
+    incNewWords,
     setInitialState,
+    incSuccess,
+    incErrors,
 }) => {
     const {
         _id,
@@ -134,16 +135,17 @@ const MainCard = ({
     const [isAnswerDisabled, setIsAnswerDisabled] = useState(false);
     const [isEasyDisabled, setIsEasyDisabled] = useState(false);
     const [answerShown, setAnswerShown] = useState(false);
+    const [firstTry, setFirstTry] = useState(true);
+
+    useEffect(() => {
+        setFirstTry(true);
+    }, [word]);
 
     useEffect(() => {
         setIsDeletedDisabled(wordObj.userWord ? wordObj.userWord.optional.deleted : false);
         setIsDifficultDisabled(wordObj.userWord ? wordObj.userWord.optional.difficult : false);
         setIsNewWord(!wordObj.userWord);
-        if (!wordObj.userWord) {
-            handleCountNewWords();
-        }
         setIsRepeatDisabled(wordObj.userWord ? wordObj.userWord.optional.repeat : false);
-
         setIsSoundEnabled(false);
         setIsAnswerDisabled(false);
         setIsEasyDisabled(false);
@@ -153,11 +155,17 @@ const MainCard = ({
 
     const handleGuessedWordProvided = async (guessedWord) => {
         if (word === guessedWord.trim()) {
+            if (firstTry) {
+                incSuccess();
+                setFirstTry(false);
+            }
+            if (!wordObj.userWord) {
+                incNewWords();
+            }
             setCorrectWordProvided(guessedWord);
             if (isAutoSoundEnabled && !isSoundEnabled) {
                 setIsSoundEnabled(true);
             }
-            handleSuccessAndErrors('correct');
             setAnswerShown(true);
             if (
                 isDifficultDisabled ||
@@ -186,7 +194,10 @@ const MainCard = ({
             }
         } else {
             setIncorrectWordProvided(guessedWord);
-            handleSuccessAndErrors('incorrect');
+            if (firstTry) {
+                incErrors();
+                setFirstTry(false);
+            }
             addNewWord(
                 {
                     ...wordObj,
@@ -626,6 +637,15 @@ const mapDispatchToProps = (dispatch) => ({
     setInitialState: (initialState) => {
         dispatch(mainGameActions.setInitialState(initialState));
     },
+    incSuccess: () => {
+        dispatch(statisticsActions.incSuccess());
+    },
+    incErrors: () => {
+        dispatch(statisticsActions.incErrors());
+    },
+    incNewWords: () => {
+        dispatch(statisticsActions.incNewWords());
+    },
 });
 
 const mapStateToProps = (state) => ({
@@ -700,9 +720,10 @@ MainCard.propTypes = {
     currentWordNumber: PropTypes.number,
     handleWordsTypeChanged: PropTypes.func.isRequired,
     wordsType: PropTypes.string.isRequired,
-    handleSuccessAndErrors: PropTypes.func.isRequired,
-    handleCountNewWords: PropTypes.func.isRequired,
+    incNewWords: PropTypes.func.isRequired,
     setInitialState: PropTypes.func.isRequired,
+    incSuccess: PropTypes.func.isRequired,
+    incErrors: PropTypes.func.isRequired,
 };
 
 MainCard.defaultProps = {
