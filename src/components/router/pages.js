@@ -55,7 +55,7 @@ const pages = [
         userMenuPage: false,
         auth: false,
         minigame: true,
-        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description: 'Determine if the word and translation match in 1 minute.',
     },
     {
         component: SpeakItGame,
