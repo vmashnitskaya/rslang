@@ -5,6 +5,7 @@ import AboutTeam from '../aboutTeam/index';
 import Sprint from '../sprint/Sprint';
 import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
+import Audition from '../audition';
 import SavannahGame from '../savannah';
 import MainGame from '../mainGame/index';
 import EnglishPuzzle from '../english-puzzle';
@@ -77,6 +78,12 @@ const pages = [
         minigame: true,
         description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
         img: '/assets/images/puzzle.jpg',
+    },
+    {
+        component: Audition,
+        title: 'Audition',
+        url: '/audition',
+        img: '',
     },
     {
         component: SavannahGame,

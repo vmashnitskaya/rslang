@@ -36,6 +36,7 @@ import { getToken, getUserId } from '../router/storage/selectors';
 import Alert from './Alert';
 import mainGameSelectors from './redux/mainGameSelectors';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import { intervalLearning } from './intervalLearning';
 
 import './MainCard.scss';
 
@@ -154,6 +155,10 @@ const MainCard = ({
     }, [word, currentWordNumber]);
 
     const handleGuessedWordProvided = async (guessedWord) => {
+        const { optional } = word;
+        const learningDates =
+            optional && optional.learningDates ? JSON.parse(optional.learningDates) : [];
+        const nextDay = intervalLearning(learningDates);
         if (word === guessedWord.trim()) {
             if (firstTry) {
                 incSuccess();
@@ -182,6 +187,7 @@ const MainCard = ({
                         repeat: isRepeatDisabled,
                         easy: isEasyDisabled,
                         learned: true,
+                        learningDates: JSON.stringify([...learningDates, nextDay]),
                     },
                 });
             } else {
@@ -207,6 +213,7 @@ const MainCard = ({
                             difficult: isDifficultDisabled,
                             deleted: isDeletedDisabled,
                             repeat: true,
+                            learningDates: JSON.stringify([]),
                         },
                     },
                 },
