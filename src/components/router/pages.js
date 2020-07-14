@@ -82,7 +82,7 @@ const pages = [
         component: SavannahGame,
         title: 'Savannah',
         url: '/Savannah',
-        img: '/assets/images/draw.jpg',
+        img: '/assets/images/savannah.jpg',
         exact: true,
         userMenuPage: false,
         auth: false,

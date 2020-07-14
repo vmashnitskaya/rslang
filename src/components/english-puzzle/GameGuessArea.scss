@@ -11,7 +11,7 @@ $base-color: #eceff1;
         height: 35px;
         background-color: transparent;
         .guessed-word {
-            background-color: darken($color: $base-color, $amount: 10);
+            background-color: darken($color: $base-color, $amount: 5);
             border: 1px solid black;
             padding-top: 8px;
             font-size: 12px;
@@ -21,7 +21,7 @@ $base-color: #eceff1;
             position: relative;
             outline: none;
             span {
-                background-color: darken($color: $base-color, $amount: 10);
+                background-color: darken($color: $base-color, $amount: 5);
             }
             .text {
                 display: block;

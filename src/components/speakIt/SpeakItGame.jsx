@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
     },
     label: {
-        color: theme.palette.primary.main,
+        color: theme.palette.darken.main,
     },
 }));
 
@@ -130,7 +130,7 @@ const SpeakItGame = ({
     useEffect(() => {
         setSelectedCard(null);
         setGuessedWords([]);
-        if (wordsType === 'repeat' && aggregatedWords.length && aggregatedWords.length > 10) {
+        if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length > 10) {
             setCards(
                 aggregatedWords
                     .slice(0, 10)
@@ -144,11 +144,7 @@ const SpeakItGame = ({
                     .sort(() => Math.random() - 0.5)
             );
             setSelectedCard(null);
-        } else if (
-            wordsType === 'repeat' &&
-            aggregatedWords.length &&
-            aggregatedWords.length < 10
-        ) {
+        } else if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length < 10) {
             setWordsType('new');
             setAlertShown(true);
         } else if (words) {

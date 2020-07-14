@@ -5,7 +5,7 @@ import './StartPage.scss';
 
 const StartPage = ({ onStart }) => (
     <section className="start-page-speakIt">
-        <h1>Speakit</h1>
+        <h2>SPEAKIT</h2>
         <p>
             Click on the words to hear them sound.
             <br />
