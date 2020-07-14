@@ -1,5 +1,4 @@
 .start-page {
-
     &_wrapper {
         width: 100%;
     }
@@ -10,12 +9,23 @@
         flex-direction: column;
         align-items: center;
         height: 90vh;
+        background-image: url("/assets/images/sprint.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
 
-        &__name, &__rules {
+        &__name {
+            font-size: 40px;
+            opacity: 0.8;
+            letter-spacing: 13px;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        &__rules {
             font-family: "Roboto", "Helvetica", "Arial", sans-serif;
             align-content: center;
             align-items: center;
-            margin: 10px;
+            font-size: 22px;
         }
     }
 
@@ -31,6 +41,4 @@
             margin: 0 10px;
         }
     }
-
 }
-

@@ -136,7 +136,7 @@ const MainGame = ({
         if (aggregatedWords === null) {
             setInitialState('true');
             setWordsType('new');
-            setAlertShown(true);
+            setAlertShown('noWords');
         } else {
             setInitialState('true');
             setMainWords(aggregatedWords);
@@ -205,7 +205,7 @@ const MainGame = ({
     };
 
     const handleAlertClose = () => {
-        setAlertShown(false);
+        setAlertShown('');
     };
 
     return loading || error || mainWords.length === 0 ? (
@@ -283,9 +283,7 @@ const MainGame = ({
                 onClose={handleAlertClose}
                 color="primary"
             >
-                <Alert onClose={handleAlertClose}>
-                    {alertShown && "No words to repeat. Let's continue with new ones."}
-                </Alert>
+                <Alert onClose={handleAlertClose} alertShown={alertShown} />
             </Snackbar>
         </>
     );

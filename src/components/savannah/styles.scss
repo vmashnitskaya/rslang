@@ -1,36 +1,35 @@
 .savannah {
     height: calc(100vh - 64px);
     padding-top: 64px;
-    background-image: url('/assets/images/bg-savannah.svg');
+    background-image: url("/assets/images/savannah.jpg");
     background-repeat: no-repeat;
     background-position-y: 100%;
     background-position-x: center;
     transition: all 1s ease;
     overflow: hidden;
 
-    .start_page{
+    .start_page {
         display: grid;
         grid-template-rows: 1fr 2fr 1fr;
         justify-items: center;
         align-items: center;
-        color: #6cffde;
         height: 100%;
         padding: 0 20px;
 
-        h2{
+        h2 {
             font-size: 40px;
-            opacity: .8;
+            opacity: 0.8;
             letter-spacing: 13px;
             font-weight: 300;
             text-align: center;
         }
 
-        p{
+        p {
             font-size: 22px;
-            opacity: .8;
+            opacity: 0.8;
         }
 
-        .level{
+        .level {
             display: flex;
 
             @media (max-width: 550px) {
@@ -38,23 +37,23 @@
                 align-items: center;
             }
 
-            &>p{
+            & > p {
                 color: white;
             }
 
-            &>div{
+            & > div {
                 display: grid;
                 justify-items: center;
                 margin: 0 35px;
             }
         }
 
-        .start_btn{
+        .start_btn {
             padding: 15px 30px;
         }
     }
 
-    .game{
+    .game {
         height: 100%;
         color: white;
         display: grid;
@@ -79,7 +78,7 @@
                     top: -7px;
                     width: 95px;
                     height: 131px;
-                    background: url('/assets/images/timer/round1.png') no-repeat;
+                    background: url("/assets/images/timer/round1.png") no-repeat;
                     background-size: cover;
                     animation: rotate-animate 2s linear infinite;
                     transform-origin: 65px 66px;
@@ -91,7 +90,7 @@
                     top: -7px;
                     width: 111px;
                     height: 57px;
-                    background: url('/assets/images/timer/round2.png') no-repeat;
+                    background: url("/assets/images/timer/round2.png") no-repeat;
                     background-size: cover;
                     animation: rotate-animate 2s linear infinite;
                     transform-origin: 46px 64px;
@@ -103,7 +102,7 @@
                     top: 31px;
                     width: 53px;
                     height: 74px;
-                    background: url('/assets/images/timer/round3.png') no-repeat;
+                    background: url("/assets/images/timer/round3.png") no-repeat;
                     background-size: cover;
                     animation: rotate-animate 2s linear infinite;
                     transform-origin: -1px 26px;
@@ -122,40 +121,40 @@
                 }
             }
 
-            .hint{
+            .hint {
                 display: grid;
                 justify-items: center;
                 opacity: 0.7;
 
-                img{
+                img {
                     width: 40px;
                     height: 32px;
                 }
             }
         }
 
-        &_header{
+        &_header {
             display: flex;
             justify-content: flex-end;
 
-            .lives{
+            .lives {
                 display: flex;
                 margin-right: 30px;
                 margin-top: 7px;
 
-                i{
+                i {
                     margin: 0 4px;
                     font-size: 20px;
                 }
             }
 
-            .close_game{
+            .close_game {
                 font-size: 30px;
                 cursor: pointer;
             }
         }
 
-        &_answers{
+        &_answers {
             display: grid;
             grid-auto-flow: column;
             justify-content: center;
@@ -172,11 +171,11 @@
                 grid-template-columns: auto;
             }
 
-            div{
+            div {
                 font-size: 24px;
                 max-width: 270px;
                 padding: 20px;
-                transition: all .15s ease;
+                transition: all 0.15s ease;
                 border-radius: 2px;
                 cursor: pointer;
                 margin: 0 20px;
@@ -186,19 +185,19 @@
                     margin: 0;
                 }
 
-                &:hover{
-                    background: hsla(0,0%,100%,.1);
+                &:hover {
+                    background: hsla(0, 0%, 100%, 0.1);
                 }
 
-                span{
-                    opacity: .79;
+                span {
+                    opacity: 0.79;
                     font-size: 18px;
                     margin-right: 5px;
                 }
             }
         }
 
-        .question{
+        .question {
             position: fixed;
             left: 0;
             top: 0;
@@ -214,19 +213,19 @@
             transition: transform 5s ease-in;
             pointer-events: none;
 
-            .word{
+            .word {
                 position: absolute;
                 transform-origin: 50% bottom;
-                transition: all .3s ease;
+                transition: all 0.3s ease;
                 transform: translate(-50%);
                 display: inline-block;
                 left: 50%;
             }
-            .fail{
-                transition: letter-spacing .6s ease;
+            .fail {
+                transition: letter-spacing 0.6s ease;
                 letter-spacing: 100px;
             }
-            .success{
+            .success {
                 width: 2px;
                 height: 25px;
                 background-color: #fff;
@@ -236,24 +235,24 @@
             }
         }
 
-        .start{
-            transition: all .5s ease;
+        .start {
+            transition: all 0.5s ease;
             opacity: 0;
         }
-        .fall{
+        .fall {
             transform: translateY(50%);
             transition: all 5s linear;
         }
-        .success_fall{
-            opacity: .5;
+        .success_fall {
+            opacity: 0.5;
             transform: translateY(85%);
-            transition: all .5s cubic-bezier(.47,0,.745,.715);
+            transition: all 0.5s cubic-bezier(0.47, 0, 0.745, 0.715);
         }
-        .success_hide{
+        .success_hide {
             display: none;
         }
 
-        .crystal{
+        .crystal {
             display: grid;
             justify-content: center;
             align-self: center;
@@ -262,43 +261,43 @@
             height: 114px;
             position: relative;
 
-            .img-move{
+            .img-move {
                 width: 72px;
                 height: 120px;
                 animation: animate-vertical 2s linear infinite;
 
-                &_bg{
+                &_bg {
                     position: absolute;
                     left: 0;
                     top: 0;
                     right: 0;
                     bottom: 0;
-                    transform: scale(.3);
+                    transform: scale(0.3);
 
-                    &-inner{
+                    &-inner {
                         display: block;
                         position: absolute;
                         top: 0;
                         left: 0;
                         width: 100%;
                         height: 100%;
-                        background: url('/assets/images/crystal/bg.png') no-repeat;
+                        background: url("/assets/images/crystal/bg.png") no-repeat;
                         background-size: cover;
                         opacity: 0;
                         visibility: hidden;
                         transform-origin: 50% 50%;
                     }
                 }
-                &_imgs{
+                &_imgs {
                     position: absolute;
                     left: 0;
                     right: 0;
                     top: 0;
                     bottom: 0;
-                    transform: scale(.3);
-                    transition: all .15s ease;
+                    transform: scale(0.3);
+                    transition: all 0.15s ease;
 
-                    i{
+                    i {
                         position: absolute;
                         left: 0;
                         top: 0;
@@ -309,26 +308,26 @@
                         background-size: cover;
                     }
 
-                    .img-1{
+                    .img-1 {
                         animation-delay: 0s;
                         opacity: 0;
-                        background-image: url('/assets/images/crystal/img1.png');
+                        background-image: url("/assets/images/crystal/img1.png");
                     }
 
-                    .img-2{
+                    .img-2 {
                         animation-delay: 1.5s;
                         opacity: 0;
-                        background-image: url('/assets/images/crystal/img2.png');
+                        background-image: url("/assets/images/crystal/img2.png");
                     }
-                    .img-3{
+                    .img-3 {
                         animation-delay: 3s;
                         opacity: 0;
-                        background-image: url('/assets/images/crystal/img3.png');
+                        background-image: url("/assets/images/crystal/img3.png");
                     }
-                    .img-4{
+                    .img-4 {
                         animation-delay: 4.5s;
                         opacity: 0;
-                        background-image: url('/assets/images/crystal/img4.png');
+                        background-image: url("/assets/images/crystal/img4.png");
                     }
                 }
             }
@@ -340,7 +339,7 @@
                 top: 3px;
                 bottom: 0;
                 opacity: 0;
-                transition: opacity .5s ease;
+                transition: opacity 0.5s ease;
 
                 .round1 {
                     position: absolute;
@@ -348,7 +347,7 @@
                     top: -7px;
                     width: 95px;
                     height: 131px;
-                    background: url('/assets/images/timer/round1.png') no-repeat;
+                    background: url("/assets/images/timer/round1.png") no-repeat;
                     background-size: cover;
                     animation: rotate-animate 2s linear infinite;
                     transform-origin: 65px 66px;
@@ -360,7 +359,7 @@
                     top: -7px;
                     width: 111px;
                     height: 57px;
-                    background: url('/assets/images/timer/round2.png') no-repeat;
+                    background: url("/assets/images/timer/round2.png") no-repeat;
                     background-size: cover;
                     animation: rotate-animate 2s linear infinite;
                     transform-origin: 46px 64px;
@@ -372,15 +371,15 @@
                     top: 31px;
                     width: 53px;
                     height: 74px;
-                    background: url('/assets/images/timer/round3.png') no-repeat;
+                    background: url("/assets/images/timer/round3.png") no-repeat;
                     background-size: cover;
                     animation: rotate-animate 2s linear infinite;
                     transform-origin: -1px 26px;
                 }
             }
 
-            .points{
-                i{
+            .points {
+                i {
                     height: 2px;
                     width: 2px;
                     border-radius: 2px;
@@ -388,214 +387,213 @@
                     position: absolute;
                 }
 
-                .point1{
+                .point1 {
                     left: 39px;
                     top: 46px;
                     animation: animate-point1 2s linear infinite;
                 }
-                .point2{
+                .point2 {
                     left: 43px;
                     top: 50px;
                     transform-origin: 20px 20px;
                     animation: animate-point2 4s linear infinite;
-                    animation-delay: .7s;
+                    animation-delay: 0.7s;
                 }
-                .point3{
+                .point3 {
                     left: 47px;
                     top: 65px;
                     transform-origin: 15px 15px;
                     animation: animate-point2 4s linear infinite;
-                    animation-delay: .4s;
+                    animation-delay: 0.4s;
                 }
-                .point4{
+                .point4 {
                     left: 79px;
                     top: 74px;
                     animation: animate-point1 2s linear infinite;
-                    animation-delay: .5s;
+                    animation-delay: 0.5s;
                 }
-                .point5{
+                .point5 {
                     left: 73px;
                     top: 85px;
                     animation: animate-point1 2s linear infinite;
-                    animation-delay: .7s;
+                    animation-delay: 0.7s;
                 }
-                .point6{
+                .point6 {
                     left: 67px;
                     top: 57px;
                     transform-origin: -10px -10px;
                     animation: animate-point6 2s linear infinite;
-                    animation-delay: .7s;
+                    animation-delay: 0.7s;
                 }
-                .point7{
+                .point7 {
                     left: 67px;
                     top: 57px;
                     transform-origin: -10px -10px;
                     animation: animate-point6 2s linear infinite;
-                    animation-delay: .7s;
+                    animation-delay: 0.7s;
                 }
-                .point8{
+                .point8 {
                     left: 67px;
                     top: 51px;
                     transform-origin: -7px -8px;
                     animation: animate-point8 2s linear infinite;
-                    animation-delay: .5s;
+                    animation-delay: 0.5s;
                 }
-                .point9{
+                .point9 {
                     left: 65px;
                     top: 94px;
                     animation: animate-point1 2s linear infinite;
-                    animation-delay: .9s;
+                    animation-delay: 0.9s;
                 }
-                .point10{
+                .point10 {
                     left: 43px;
                     top: 35px;
                     animation: animate-point1 2s linear infinite;
-                    animation-delay: .9s;
+                    animation-delay: 0.9s;
                 }
             }
         }
     }
-
 }
 
-@keyframes rotate-animate{
-    0%{
+@keyframes rotate-animate {
+    0% {
         transform: rotate(0deg);
     }
-    100%{
+    100% {
         transform: rotate(1turn);
     }
 }
 
-@keyframes animate-vertical{
-    0%{
+@keyframes animate-vertical {
+    0% {
         transform: translate(0);
     }
-    23%{
+    23% {
         transform: translateY(-6px);
     }
-    25%{
+    25% {
         transform: translateY(-7px);
     }
-    28%{
+    28% {
         transform: translateY(-6px);
     }
-    50%{
+    50% {
         transform: translate(0);
     }
-    72%{
+    72% {
         transform: translateY(6px);
     }
-    75%{
+    75% {
         transform: translateY(7px);
     }
-    78%{
+    78% {
         transform: translateY(6px);
     }
-    100%{
+    100% {
         transform: translate(0);
     }
 }
 
-@keyframes animate-image{
-    0%{
+@keyframes animate-image {
+    0% {
         opacity: 0;
     }
-    10%{
+    10% {
         opacity: 1;
     }
-    25%{
+    25% {
         opacity: 1;
     }
-    35%{
+    35% {
         opacity: 0;
     }
-    100%{
+    100% {
         opacity: 0;
     }
 }
 
-@keyframes animate-point1{
-    0%{
+@keyframes animate-point1 {
+    0% {
         opacity: 0;
         transform: scale(0);
     }
-    10%{
+    10% {
         opacity: 1;
         transform: scale(1);
     }
-    30%{
+    30% {
         opacity: 1;
     }
-    60%{
+    60% {
         opacity: 0;
         transform: scale(0);
     }
-    100%{
+    100% {
         opacity: 0;
         transform: scale(0);
     }
 }
 
-@keyframes animate-point2{
-    0%{
+@keyframes animate-point2 {
+    0% {
         opacity: 0;
         transform: rotate(0deg);
     }
-    10%{
+    10% {
         opacity: 0;
         transform: rotate(0deg);
     }
-    50%{
+    50% {
         opacity: 1;
     }
-    70%{
+    70% {
         opacity: 0;
         transform: rotate(-90deg);
     }
-    100%{
+    100% {
         opacity: 0;
         transform: rotate(0deg);
     }
 }
-@keyframes animate-point6{
-    0%{
+@keyframes animate-point6 {
+    0% {
         opacity: 0;
         transform: rotate(-20deg);
     }
-    10%{
+    10% {
         opacity: 1;
         transform: rotate(-20deg);
     }
-    50%{
+    50% {
         opacity: 1;
     }
-    70%{
+    70% {
         opacity: 0;
         transform: rotate(-110deg);
     }
-    100%{
+    100% {
         opacity: 0;
         transform: rotate(-20deg);
     }
 }
-@keyframes animate-point8{
-    0%{
+@keyframes animate-point8 {
+    0% {
         opacity: 0;
         transform: rotate(-90deg);
     }
-    10%{
+    10% {
         opacity: 1;
         transform: rotate(-90deg);
     }
-    50%{
+    50% {
         opacity: 1;
     }
-    70%{
+    70% {
         opacity: 0;
         transform: rotate(-180deg);
     }
-    100%{
+    100% {
         opacity: 0;
         transform: rotate(-90deg);
     }
