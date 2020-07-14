@@ -33,7 +33,7 @@ const TooltipIcon = ({ title }) => {
     );
 };
 
-const SettingsPage = ({ settings, fetchSettings }) => {
+const SettingsPage = ({ settings, fetchSettingsSuccess }) => {
     const userId = useSelector(getUserId);
     const token = useSelector(getToken);
 
@@ -90,9 +90,11 @@ const SettingsPage = ({ settings, fetchSettings }) => {
     }, [error]);
 
     const saveSettings = async () => {
-        await userSettingsApi.putUserSettings(userId, token, newSettings);
-        fetchSettings(userId, token);
-        popUpData('Updated', 'Settings updated successfully');
+        const putSettings = await userSettingsApi.putUserSettings(userId, token, newSettings);
+        if (putSettings) {
+            popUpData('Updated', 'Settings updated successfully');
+            fetchSettingsSuccess(userId, token, newSettings);
+        }
     };
     const cancelSettings = () => {
         setWordsNumber(wordsPerDay);
@@ -289,6 +291,9 @@ const mapDispatchToProps = (dispatch) => ({
     fetchSettings: (userId, token) => {
         dispatch(settingsActions.fetchSettings(userId, token));
     },
+    fetchSettingsSuccess: (userId, token, settings) => {
+        dispatch(settingsActions.fetchSettingsSuccess(userId, token, settings));
+    },
 });
 
 SettingsPage.propTypes = {
@@ -296,7 +301,7 @@ SettingsPage.propTypes = {
         wordsPerDay: PropTypes.number,
         optional: PropTypes.objectOf(PropTypes.bool),
     }).isRequired,
-    fetchSettings: PropTypes.func.isRequired,
+    fetchSettingsSuccess: PropTypes.func.isRequired,
 };
 TooltipIcon.propTypes = {
     title: PropTypes.string.isRequired,
