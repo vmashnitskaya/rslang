@@ -15,7 +15,7 @@ import TodayAchivmentsWidget from '../statistics/components/TodayAchivmentsWidge
 
 const useStyles = makeStyles(() => ({
     media: {
-        height: 150,
+        minHeight: 150,
     },
 }));
 

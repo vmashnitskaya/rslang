@@ -17,6 +17,7 @@ import LevelTest from '../LevelTest/LevelTest';
 const pages = [
     {
         component: MainPage,
+        title: 'Main Page',
         url: '/',
         exact: true,
         img: '',
@@ -28,6 +29,7 @@ const pages = [
     },
     {
         component: MainGame,
+        title: 'Words learning',
         url: '/learn',
         exact: false,
         img: '/assets/images/maingame-card.jpg',
@@ -39,6 +41,7 @@ const pages = [
     },
     {
         component: Vocabulary,
+        title: 'Vocabulary',
         url: '/vocabulary',
         exact: false,
         img: '/assets/images/vocabulary.png',
@@ -49,18 +52,8 @@ const pages = [
         description: '',
     },
     {
-        component: Sprint,
-        url: '/sprint',
-        img: '/assets/images/sprint-card.jpg',
-        exact: false,
-        userMenuPage: false,
-        mainPage: true,
-        auth: false,
-        minigame: true,
-        description: 'Determine if the word and translation match in 1 minute.',
-    },
-    {
         component: SpeakItGame,
+        title: 'SpeakIt',
         url: '/speakit',
         img: '/assets/images/speakit-card.jpg',
         exact: true,
@@ -84,6 +77,7 @@ const pages = [
     },
     {
         component: Audition,
+        title: 'Audition',
         url: '/audition',
         img: '/assets/images/audition-card.jpg',
         exact: true,
@@ -96,6 +90,7 @@ const pages = [
     },
     {
         component: SavannahGame,
+        title: 'Savannah',
         url: '/Savannah',
         img: '/assets/images/savannah-card.jpg',
         exact: true,
@@ -108,6 +103,7 @@ const pages = [
     },
     {
         component: SettingsPage,
+        title: 'Settings',
         url: '/settings',
         img: '/assets/images/settings.png',
         exact: true,
@@ -119,6 +115,7 @@ const pages = [
     },
     {
         component: AnagrammGame,
+        title: 'Anagramm Game',
         url: '/anagramm',
         exact: true,
         img: '/assets/images/anagramm-card.jpg',
@@ -129,7 +126,20 @@ const pages = [
         description: 'Choose the difficulty level of the game and make words from mixed letters.',
     },
     {
+        component: Sprint,
+        title: 'Sprint',
+        url: '/sprint',
+        img: '/assets/images/sprint-card.jpg',
+        exact: false,
+        userMenuPage: false,
+        mainPage: true,
+        auth: false,
+        minigame: true,
+        description: 'Determine if the word and translation match in 1 minute.',
+    },
+    {
         component: AboutProject,
+        title: 'About Project',
         url: '/aboutproject',
         exact: true,
         img: '/assets/images/angry.jpg',
@@ -141,6 +151,7 @@ const pages = [
     },
     {
         component: AboutTeam,
+        title: 'About Team',
         url: '/aboutteam',
         img: '/assets/images/happy.jpg',
         exact: true,
@@ -178,6 +189,7 @@ const pages = [
 
 export const pagePropType = PropTypes.exact({
     component: PropTypes.elementType.isRequired,
+    title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     exact: PropTypes.bool.isRequired,
     img: PropTypes.string.isRequired,
