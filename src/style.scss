@@ -4,5 +4,8 @@ body {
     padding: 0;
 }
 .root {
-    height: calc(100vh - 64px);
+    height: 100vh;
+}
+html {
+    height: 100%;
 }

@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
         height: 0,
         paddingTop: '56.25%',
         marginBottom: '10px',
+        maxWidth: 400,
     },
     word: {
         display: 'flex',
