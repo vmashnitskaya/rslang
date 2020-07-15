@@ -17,7 +17,6 @@ const ModalWindow = ({ score, mistakes, funcPlayAgainHandler }) => {
             <p>Total points: {score}</p>
             <p>Correct answrs: {score / 100}</p>
             <p>Wrong answers: {mistakes}</p>
-
             <ButtonPlayAgain />
         </Typography>
     );
