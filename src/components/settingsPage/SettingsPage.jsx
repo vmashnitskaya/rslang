@@ -52,7 +52,7 @@ const SettingsPage = ({ settings, fetchSettingsSuccess }) => {
     const { optional, wordsPerDay } = settings;
     const [wordsNumber, setWordsNumber] = useState(wordsPerDay);
     const [settingsOptional, setSettingsOptional] = useState({ ...optional });
-    const [isDisabled, setIsDisabled] = useState(false);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
 
     const handleSetSettingsOptional = (obj) => {
         setSettingsOptional({ ...settingsOptional, ...obj });
@@ -79,13 +79,13 @@ const SettingsPage = ({ settings, fetchSettingsSuccess }) => {
 
     useEffect(() => {
         if (error) {
-            setIsDisabled(true);
+            setIsSaveButtonDisabled(true);
             popUpData(
                 'Warning!!!',
                 'Please, enable one of the next items: Words Translate, Text Meaning or Text Example'
             );
         } else {
-            setIsDisabled(false);
+            setIsSaveButtonDisabled(false);
         }
     }, [error]);
 
@@ -269,7 +269,7 @@ const SettingsPage = ({ settings, fetchSettingsSuccess }) => {
                     color="secondary"
                     size="large"
                     onClick={saveSettings}
-                    disabled={isDisabled}
+                    disabled={isSaveButtonDisabled}
                 >
                     Save
                 </Button>
