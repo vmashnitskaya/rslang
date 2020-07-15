@@ -70,15 +70,6 @@ const pages = [
         minigame: true,
         description: 'Training of pronunciation words correctly. Images and examples are provided.',
     },
-
-    {
-        component: AnagrammGame,
-        title: 'Anagramm Game',
-        url: '/anagrammgame',
-        img: '',
-        exact: true,
-    },
-
     {
         component: EnglishPuzzle,
         url: '/englishpuzzle',
@@ -133,7 +124,7 @@ const pages = [
         mainPage: true,
         auth: false,
         minigame: true,
-        description: 'Make words from letters.',
+        description: 'Make words from letters. Images and examples are provided.',
     },
     {
         component: AboutProject,

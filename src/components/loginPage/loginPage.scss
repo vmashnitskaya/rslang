@@ -13,6 +13,13 @@ a {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     text-decoration: none;
     font-size: 18px;
+    color: rgb(85, 26, 139);
+    &:focus {
+        color: rgb(85, 26, 139);
+    }
+    &:link {
+        color: rgb(85, 26, 139);
+    }
 }
 .link-to-sign-up {
     width: 70%;
