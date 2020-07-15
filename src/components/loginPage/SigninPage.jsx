@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import Form from './Form';
 import Message from './Message';
 import action from '../router/storage/actions';
@@ -11,7 +12,7 @@ import MinigamesSection from './MinigamesSection';
 import AboutUsSection from './AboutUsSection';
 import IntervalSection from './IntervalSection';
 import SettingsSection from './SettingsSection';
-import { /* getLogInMessage, */ getLogInError } from '../router/storage/selectors';
+import { getLogInError } from '../router/storage/selectors';
 import './loginPage.scss';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 const SigninPage = () => {
     const classes = useStyles();
     const errorMessage = useSelector(getLogInError);
-    // const infoMessage = useSelector(getLogInMessage);
     const dispatch = useDispatch();
 
     const onSignIn = async (email, password) => {
@@ -58,7 +58,6 @@ const SigninPage = () => {
                             onSubmit={onSignIn}
                             onError={onFormError}
                         />
-                        {/* {infoMessage && <Message className="info" text={infoMessage} />} */}
                         {errorMessage && <Message className="error" text={errorMessage} />}
                     </div>
                 </section>
@@ -66,6 +65,17 @@ const SigninPage = () => {
                 <MinigamesSection />
                 <IntervalSection />
                 <SettingsSection />
+                <Divider />
+                <div className="github-section">
+                    <GitHubIcon color="primary" size="large" />{' '}
+                    <a
+                        href="https://github.com/vmashnitskaya/rslang"
+                        target="_blank
+"
+                    >
+                        Link to Github repository
+                    </a>
+                </div>
             </div>
         </div>
     );

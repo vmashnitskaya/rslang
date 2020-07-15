@@ -1,19 +1,28 @@
 import React from 'react';
-import { Box, Link } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Box, Link, Avatar } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import EmailIcon from '@material-ui/icons/Email';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import TelegramIcon from '@material-ui/icons/Telegram';
 import './Member.scss';
 
+const preventDefault = (event) => event.preventDefault();
+const useStyles = makeStyles((theme) => ({
+    large: {
+        width: theme.spacing(20),
+        height: theme.spacing(20),
+    },
+}));
+
 const Member = ({ member }) => {
-    const { name, age, position, location, aboutMe, description, tasks, links } = member;
+    const classes = useStyles();
+    const { name, image, position, location, tasks, links } = member;
     return (
         <Box className="memberCard">
             <h1>{name}</h1>
-            <div>image</div>
+            <Avatar alt={name} src={image} className={classes.large} />
             <div className="memberCard__mainText">Team position: {position}</div>
-            <div className="memberCard__mainText">Age: {age}</div>
             <div className="memberCard__mainText">Location: {location}</div>
             <div className="memberCard__mainText">Contacts:</div>
             <div className="memberLinks">
@@ -25,18 +34,16 @@ const Member = ({ member }) => {
                     <GitHubIcon fontSize="small" />
                     GitHub
                 </Link>
-                <Link href={links.telegram} target="_blank" rel="noreferrer">
+                <Link href={links.telegram} onClick={preventDefault} rel="noreferrer">
                     <TelegramIcon fontSize="small" />
                     {links.telegram}
                 </Link>
             </div>
-            <div>{aboutMe}</div>
-            <div>{description}</div>
             <div>
                 Completed tasks:
                 <ul>
                     {tasks.map((el) => (
-                        <li>{el}</li>
+                        <li key={el}>{el}</li>
                     ))}
                 </ul>
             </div>
@@ -47,13 +54,15 @@ const Member = ({ member }) => {
 Member.propTypes = {
     member: PropTypes.shape({
         name: PropTypes.string,
-        age: PropTypes.string,
+        image: PropTypes.string,
         position: PropTypes.string,
         location: PropTypes.string,
-        aboutMe: PropTypes.string,
-        description: PropTypes.string,
         tasks: PropTypes.array,
-        links: PropTypes.array,
+        links: PropTypes.shape({
+            email: PropTypes.string,
+            git: PropTypes.string,
+            telegram: PropTypes.string,
+        }),
     }).isRequired,
 };
 
