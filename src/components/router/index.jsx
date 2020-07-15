@@ -15,7 +15,12 @@ import SigninPage from '../loginPage/SigninPage';
 import SignupPage from '../loginPage/SignupPage';
 
 const Router = ({ token, loading, error, settingsError, settingsLoading, auth }) => {
-    const routes = pages.map((p) => ({ title: p.title, url: p.url, img: p.img }));
+    const routes = pages.map((p) => ({
+        title: p.title,
+        url: p.url,
+        img: p.img,
+        mainPage: p.mainPage,
+    }));
     const [authDone, setAuthDone] = useState(false);
 
     useEffect(() => {

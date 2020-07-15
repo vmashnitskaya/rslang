@@ -86,17 +86,12 @@ const updateStaticsMiniGame = (game, totalWords, correctAnswers) => async (dispa
     }
 };
 
-const getDate = () => `${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`;
-const getDateAndTime = () => `${new Date().toISOString().slice(0, 16).replace(/-|T|:/g, '')}`;
-
 export default {
     fetchStatistics,
     updateStatics,
     saveWordsPerDay,
     updateStaticsMiniGame,
     setDafaultStatistics,
-    getDate,
-    getDateAndTime,
     incSuccess,
     incErrors,
     incNewWords,
