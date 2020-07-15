@@ -55,6 +55,10 @@ const ShuffleLettersBox = () => {
     const globalStore = store.getState();
     const { userId, token } = globalStore.navigation.auth;
 
+    const _urlNotAuth = `https://afternoon-falls-25894.herokuapp.com/words?page=2&group=${
+        levelDifficult - 1
+    }`;
+
     const _url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?id=${userId}&group=${
         levelDifficult - 1
     }&wordsPerPage=${wordsPerPage}`;
@@ -75,24 +79,37 @@ const ShuffleLettersBox = () => {
         setResultVisible(false);
     }
 
-    const startGame = async (url) => {
+    const startGame = async () => {
         setDefaultGameState();
         setResultVisible(false);
 
-        const response = await fetch(url, {
-            method: 'GET',
-            withCredentials: true,
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-            },
-        });
+        let response;
+        let responseCollection;
+        let responseJson;
+        let arrayLenght;
 
+        if (userId && token) {
+            response = await fetch(_url, {
+                method: 'GET',
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
+                },
+            });
+            responseJson = await response.json();
+            responseCollection = responseJson[0].paginatedResults;
+            arrayLenght = responseCollection.length;
+        }
+
+        if (!userId && !token) {
+            response = await fetch(_urlNotAuth);
+            responseJson = await response.json();
+            arrayLenght = responseCollection.length;
+        }
         const wordsCollection = [];
-        const responseJson = await response.json();
-        const responseCollection = responseJson[0].paginatedResults;
 
-        for (let i = 0; i < responseCollection.length; i += 1) {
+        for (let i = 0; i < arrayLenght; i += 1) {
             const { image } = responseCollection[i];
             const collectionWords = {
                 id: responseCollection[i].id,
@@ -117,7 +134,7 @@ const ShuffleLettersBox = () => {
                 {!isStarted && !resultVisible && (
                     <StartGameNode
                         funcStartGame={() => {
-                            startGame(_url);
+                            startGame();
                         }}
                         level={levelDifficult}
                         funcSetLevel={setLevel}
