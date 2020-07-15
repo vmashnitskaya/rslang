@@ -1,5 +1,6 @@
 .savannah {
     height: calc(100vh - 64px);
+    width: 100%;
     padding-top: 64px;
     background-image: url("/assets/images/savannah.jpg");
     background-repeat: no-repeat;
@@ -15,6 +16,7 @@
         align-items: center;
         height: 100%;
         padding: 0 20px;
+        width: 100vw;
 
         h2 {
             font-size: 40px;
