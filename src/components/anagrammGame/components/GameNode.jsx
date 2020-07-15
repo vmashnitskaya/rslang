@@ -116,7 +116,7 @@ const GameNode = ({ gameStates }) => {
                 <Typography>{score}</Typography>
             </Paper>
             <Paper>{alert}</Paper>
-            <CardActionArea>
+            <CardActionArea style={{ cursor: 'default' }}>
                 <CardMedia className={classes.media} image={showedImage} title="" />
             </CardActionArea>
             <Paper>
