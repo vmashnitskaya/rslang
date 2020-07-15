@@ -117,7 +117,9 @@ const GameNode = ({ gameStates }) => {
             </Paper>
             <Paper>{alert}</Paper>
             <CardActionArea style={{ cursor: 'default' }}>
-                <CardMedia className={classes.media} image={showedImage} title="" />
+                {showedImage ? (
+                    <CardMedia className={classes.media} image={showedImage} title="" />
+                ) : null}
             </CardActionArea>
             <Paper>
                 <CardContent>

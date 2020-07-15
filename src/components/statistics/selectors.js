@@ -21,7 +21,7 @@ const weeklyAchivments = (state) => {
     const stats = statSelectors.getStatistics(state).optional.main;
     const arr = [];
     const firstDay = new Date();
-    firstDay.setDate(firstDay.getDate() - 8);
+    firstDay.setDate(firstDay.getDate() - 7);
     for (let i = 0; i < 7; i += 1) {
         firstDay.setDate(firstDay.getDate() + 1);
         const key = statUtils.convertDate(firstDay);

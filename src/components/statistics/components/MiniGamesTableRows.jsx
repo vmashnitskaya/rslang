@@ -54,9 +54,13 @@ function MiniGamesTableRows({ row }) {
                 <TableCell align="right">{row.totalGames}</TableCell>
                 <TableCell align="right">{row.correct}</TableCell>
                 <TableCell align="right">{row.wrong}</TableCell>
-                <TableCell align="right">{`${Math.round(
-                    (row.correct / row.totalWords) * 100
-                )}%`}</TableCell>
+                <TableCell align="right">{`${
+                    Number.IsNum(
+                        Math.round(row.correct / row.totalWords)
+                            ? Math.round(row.correct / row.totalWords)
+                            : 0
+                    ) * 100
+                }%`}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>

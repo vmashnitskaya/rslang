@@ -69,7 +69,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
         setStatistics(numberLearnedWords, gameStats.numberOfChosenRightWords);
         return (
             <div className="popup__wrapper">
-                <Dialog open="true">
+                <Dialog open>
                     <DialogTitle>Game over</DialogTitle>
                     <DialogContent>
                         <DialogContentText>

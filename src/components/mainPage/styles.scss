@@ -6,11 +6,21 @@
     max-width: 1400px;
     margin: 0 auto;
 
+    @media (max-width: 725px) {
+        grid-template-rows: auto;
+    }
+
     .main_statistics{
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 20px;
         padding: 10px 0;
+        white-space: nowrap;
+
+        @media (max-width: 725px) {
+            grid-template-rows: 1fr 1fr;
+            grid-template-columns: auto;
+        }
 
         h3{
             align-self: end;
@@ -20,6 +30,10 @@
             display: grid;
             grid-template-rows: 1fr 1fr;
 
+            @media (max-width: 400px) {
+                grid-template-rows: auto;
+            }
+
             &>*{
                 display: grid;
                 padding: 10px;
@@ -27,6 +41,12 @@
                 grid-gap: 10px;
                 grid-auto-flow: column;
                 align-items: center;
+
+                @media (max-width: 400px) {
+                    grid-auto-flow: initial;
+                    padding: 0;
+                    grid-gap: 0px;
+                }
 
             }
             .today_statistics div{
@@ -55,6 +75,11 @@
 
             div{
                 justify-self: center;
+
+                .active{
+                    color: seagreen;
+                    font-weight: bold;
+                }
             }
         }
     }
