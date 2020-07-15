@@ -69,6 +69,15 @@ const pages = [
         minigame: true,
         description: 'Training of pronunciation words correctly. Images and examples are provided.',
     },
+
+    {
+        component: AnagrammGame,
+        title: 'Anagramm Game',
+        url: '/anagrammgame',
+        img: '',
+        exact: true,
+    },
+
     {
         component: EnglishPuzzle,
         title: 'English-Puzzle',
