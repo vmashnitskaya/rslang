@@ -27,6 +27,7 @@ import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/ag
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import statisticsUtils from '../router/storage/getPutStatisticsRedux/statisticsUtils';
 import ResultsPopUp from './ResultsPopUp';
 import Alert from './Alert';
 import './EnglishPuzzleGame.scss';
@@ -648,7 +649,13 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(puzzleActions.setDefaultState());
     },
     setStatistics: (correct) =>
-        dispatch(statisticsActions.updateStaticsMiniGame('puzzle', 10, correct)),
+        dispatch(
+            statisticsActions.updateStaticsMiniGame(
+                statisticsUtils.miniGames.englishPuzzle.alias,
+                10,
+                correct
+            )
+        ),
 });
 
 const mapStateToProps = (state) => ({

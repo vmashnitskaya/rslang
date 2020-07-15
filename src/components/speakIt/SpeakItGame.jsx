@@ -30,6 +30,7 @@ import Alert from './Alert';
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import statisticsUtils from '../router/storage/getPutStatisticsRedux/statisticsUtils';
 
 const filterForRepeatWords = {
     $or: [
@@ -421,7 +422,13 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
     },
     setStatistics: (correct) => {
-        dispatch(statisticsActions.updateStaticsMiniGame('speakit', 10, correct));
+        dispatch(
+            statisticsActions.updateStaticsMiniGame(
+                statisticsUtils.miniGames.speakIt.alias,
+                10,
+                correct
+            )
+        );
     },
     setInitialState: () => {
         dispatch(speakItActions.setInitialState());
