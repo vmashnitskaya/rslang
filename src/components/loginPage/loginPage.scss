@@ -101,6 +101,7 @@ a {
             min-width: 200px;
             max-width: 300px;
             margin: 20px;
+            cursor: pointer;
             p {
                 font-size: 18px;
                 text-align: center;
@@ -111,6 +112,9 @@ a {
             }
         }
     }
+}
+.image-options {
+    max-width: 600px;
 }
 
 @media screen and (max-width: 960px) {

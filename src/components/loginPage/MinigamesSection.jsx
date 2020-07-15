@@ -4,14 +4,11 @@ import { Typography, Card, CardActionArea, CardContent, CardMedia } from '@mater
 import { Link } from 'react-router-dom';
 import pages from '../router/pages';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        [theme.breakpoints.down('md')]: {},
-    },
+const useStyles = makeStyles({
     media: {
         height: 170,
     },
-}));
+});
 
 const MinigamesSection = () => {
     const classes = useStyles();
