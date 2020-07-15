@@ -460,18 +460,14 @@ const EnglishPuzzleGame = ({
                                 control={<Radio className={classes.rootRadioOption} />}
                                 label="New"
                                 labelPlacement="top"
-
                                 className={wordsType === 'new' ? classes.label : undefined}
-
                             />
                             <FormControlLabel
                                 value="repeat"
                                 control={<Radio className={classes.rootRadioOption} />}
                                 label="Repeat words"
                                 labelPlacement="top"
-
                                 className={wordsType === 'repeat' ? classes.label : undefined}
-
                             />
                         </RadioGroup>
                     </FormControl>
