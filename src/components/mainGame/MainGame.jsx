@@ -111,7 +111,7 @@ const MainGame = ({
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
     const [isNewWordWillBeShown, setIsNewWordWillBeShown] = useState(false);
     const [wordsType, setWordsType] = useState('new');
-    const [alertShown, setAlertShown] = useState(false);
+    const [alertShown, setAlertShown] = useState('');
 
     useEffect(() => {
         if (settings.optional && wordsType && wordsType === 'new') {
