@@ -1,12 +1,12 @@
 import React from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
 import PropTypes from 'prop-types';
-import purple from '@material-ui/core/colors/purple';
+import lightBlue from '@material-ui/core/colors/lightBlue';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     root: {
-        backgroundColor: purple[500],
+        backgroundColor: lightBlue[700],
         maxWidth: 450,
         minWidth: 280,
     },
@@ -23,6 +23,7 @@ const Alert = ({ onClose, alertShown }) => {
             {alertShown === 'repeat' && 'The word will appear again in this training.'}
             {alertShown === 'easy' &&
                 'The word will not be shown again. You can resore it in vacabulary.'}
+            {alertShown === 'noWords' && "No words to repeat. Let's continue with new ones."}
         </MuiAlert>
     );
 };

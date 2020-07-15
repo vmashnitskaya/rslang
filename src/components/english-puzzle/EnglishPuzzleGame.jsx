@@ -1,5 +1,13 @@
 import React, { useMemo, useEffect, useState, useRef, useCallback } from 'react';
-import { Button, FormControl, Paper, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
+import {
+    Button,
+    FormControl,
+    Paper,
+    FormControlLabel,
+    Radio,
+    RadioGroup,
+    Snackbar,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -19,6 +27,7 @@ import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/ag
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
 import ResultsPopUp from './ResultsPopUp';
+import Alert from './Alert';
 import './EnglishPuzzleGame.scss';
 
 const maxLevel = 5;
@@ -132,10 +141,10 @@ const EnglishPuzzleGame = ({
     const { level, option } = pagination;
     const [wordsType, setWordsType] = useState('new');
     const classes = useStyles();
-    const [isDropdownDisabled, setIsDropdownDisabled] = useState(false);
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
     const [minWindow, setMinWindow] = useState(false);
     const container = useRef();
+    const [alertShown, setAlertShown] = useState(false);
 
     const levelOptions = useMemo(
         () =>
@@ -188,7 +197,7 @@ const EnglishPuzzleGame = ({
     useEffect(() => {
         setCurrentLine(0);
         setGuessedArrays([]);
-        if (wordsType === 'repeat' && aggregatedWords.length && aggregatedWords.length > 10) {
+        if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length > 10) {
             setData(
                 aggregatedWords
                     .map(
@@ -218,12 +227,9 @@ const EnglishPuzzleGame = ({
                     )
                     .sort(() => Math.random() - 0.5)
             );
-        } else if (
-            wordsType === 'repeat' &&
-            aggregatedWords.length &&
-            aggregatedWords.length < 10
-        ) {
+        } else if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length < 10) {
             setWordsType('new');
+            setAlertShown(true);
         } else if (words) {
             if (words.length) {
                 let currentArray = null;
@@ -402,7 +408,6 @@ const EnglishPuzzleGame = ({
     const handleRadioChange = (event) => {
         if (wordsType && wordsType !== event.target.value) {
             setWordsType(event.target.value);
-            setIsDropdownDisabled(!isDropdownDisabled);
         }
     };
 
@@ -410,12 +415,16 @@ const EnglishPuzzleGame = ({
         setIsPopUpOpened(false);
     };
 
+    const handleAlertClose = () => {
+        setAlertShown(false);
+    };
+
     return isStartPage ? (
         <div ref={container}>
             <StartPage onClick={handleStartPageClose} minWindow={minWindow} />
         </div>
     ) : (
-        <>
+        <div className="puzzle-wrapper">
             <div className="ep-page">
                 <div className="header">
                     <div className="header__drop-downs">
@@ -426,7 +435,7 @@ const EnglishPuzzleGame = ({
                             value={level}
                             options={levelOptions}
                             onChange={handleLevelChange}
-                            isDropdownDisabled={isDropdownDisabled}
+                            isDropdownDisabled={wordsType === 'repeat'}
                         />
                         <DropDown
                             className="page"
@@ -435,7 +444,7 @@ const EnglishPuzzleGame = ({
                             value={option}
                             options={optionOptions}
                             onChange={handleOptionChange}
-                            isDropdownDisabled={isDropdownDisabled}
+                            isDropdownDisabled={wordsType === 'repeat'}
                         />
                     </div>
                     <FormControl component="fieldset">
@@ -556,7 +565,20 @@ const EnglishPuzzleGame = ({
                 onClose={onPopupClosed}
                 onNewGame={handleContinueGame}
             />
-        </>
+            <Snackbar
+                open={Boolean(alertShown)}
+                autoHideDuration={3000}
+                onClose={handleAlertClose}
+                color="primary"
+            >
+                <Alert
+                    onClose={handleAlertClose}
+                    alertShown={
+                        alertShown ? "No words to repeat. Let's continue with new ones." : ''
+                    }
+                />
+            </Snackbar>
+        </div>
     );
 };
 

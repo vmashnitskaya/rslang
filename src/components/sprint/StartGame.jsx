@@ -78,7 +78,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                     </Toolbar>
                 </AppBar>
                 <Box className="start-page_content">
-                    <h1 className="start-page_content__name">Sprint</h1>
+                    <h2 className="start-page_content__name">SPRINT</h2>
                     <p className="start-page_content__rules">
                         Determine if the word and translation match in 1 minute
                         <br />
@@ -103,6 +103,19 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                             Random words
                         </Button>
                     </Box>
+                    {show && (
+                        <Box>
+                            <Typography align="center" variant="h6">
+                                Word complexity
+                            </Typography>
+                            <ComplexityPoints
+                                currentComplexity={complexity}
+                                onComplexityChange={handleComplexityChange}
+                                complexityArray={[0, 1, 2, 3, 4, 5]}
+                            />
+                        </Box>
+                    )}
+                    <Typography>{message}</Typography>
                 </Box>
                 {show && (
                     <Box>
