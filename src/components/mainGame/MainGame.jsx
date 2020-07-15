@@ -25,7 +25,6 @@ import mainGameSelectors from './redux/mainGameSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
 import settingsSelectors from '../router/storage/getSettingsRedux/settingsSelectors';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
-import { dateToString } from './intervalLearning';
 
 import './MainGame.scss';
 
@@ -77,9 +76,6 @@ const filterForRepeatWords = {
             $and: [
                 {
                     'userWord.optional.repeat': true,
-                    'userWord.optional.learningDates': {
-                        $elemMatch: dateToString(new Date()),
-                    },
                     'userWord.optional.deleted': null,
                 },
             ],
