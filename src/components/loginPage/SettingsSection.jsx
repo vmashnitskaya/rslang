@@ -43,7 +43,11 @@ const SettingsSection = () => {
                     </Typography>
                 </div>
                 <div className="statistics" data-option="statistics" onClick={onClick}>
-                    <img data-option="statistics" src="/assets/images/angry.jpg" alt="vocabulary" />
+                    <img
+                        data-option="statistics"
+                        src="/assets/images/statistics.png"
+                        alt="statistics"
+                    />
                     <Typography data-option="statistics" color="textSecondary" gutterBottom>
                         {' '}
                         <Typography variant="inherit" color="primary">

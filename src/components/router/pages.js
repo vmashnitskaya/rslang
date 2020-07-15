@@ -72,6 +72,7 @@ const pages = [
     },
     {
         component: EnglishPuzzle,
+        title: 'English Puzzle',
         url: '/englishpuzzle',
         exact: true,
         userMenuPage: false,
@@ -90,7 +91,8 @@ const pages = [
         mainPage: true,
         auth: false,
         minigame: true,
-        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description:
+            'During the game, the word in English will be pronounced, you need to select its translation.',
     },
     {
         component: SavannahGame,
@@ -101,7 +103,8 @@ const pages = [
         mainPage: true,
         auth: false,
         minigame: true,
-        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description:
+            'This is a simulator for translating your passive learned dictionary into the active stage.',
     },
     {
         component: SettingsPage,
@@ -123,7 +126,7 @@ const pages = [
         mainPage: true,
         auth: false,
         minigame: true,
-        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description: 'Choose the difficulty level of the game and make words from mixed letters.',
     },
     {
         component: AboutProject,
