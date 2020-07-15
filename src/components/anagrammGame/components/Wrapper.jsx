@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Alert from '@material-ui/lab/Alert';
 import Card from '@material-ui/core/Card';
 import store from '../../../rootReducer';
 import useStyles from './style';
@@ -12,6 +13,7 @@ const ShuffleLettersBox = () => {
     const classes = useStyles();
 
     const [isStarted, setIsStarted] = useState(false);
+    const [isError, setIsError] = useState(false);
     const [resultVisible, setResultVisible] = useState(false);
 
     const [levelDifficult, setLevel] = useState(null);
@@ -88,26 +90,30 @@ const ShuffleLettersBox = () => {
         let responseJson;
         let arrayLenght;
 
-        if (userId && token) {
-            response = await fetch(_url, {
-                method: 'GET',
-                withCredentials: true,
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: 'application/json',
-                },
-            });
-            responseJson = await response.json();
-            responseCollection = responseJson[0].paginatedResults;
-            arrayLenght = responseCollection.length;
+        try {
+            if (userId && token) {
+                response = await fetch(_url, {
+                    method: 'GET',
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: 'application/json',
+                    },
+                });
+                responseJson = await response.json();
+                responseCollection = responseJson[0].paginatedResults;
+                arrayLenght = responseCollection.length;
+            } else {
+                response = await fetch(_urlNotAuth);
+                responseJson = await response.json();
+                responseCollection = responseJson;
+                arrayLenght = responseCollection.length;
+            }
+        } catch (ex) {
+            setIsError(true);
+            return;
         }
-
-        if (!userId && !token) {
-            response = await fetch(_urlNotAuth);
-            responseJson = await response.json();
-            responseCollection = responseJson;
-            arrayLenght = responseCollection.length;
-        }
+        setIsError(false);
         const wordsCollection = [];
 
         for (let i = 0; i < arrayLenght; i += 1) {
@@ -140,6 +146,11 @@ const ShuffleLettersBox = () => {
                         level={levelDifficult}
                         funcSetLevel={setLevel}
                     />
+                )}
+                {isError && (
+                    <Alert severity="error">
+                        Server error. Please, check your internet connection.
+                    </Alert>
                 )}
                 {isStarted && <GameNode gameStates={gameStates} />}
                 {resultVisible && (
