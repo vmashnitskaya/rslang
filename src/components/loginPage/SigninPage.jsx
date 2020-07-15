@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import Form from './Form';
 import Message from './Message';
 import action from '../router/storage/actions';
@@ -66,6 +67,10 @@ const SigninPage = () => {
                 <MinigamesSection />
                 <IntervalSection />
                 <SettingsSection />
+                <Divider />
+                <div className="github-section">
+                    <GitHubIcon color="primary" size="large" />
+                </div>
             </div>
         </div>
     );
