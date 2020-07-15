@@ -771,14 +771,16 @@ EnglishPuzzleGame.propTypes = {
     loadingAggr: PropTypes.bool.isRequired,
     errorAggr: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
-    userId: PropTypes.string.isRequired,
-    token: PropTypes.string.isRequired,
+    userId: PropTypes.string,
+    token: PropTypes.string,
     setDefaultState: PropTypes.func.isRequired,
     setStatistics: PropTypes.func.isRequired,
 };
 
 EnglishPuzzleGame.defaultProps = {
     error: false,
+    userId: null,
+    token: null,
     data: [],
     currentLine: 0,
     currentGuessedWords: [],
