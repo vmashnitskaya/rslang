@@ -19,7 +19,7 @@ const WeeklyAchivmentsWidget = ({ weeklyAchivments, wordsPerDay }) => {
                 {weeklyAchivments.map((e) => (
                     <div key={`wstatwidday_${e.day}`}>
                         {e.value ? <CheckIcon /> : <ClearIcon />}
-                        <p>{e.day}</p>
+                        <p className={e.today ? 'active' : ''}>{e.day}</p>
                     </div>
                 ))}
             </div>

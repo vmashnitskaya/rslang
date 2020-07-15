@@ -96,7 +96,6 @@ function GamePage({ words, setFinished, setGameResults, rightAnswersCallback }) 
         if (arr.length >= 1) {
             const rightAnsw = arr.reduce((a, e) => a + e);
             setrightAnswers(rightAnsw);
-            console.log('tempResults', rightAnsw);
             rightAnswersCallback(rightAnsw);
         }
     }, [tempResults, rightAnswersCallback, setrightAnswers]);
