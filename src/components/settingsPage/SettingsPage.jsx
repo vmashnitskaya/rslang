@@ -288,9 +288,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchSettings: (userId, token) => {
-        dispatch(settingsActions.fetchSettings(userId, token));
-    },
     fetchSettingsSuccess: (userId, token, settings) => {
         dispatch(settingsActions.fetchSettingsSuccess(userId, token, settings));
     },
