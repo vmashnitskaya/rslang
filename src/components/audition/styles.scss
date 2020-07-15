@@ -28,6 +28,8 @@ div.audition {
     }
     &__variants {
         display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     &__variant {
         margin-right: 10px;
