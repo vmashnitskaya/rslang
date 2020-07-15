@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import Form from './Form';
 import Message from './Message';
 import LoginPhrase from './LoginPhrase';
@@ -81,6 +82,17 @@ const SignupPage = () => {
                 <MinigamesSection />
                 <IntervalSection />
                 <SettingsSection />
+                <Divider />
+                <div className="github-section">
+                    <GitHubIcon color="primary" size="large" />{' '}
+                    <a
+                        href="https://github.com/vmashnitskaya/rslang"
+                        target="_blank
+"
+                    >
+                        Link to Github repository
+                    </a>
+                </div>
             </div>
         </div>
     );

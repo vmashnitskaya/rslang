@@ -112,25 +112,27 @@ const ShuffleLettersBox = () => {
     };
 
     return (
-        <Card className={classes.root}>
-            {!isStarted && !resultVisible && (
-                <StartGameNode
-                    funcStartGame={() => {
-                        startGame(_url);
-                    }}
-                    level={levelDifficult}
-                    funcSetLevel={setLevel}
-                />
-            )}
-            {isStarted && <GameNode gameStates={gameStates} />}
-            {resultVisible && (
-                <ModalWindow
-                    score={score}
-                    mistakes={mistakes}
-                    funcPlayAgainHandler={playAgainHandler}
-                />
-            )}
-        </Card>
+        <div className={classes.wrapper}>
+            <Card className={classes.root}>
+                {!isStarted && !resultVisible && (
+                    <StartGameNode
+                        funcStartGame={() => {
+                            startGame(_url);
+                        }}
+                        level={levelDifficult}
+                        funcSetLevel={setLevel}
+                    />
+                )}
+                {isStarted && <GameNode gameStates={gameStates} />}
+                {resultVisible && (
+                    <ModalWindow
+                        score={score}
+                        mistakes={mistakes}
+                        funcPlayAgainHandler={playAgainHandler}
+                    />
+                )}
+            </Card>
+        </div>
     );
 };
 

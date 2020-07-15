@@ -1,9 +1,16 @@
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
+    wrapper: {
+        height: '100vh',
+        width: '100%',
+        backgroundImage: 'url("/assets/images/anagramm.jpg")',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        paddingTop: 90,
+    },
     root: {
         maxWidth: 800,
-        marginTop: 90,
         marginLeft: 'auto',
         marginRight: 'auto',
         textAlign: 'center',
