@@ -71,7 +71,7 @@ const pages = [
     },
     {
         component: EnglishPuzzle,
-        title: 'English-Puzzle',
+        title: 'English Puzzle',
         url: '/englishpuzzle',
         exact: true,
         userMenuPage: false,

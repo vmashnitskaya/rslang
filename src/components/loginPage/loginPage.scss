@@ -27,6 +27,16 @@ a {
         font-size: 18px;
     }
 }
+.github-section {
+    margin-top: 10px;
+    color: rgb(85, 26, 139);
+    &:focus {
+        color: rgb(85, 26, 139);
+    }
+    &:link {
+        color: rgb(85, 26, 139);
+    }
+}
 
 .signin-page {
     display: flex;

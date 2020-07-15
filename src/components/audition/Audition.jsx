@@ -142,7 +142,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
     const ShowStartScreen = () => {
         return (
             <div className="start-screen">
-                <h2>Audition</h2>
+                <h2 className="title">AUDITION</h2>
                 <p>
                     During the game, the word in English will be voiced, you need to select its
                     translation
