@@ -12,7 +12,7 @@ const StartWindow = () => {
                 alt=""
             />
             <h2>ANAGRAMM</h2>
-            <p>
+            <p className="paragraph">
                 The rules of the game are simple: collect words from the letters presented and get
                 points.
             </p>
