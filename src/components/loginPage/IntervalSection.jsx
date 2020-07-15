@@ -28,13 +28,13 @@ const IntervalSection = () => {
                 </div>
                 <div className="interval_point">
                     <Typography color="textSecondary" gutterBottom>
-                        Click on{' '}
+                        Repeated word will be{' '}
                         <Typography variant="inherit" color="primary">
-                            Repeat icon
+                            indicated
                         </Typography>{' '}
-                        and the word will be repeated in the training.
+                        at the top of the card.
                     </Typography>
-                    <img src="/assets/images/delete.png" alt="difficulty2" />
+                    <img src="/assets/images/repeat.png" alt="difficulty2" />
                 </div>
                 <div className="interval_point">
                     <Typography color="textSecondary" gutterBottom>
