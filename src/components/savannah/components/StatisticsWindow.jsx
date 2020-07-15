@@ -17,6 +17,7 @@ import {
 import ResultCard from './ResultCard';
 import actions from '../storage/actions';
 import statisticsActions from '../../router/storage/getPutStatisticsRedux/statisticsActions';
+import statisticsUtils from '../../router/storage/getPutStatisticsRedux/statisticsUtils';
 import selectors from '../storage/selectors';
 import utils from '../utils';
 
@@ -107,7 +108,13 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(actions.gameResults.clear());
     },
     setStatistics: (total, correct) =>
-        dispatch(statisticsActions.updateStaticsMiniGame('sav', total, correct)),
+        dispatch(
+            statisticsActions.updateStaticsMiniGame(
+                statisticsUtils.miniGames.savannah.alias,
+                total,
+                correct
+            )
+        ),
 });
 
 const mapStateToProps = (state) => ({

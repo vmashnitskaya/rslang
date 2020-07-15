@@ -26,7 +26,7 @@ const ComplexityPoints = ({ complexityArray, onComplexityChange, wordsType }) =>
                     key={complexity}
                     value={complexity}
                     className="point"
-                    control={<Radio color="darken" disabled={wordsType === 'repeat'} />}
+                    control={<Radio color="default" disabled={wordsType === 'repeat'} />}
                 />
             ))}
         </RadioGroup>

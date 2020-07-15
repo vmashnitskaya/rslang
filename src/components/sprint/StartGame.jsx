@@ -109,13 +109,14 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                                 Word complexity
                             </Typography>
                             <ComplexityPoints
+                                wordsType=""
                                 currentComplexity={complexity}
                                 onComplexityChange={handleComplexityChange}
                                 complexityArray={[0, 1, 2, 3, 4, 5]}
                             />
                         </Box>
                     )}
-                    <Typography>{message}</Typography>
+                    <Typography className="message">{message}</Typography>
                 </Box>
                 <Button
                     variant="contained"

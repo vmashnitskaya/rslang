@@ -1,19 +1,27 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, Box, Paper } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
+import CancelIcon from '@material-ui/icons/Cancel';
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
 import Timer from './Timer';
 import WordContent from './WordContent';
-import './styles.scss';
 import useAggregatedWords from '../router/storage/hooks/useAggregatedWords';
 import ResultGame from './ResultGame';
 import Loading from './Loading';
 import { POINT_FOR_RIGHT_ANSWER, BONUS_POINTS, MAX_STRICK } from './constants';
+import { getToken } from '../router/storage/selectors';
+import useWords from '../router/storage/hooks/useWords';
+import './styles.scss';
 
-const shuffle = (array) => array.sort(() => Math.random() - 0.5);
+const shuffle = (array) => {
+    const arr = [...array];
+    return arr.sort(() => Math.random() - 0.5);
+};
 
 export default function App({ userWordsOnly, complexity }) {
+    const token = useSelector(getToken);
     const [page, setPage] = useState(0);
     const filterUserWordsOnly = userWordsOnly ? { userWord: { $ne: null } } : {};
     const config = {
@@ -23,7 +31,17 @@ export default function App({ userWordsOnly, complexity }) {
         wordsPerPage: 40,
     };
     const { data, error, loading } = useAggregatedWords(config);
-    const words = (data && data[0].paginatedResults) || [];
+    // eslint-disable-next-line no-unused-vars
+    const { words: unuserWords, error: unuserWordsError, loading: unuserWordsLoad } = useWords(
+        complexity,
+        page
+    );
+    let words;
+    if (token) {
+        words = (data && data[0].paginatedResults) || [];
+    } else {
+        words = unuserWords || [];
+    }
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [streak, setStreak] = useState(0);
@@ -48,7 +66,7 @@ export default function App({ userWordsOnly, complexity }) {
                 return w;
             })
         );
-    }, [words]);
+    }, [words[0]]);
 
     const word = gameWords[currentWordIndex];
 
@@ -105,13 +123,25 @@ export default function App({ userWordsOnly, complexity }) {
             {!loading && (
                 <Box className="wrapper">
                     <Box className="sprint-game">
+                        <Button className="closeButton" onClick={onTimeOut}>
+                            <CancelIcon fontSize="large" />
+                        </Button>
                         <Box className="score_container">
                             {word && !endGame && <Timer onTimeOut={onTimeOut} />}
                             <Box>
-                                {Array(totalWinStars).fill(<StarIcon className="star_full" />)}
-                                {Array(totalEmptyStars).fill(
-                                    <StarBorderOutlinedIcon className="star_empty" />
-                                )}
+                                {Array(totalWinStars)
+                                    .fill(null)
+                                    .map(() => (
+                                        <StarIcon key={Math.random()} className="star_full" />
+                                    ))}
+                                {Array(totalEmptyStars)
+                                    .fill(null)
+                                    .map(() => (
+                                        <StarBorderOutlinedIcon
+                                            key={Math.random()}
+                                            className="star_empty"
+                                        />
+                                    ))}
                             </Box>
                             <Box className="score">{score}</Box>
                         </Box>
@@ -138,13 +168,27 @@ export default function App({ userWordsOnly, complexity }) {
                                 >
                                     Correct
                                 </Button>
-                                <ResultGame
-                                    open={isPopUpOpened}
-                                    unGuessedWords={unGuessedWords}
-                                    guessedWords={guessedWords}
-                                    onClose={handlePopUpClose}
-                                    onNewGame={handleNewGame}
-                                />
+                                {isPopUpOpened && (
+                                    <ResultGame
+                                        open={isPopUpOpened}
+                                        unGuessedWords={unGuessedWords.map(
+                                            ({ word, wordTranslate, audio }) => ({
+                                                word,
+                                                wordTranslate,
+                                                audio,
+                                            })
+                                        )}
+                                        guessedWords={guessedWords.map(
+                                            ({ word, wordTranslate, audio }) => ({
+                                                word,
+                                                wordTranslate,
+                                                audio,
+                                            })
+                                        )}
+                                        onClose={handlePopUpClose}
+                                        onNewGame={handleNewGame}
+                                    />
+                                )}
                             </Box>
                         </Paper>
                     </Box>

@@ -36,7 +36,6 @@ import { getToken, getUserId } from '../router/storage/selectors';
 import Alert from './Alert';
 import mainGameSelectors from './redux/mainGameSelectors';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
-import { intervalLearning } from './intervalLearning';
 
 import './MainCard.scss';
 
@@ -60,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
         height: 0,
         paddingTop: '56.25%',
         marginBottom: '10px',
+        maxWidth: 400,
     },
     word: {
         display: 'flex',
@@ -155,10 +155,6 @@ const MainCard = ({
     }, [word, currentWordNumber]);
 
     const handleGuessedWordProvided = async (guessedWord) => {
-        const { optional } = word;
-        const learningDates =
-            optional && optional.learningDates ? JSON.parse(optional.learningDates) : [];
-        const nextDay = intervalLearning(learningDates);
         if (word === guessedWord.trim()) {
             if (firstTry) {
                 incSuccess();
@@ -187,7 +183,6 @@ const MainCard = ({
                         repeat: isRepeatDisabled,
                         easy: isEasyDisabled,
                         learned: true,
-                        learningDates: JSON.stringify([...learningDates, nextDay]),
                     },
                 });
             } else {
@@ -213,7 +208,6 @@ const MainCard = ({
                             difficult: isDifficultDisabled,
                             deleted: isDeletedDisabled,
                             repeat: true,
-                            learningDates: JSON.stringify([]),
                         },
                     },
                 },
@@ -384,10 +378,6 @@ const MainCard = ({
         }
     };
 
-    const stats =
-        statistics.optional && statistics.optional.main
-            ? statistics.optional.main[statisticsActions.getDate()]
-            : null;
     return (
         <>
             <div className="card__wrapper">
@@ -425,7 +415,7 @@ const MainCard = ({
                 <div className={classes.chartWrapper}>
                     <LinearProgressWithLabel
                         className={classes.chart}
-                        learned={stats ? stats.l : 0}
+                        learned={statistics.l}
                         toLearn={wordsPerDay}
                     />
                 </div>
@@ -624,7 +614,6 @@ const MainCard = ({
         </>
     );
 };
-
 const mapDispatchToProps = (dispatch) => ({
     setAutoSoundEnabled: (isAutoSoundEnabled) => {
         dispatch(mainGameActions.setAutoSoundEnabled(isAutoSoundEnabled));
@@ -654,7 +643,6 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(statisticsActions.incNewWords());
     },
 });
-
 const mapStateToProps = (state) => ({
     isAutoSoundEnabled: mainGameSelectors.getIsAutoSoundEnabled(state),
     wordStatus: mainGameSelectors.getWordStatus(state),
@@ -662,7 +650,6 @@ const mapStateToProps = (state) => ({
     userId: getUserId(state),
     token: getToken(state),
 });
-
 MainCard.propTypes = {
     wordObj: PropTypes.shape({
         _id: PropTypes.string,
@@ -713,13 +700,13 @@ MainCard.propTypes = {
     setIsTranslationEnabled: PropTypes.func.isRequired,
     isTranslationEnabled: PropTypes.bool.isRequired,
     statistics: PropTypes.shape({
-        learnedWords: PropTypes.number,
-        optional: {
-            main: {
-                d: PropTypes.number.isRequired,
-                l: PropTypes.number.isRequired,
-            }.isRequired,
-        },
+        d: PropTypes.number.isRequired,
+        l: PropTypes.number.isRequired,
+        s: PropTypes.number.isRequired,
+        e: PropTypes.number.isRequired,
+        sq: PropTypes.number.isRequired,
+        msq: PropTypes.number.isRequired,
+        n: PropTypes.number.isRequired,
     }).isRequired,
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
@@ -732,7 +719,6 @@ MainCard.propTypes = {
     incSuccess: PropTypes.func.isRequired,
     incErrors: PropTypes.func.isRequired,
 };
-
 MainCard.defaultProps = {
     wordObj: {
         _id: '',
@@ -750,5 +736,4 @@ MainCard.defaultProps = {
     },
     currentWordNumber: 0,
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(MainCard);

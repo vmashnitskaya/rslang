@@ -1,9 +1,81 @@
-.main_page {
+.main_page{
+    padding: 80px 20px 10px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 28vh auto;
     grid-gap: 20px;
-    padding: 80px 30px;
-    a {
-        text-decoration: none;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    .main_statistics{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+        padding: 10px 0;
+
+        h3{
+            align-self: end;
+        }
+
+        &>div{
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+
+            &>*{
+                display: grid;
+                padding: 10px;
+                margin: 0;
+                grid-gap: 10px;
+                grid-auto-flow: column;
+                align-items: center;
+
+            }
+            .today_statistics div{
+                background-color: #f5f5f5;
+            }
+            .week_statistics{
+                display: block;
+                border-left: 1px solid #d9d9d9;
+            }
+            h5, h4{
+                margin: 5px;
+            }
+            p{
+                margin: 5px;
+            }
+        }
+
+        .week {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .allweek{
+            display: grid;
+            grid-auto-flow: column;
+            grid-column: 1/3;
+
+            div{
+                justify-self: center;
+            }
+        }
+    }
+    .links{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 20px;
+
+        @media (max-width: 900px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        @media (max-width: 670px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (max-width: 480px) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        a{
+            text-decoration: none;
+        }
     }
 }
+

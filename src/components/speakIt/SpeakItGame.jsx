@@ -29,6 +29,8 @@ import speakItSelectors from './redux/speakItSelectors';
 import Alert from './Alert';
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import statisticsUtils from '../router/storage/getPutStatisticsRedux/statisticsUtils';
 
 const filterForRepeatWords = {
     $or: [
@@ -101,6 +103,7 @@ const SpeakItGame = ({
     loadingAggr,
     errorAggr,
     fetchAggregatedWords,
+    setStatistics,
     setInitialState,
 }) => {
     const speechRecognitionRef = useRef();
@@ -249,6 +252,7 @@ const SpeakItGame = ({
 
     useEffect(() => {
         if (guessedWords.length === 10) {
+            setStatistics(10);
             handlePopUpOpened();
         }
     }, [guessedWords, handlePopUpOpened]);
@@ -272,30 +276,32 @@ const SpeakItGame = ({
     ) : (
         <div className="speakit-wrapper">
             <div className="game-page">
-                <FormControl component="fieldset">
-                    <RadioGroup
-                        aria-label="words"
-                        name="words"
-                        value={wordsType}
-                        onChange={handleRadioChange}
-                        className={classes.rootRadio}
-                    >
-                        <FormControlLabel
-                            value="new"
-                            control={<Radio className={classes.rootRadioOption} />}
-                            label="New"
-                            labelPlacement="top"
-                            className={wordsType === 'new' ? classes.label : undefined}
-                        />
-                        <FormControlLabel
-                            value="repeat"
-                            control={<Radio className={classes.rootRadioOption} />}
-                            label="Repeat words"
-                            labelPlacement="top"
-                            className={wordsType === 'repeat' ? classes.label : undefined}
-                        />
-                    </RadioGroup>
-                </FormControl>
+                {token && userId && (
+                    <FormControl component="fieldset">
+                        <RadioGroup
+                            aria-label="words"
+                            name="words"
+                            value={wordsType}
+                            onChange={handleRadioChange}
+                            className={classes.rootRadio}
+                        >
+                            <FormControlLabel
+                                value="new"
+                                control={<Radio className={classes.rootRadioOption} />}
+                                label="New"
+                                labelPlacement="top"
+                                className={wordsType === 'new' && classes.label}
+                            />
+                            <FormControlLabel
+                                value="repeat"
+                                control={<Radio className={classes.rootRadioOption} />}
+                                label="Repeat words"
+                                labelPlacement="top"
+                                className={wordsType === 'repeat' && classes.label}
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                )}
                 <ComplexityPoints
                     currentComplexity={complexity}
                     onComplexityChange={handleComplexityChange}
@@ -419,6 +425,15 @@ const mapDispatchToProps = (dispatch) => ({
     fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
         dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
     },
+    setStatistics: (correct) => {
+        dispatch(
+            statisticsActions.updateStaticsMiniGame(
+                statisticsUtils.miniGames.speakIt.alias,
+                10,
+                correct
+            )
+        );
+    },
     setInitialState: () => {
         dispatch(speakItActions.setInitialState());
     },
@@ -500,6 +515,7 @@ SpeakItGame.propTypes = {
     loadingAggr: PropTypes.bool.isRequired,
     errorAggr: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
+    setStatistics: PropTypes.func.isRequired,
     setInitialState: PropTypes.func.isRequired,
 };
 

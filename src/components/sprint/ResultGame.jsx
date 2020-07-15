@@ -13,6 +13,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import statisticsUtils from '../router/storage/getPutStatisticsRedux/statisticsUtils';
 import ResultCard from './ResultCard';
 
 const ResultGame = ({ open, unGuessedWords, guessedWords, onNewGame }) => {
@@ -20,7 +21,11 @@ const ResultGame = ({ open, unGuessedWords, guessedWords, onNewGame }) => {
     const totalWords = unGuessedWords.length + guessedWords.length;
     useEffect(() => {
         dispatch(
-            statisticsActions.updateStaticsMiniGame('sprint', totalWords, guessedWords.length)
+            statisticsActions.updateStaticsMiniGame(
+                statisticsUtils.miniGames.sprint.alias,
+                totalWords,
+                guessedWords.length
+            )
         );
     }, [dispatch]);
     return (
@@ -91,7 +96,7 @@ const ResultGame = ({ open, unGuessedWords, guessedWords, onNewGame }) => {
 ResultGame.propTypes = {
     open: PropTypes.bool.isRequired,
     unGuessedWords: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-    guessedWords: PropTypes.arrayOf(PropTypes.string).isRequired,
+    guessedWords: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
     onNewGame: PropTypes.func.isRequired,
 };
 

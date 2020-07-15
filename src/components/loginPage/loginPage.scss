@@ -1,4 +1,5 @@
 .login {
+    background-color: white;
     background: url("/assets/images/login_bg.jpg") 100% 100% no-repeat;
     background-position: 0% 0%;
 }
@@ -13,11 +14,28 @@ a {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     text-decoration: none;
     font-size: 18px;
+    color: rgb(85, 26, 139);
+    &:focus {
+        color: rgb(85, 26, 139);
+    }
+    &:link {
+        color: rgb(85, 26, 139);
+    }
 }
 .link-to-sign-up {
     width: 70%;
     p {
         font-size: 18px;
+    }
+}
+.github-section {
+    margin-top: 10px;
+    color: rgb(85, 26, 139);
+    &:focus {
+        color: rgb(85, 26, 139);
+    }
+    &:link {
+        color: rgb(85, 26, 139);
     }
 }
 
@@ -101,6 +119,7 @@ a {
             min-width: 200px;
             max-width: 300px;
             margin: 20px;
+            cursor: pointer;
             p {
                 font-size: 18px;
                 text-align: center;
@@ -111,6 +130,9 @@ a {
             }
         }
     }
+}
+.image-options {
+    max-width: 600px;
 }
 
 @media screen and (max-width: 960px) {
