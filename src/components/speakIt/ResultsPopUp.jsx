@@ -87,7 +87,7 @@ const ResultsPopUp = ({ open, cards, guessedWords, onClose, onNewGame }) => {
                     Resume game
                 </Button>
                 <Button onClick={onNewGame} color="primary" autoFocus>
-                    New gane
+                    New game
                 </Button>
             </DialogActions>
         </Dialog>
