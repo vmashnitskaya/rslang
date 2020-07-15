@@ -26,6 +26,7 @@ import puzzleSelectors from './redux/puzzleSelectors';
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 import ResultsPopUp from './ResultsPopUp';
 import Alert from './Alert';
 import './EnglishPuzzleGame.scss';
@@ -137,6 +138,7 @@ const EnglishPuzzleGame = ({
     errorAggr,
     fetchAggregatedWords,
     setDefaultState,
+    setStatistics,
 }) => {
     const { level, option } = pagination;
     const [wordsType, setWordsType] = useState('new');
@@ -353,6 +355,7 @@ const EnglishPuzzleGame = ({
     };
 
     const startNewLevel = () => {
+        setStatistics(10);
         if (option < maxOption) {
             setPagination({ ...pagination, option: pagination.option + 1 });
         } else if (level < maxLevel) {
@@ -447,30 +450,32 @@ const EnglishPuzzleGame = ({
                             isDropdownDisabled={wordsType === 'repeat'}
                         />
                     </div>
-                    <FormControl component="fieldset">
-                        <RadioGroup
-                            aria-label="words"
-                            name="words"
-                            value={wordsType}
-                            onChange={handleRadioChange}
-                            className={classes.rootRadio}
-                        >
-                            <FormControlLabel
-                                value="new"
-                                control={<Radio className={classes.rootRadioOption} />}
-                                label="New"
-                                labelPlacement="top"
-                                className={wordsType === 'new' ? classes.label : undefined}
-                            />
-                            <FormControlLabel
-                                value="repeat"
-                                control={<Radio className={classes.rootRadioOption} />}
-                                label="Repeat words"
-                                labelPlacement="top"
-                                className={wordsType === 'repeat' ? classes.label : undefined}
-                            />
-                        </RadioGroup>
-                    </FormControl>
+                    {token && userId && (
+                        <FormControl component="fieldset">
+                            <RadioGroup
+                                aria-label="words"
+                                name="words"
+                                value={wordsType}
+                                onChange={handleRadioChange}
+                                className={classes.rootRadio}
+                            >
+                                <FormControlLabel
+                                    value="new"
+                                    control={<Radio className={classes.rootRadioOption} />}
+                                    label="New"
+                                    labelPlacement="top"
+                                    className={wordsType === 'new' && classes.label}
+                                />
+                                <FormControlLabel
+                                    value="repeat"
+                                    control={<Radio className={classes.rootRadioOption} />}
+                                    label="Repeat words"
+                                    labelPlacement="top"
+                                    className={wordsType === 'repeat' && classes.label}
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    )}
                     <Hints
                         handleAutoEnabledChecked={enableAutoPronunciation}
                         handlePronunciationHintChecked={enablePronunciation}
@@ -642,6 +647,8 @@ const mapDispatchToProps = (dispatch) => ({
     setDefaultState: () => {
         dispatch(puzzleActions.setDefaultState());
     },
+    setStatistics: (correct) =>
+        dispatch(statisticsActions.updateStaticsMiniGame('puzzle', 10, correct)),
 });
 
 const mapStateToProps = (state) => ({
@@ -760,6 +767,7 @@ EnglishPuzzleGame.propTypes = {
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     setDefaultState: PropTypes.func.isRequired,
+    setStatistics: PropTypes.func.isRequired,
 };
 
 EnglishPuzzleGame.defaultProps = {

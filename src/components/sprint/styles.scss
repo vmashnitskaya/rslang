@@ -16,6 +16,12 @@ main {
             justify-content: center;
             align-items: center;
             width: 95%;
+
+            .closeButton {
+                left: 48%;
+                margin-top: 70px;
+            }
+
             .score_container {
                 margin: 0 auto;
                 display: flex;

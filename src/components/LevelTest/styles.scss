@@ -1,0 +1,18 @@
+.test {
+    background-image: url(../../../public/assets/images/login_bg.jpg);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    margin: 60px auto;
+
+    &__description {
+        padding-left: 3%;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        margin: 2%;
+    }
+}

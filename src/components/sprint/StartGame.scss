@@ -20,12 +20,17 @@
             font-weight: 300;
             text-align: center;
         }
-
+        
         &__rules {
             font-family: "Roboto", "Helvetica", "Arial", sans-serif;
             align-content: center;
             align-items: center;
             font-size: 22px;
+            padding: 10px;
+        }
+
+        .message {
+            padding: 10px;
         }
     }
 

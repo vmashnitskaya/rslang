@@ -1,9 +1,11 @@
 .main_page {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     padding: 80px 30px;
     a {
         text-decoration: none;
+        justify-self: center;
+        margin: 20px;
     }
 }

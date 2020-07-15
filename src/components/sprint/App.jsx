@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Box, Paper } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
+import CancelIcon from '@material-ui/icons/Cancel';
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
 import Timer from './Timer';
 import WordContent from './WordContent';
@@ -105,13 +106,25 @@ export default function App({ userWordsOnly, complexity }) {
             {!loading && (
                 <Box className="wrapper">
                     <Box className="sprint-game">
+                        <Button className="closeButton" onClick={onTimeOut}>
+                            <CancelIcon fontSize="large" />
+                        </Button>
                         <Box className="score_container">
                             {word && !endGame && <Timer onTimeOut={onTimeOut} />}
                             <Box>
-                                {Array(totalWinStars).fill(<StarIcon className="star_full" />)}
-                                {Array(totalEmptyStars).fill(
-                                    <StarBorderOutlinedIcon className="star_empty" />
-                                )}
+                                {Array(totalWinStars)
+                                    .fill(null)
+                                    .map(() => (
+                                        <StarIcon key={Math.random()} className="star_full" />
+                                    ))}
+                                {Array(totalEmptyStars)
+                                    .fill(null)
+                                    .map(() => (
+                                        <StarBorderOutlinedIcon
+                                            key={Math.random()}
+                                            className="star_empty"
+                                        />
+                                    ))}
                             </Box>
                             <Box className="score">{score}</Box>
                         </Box>
@@ -138,13 +151,27 @@ export default function App({ userWordsOnly, complexity }) {
                                 >
                                     Correct
                                 </Button>
-                                <ResultGame
-                                    open={isPopUpOpened}
-                                    unGuessedWords={unGuessedWords}
-                                    guessedWords={guessedWords}
-                                    onClose={handlePopUpClose}
-                                    onNewGame={handleNewGame}
-                                />
+                                {isPopUpOpened && (
+                                    <ResultGame
+                                        open={isPopUpOpened}
+                                        unGuessedWords={unGuessedWords.map(
+                                            ({ word, wordTranslate, audio }) => ({
+                                                word,
+                                                wordTranslate,
+                                                audio,
+                                            })
+                                        )}
+                                        guessedWords={guessedWords.map(
+                                            ({ word, wordTranslate, audio }) => ({
+                                                word,
+                                                wordTranslate,
+                                                audio,
+                                            })
+                                        )}
+                                        onClose={handlePopUpClose}
+                                        onNewGame={handleNewGame}
+                                    />
+                                )}
                             </Box>
                         </Paper>
                     </Box>

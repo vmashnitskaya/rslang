@@ -12,14 +12,18 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import statisticsSelectors from '../router/storage/getPutStatisticsRedux/statisticsSelectors';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     media: {
         height: 150,
     },
     root: {
         maxWidth: 350,
+        minWidth: 320,
+        [theme.breakpoints.down('md')]: {
+            minWidth: 280,
+        },
     },
-});
+}));
 
 const MainPage = ({ routes }) => {
     const classes = useStyles();
@@ -36,7 +40,7 @@ const MainPage = ({ routes }) => {
                                     <CardMedia
                                         className={classes.media}
                                         image={e.img}
-                                        title="Contemplative Reptile"
+                                        title={e.title}
                                     />
                                 </CardActionArea>
                             </Card>
