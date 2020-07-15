@@ -1,7 +1,8 @@
 import React from 'react';
+import Wrapper from './components/Wrapper';
 
-function AnogrammGame() {
-    return <div>Game</div>;
+function AnagrammGame() {
+    return <Wrapper />;
 }
 
-export default AnogrammGame;
+export default AnagrammGame;

@@ -4,8 +4,8 @@ import Button from '@material-ui/core/Button';
 import './StartPage.scss';
 
 const StartPage = ({ onStart }) => (
-    <div className="start-page">
-        <h1>Speakit</h1>
+    <section className="start-page-speakIt">
+        <h2>SPEAKIT</h2>
         <p>
             Click on the words to hear them sound.
             <br />
@@ -19,7 +19,7 @@ const StartPage = ({ onStart }) => (
         >
             Start
         </Button>
-    </div>
+    </section>
 );
 
 StartPage.propTypes = {

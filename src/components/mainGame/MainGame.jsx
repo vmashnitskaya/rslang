@@ -25,6 +25,8 @@ import mainGameSelectors from './redux/mainGameSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
 import settingsSelectors from '../router/storage/getSettingsRedux/settingsSelectors';
 import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import { dateToString } from './intervalLearning';
+
 import './MainGame.scss';
 
 const filterForNewAndLearnedWords = {
@@ -75,6 +77,9 @@ const filterForRepeatWords = {
             $and: [
                 {
                     'userWord.optional.repeat': true,
+                    'userWord.optional.learningDates': {
+                        $elemMatch: dateToString(new Date()),
+                    },
                     'userWord.optional.deleted': null,
                 },
             ],
@@ -131,7 +136,7 @@ const MainGame = ({
         if (aggregatedWords === null) {
             setInitialState('true');
             setWordsType('new');
-            setAlertShown(true);
+            setAlertShown('noWords');
         } else {
             setInitialState('true');
             setMainWords(aggregatedWords);
@@ -196,7 +201,7 @@ const MainGame = ({
     };
 
     const handleAlertClose = () => {
-        setAlertShown(false);
+        setAlertShown('');
     };
 
     return loading || error || mainWords.length === 0 ? (
@@ -261,9 +266,7 @@ const MainGame = ({
                 onClose={handleAlertClose}
                 color="primary"
             >
-                <Alert onClose={handleAlertClose}>
-                    {alertShown && "No words to repeat. Let's continue with new ones."}
-                </Alert>
+                <Alert onClose={handleAlertClose} alertShown={alertShown} />
             </Snackbar>
         </>
     );
@@ -318,7 +321,7 @@ MainGame.propTypes = {
                 }),
             }),
         })
-    ).isRequired,
+    ),
     loading: PropTypes.bool.isRequired,
     error: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
@@ -357,5 +360,6 @@ MainGame.propTypes = {
 MainGame.defaultProps = {
     mainWords: [],
     error: false,
+    aggregatedWords: [],
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MainGame);

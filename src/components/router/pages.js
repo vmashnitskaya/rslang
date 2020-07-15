@@ -5,12 +5,14 @@ import AboutTeam from '../aboutTeam';
 import Sprint from '../sprint/Sprint';
 import SpeakItGame from '../speakIt';
 import Vocabulary from '../vocabulary';
+import Audition from '../audition';
 import SavannahGame from '../savannah';
 import MainGame from '../mainGame';
 import EnglishPuzzle from '../english-puzzle';
 import SettingsPage from '../settingsPage';
 import AnagrammGame from '../anagrammGame';
 import Statistics from '../statistics';
+import LevelTest from '../LevelTest/LevelTest';
 
 const pages = [
     {
@@ -30,7 +32,7 @@ const pages = [
         title: 'Words learning',
         url: '/learn',
         exact: false,
-        img: '/assets/images/learn.jpg',
+        img: '/assets/images/main.jpg',
         userMenuPage: false,
         mainPage: true,
         auth: true,
@@ -42,7 +44,7 @@ const pages = [
         title: 'Vocabulary',
         url: '/vocabulary',
         exact: false,
-        img: '/assets/images/scared.jpg',
+        img: '/assets/images/vocabulary.png',
         userMenuPage: true,
         mainPage: false,
         auth: true,
@@ -53,19 +55,51 @@ const pages = [
         component: Sprint,
         title: 'Sprint',
         url: '/sprint',
-        img: '/assets/images/sprint.png',
+        img: '/assets/images/sprint.jpg',
         exact: false,
         userMenuPage: false,
         mainPage: true,
         auth: false,
         minigame: true,
-        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description: 'Determine if the word and translation match in 1 minute.',
     },
     {
         component: SpeakItGame,
         title: 'SpeakIt',
         url: '/speakit',
-        img: '/assets/images/start-image.jpg',
+        img: '/assets/images/speakit.jpg',
+        exact: true,
+        userMenuPage: false,
+        mainPage: true,
+        auth: false,
+        minigame: true,
+        description: 'Training of pronunciation words correctly. Images and examples are provided.',
+    },
+
+    {
+        component: AnagrammGame,
+        title: 'Anagramm Game',
+        url: '/anagrammgame',
+        img: '',
+        exact: true,
+    },
+
+    {
+        component: EnglishPuzzle,
+        title: 'English-Puzzle',
+        url: '/englishpuzzle',
+        exact: true,
+        userMenuPage: false,
+        auth: false,
+        minigame: true,
+        description: 'Create sentences with words. Additional hints can be used for help.',
+        img: '/assets/images/puzzle.jpg',
+    },
+    {
+        component: Audition,
+        title: 'Audition',
+        url: '/audition',
+        img: '/assets/images/audition.jpg',
         exact: true,
         userMenuPage: false,
         mainPage: true,
@@ -78,18 +112,12 @@ const pages = [
         title: 'English-Puzzle',
         url: '/englishpuzzle',
         img: '/assets/images/start-image.jpg',
-        exact: true,
-        userMenuPage: false,
-        mainPage: true,
-        auth: false,
-        minigame: true,
-        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
     },
     {
         component: SavannahGame,
         title: 'Savannah',
         url: '/Savannah',
-        img: '/assets/images/draw.jpg',
+        img: '/assets/images/savannah.jpg',
         exact: true,
         userMenuPage: false,
         mainPage: true,
@@ -101,7 +129,7 @@ const pages = [
         component: SettingsPage,
         title: 'Settings',
         url: '/settings',
-        img: '/assets/images/angry.jpg',
+        img: '/assets/images/settings.png',
         exact: true,
         userMenuPage: true,
         mainPage: false,
@@ -154,6 +182,18 @@ const pages = [
         userMenuPage: true,
         mainPage: false,
         auth: true,
+        minigame: false,
+        description: '',
+    },
+    {
+        component: LevelTest,
+        title: 'Level Test',
+        url: '/levelTest',
+        img: '/assets/images/happy.jpg',
+        exact: true,
+        userMenuPage: false,
+        mainPage: false,
+        auth: false,
         minigame: false,
         description: '',
     },

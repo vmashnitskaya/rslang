@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Box, Typography, AppBar, Toolbar, IconButton, Button, Dialog } from '@material-ui/core';
+import { Box, Typography, AppBar, Toolbar, Button, Dialog } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ComplexityPoints from '../speakIt/ComplexityPoints';
 import './StartGame.scss';
 import useUserWord from '../router/storage/hooks/useUserWords';
+import { getToken } from '../router/storage/selectors';
 import Loading from './Loading';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,6 +26,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
     const [message, setMessage] = useState(null);
     const { words, error, loading } = useUserWord();
     const [start, setStart] = useState(true);
+    const token = useSelector(getToken);
 
     const handleClose = () => {
         onClose();
@@ -57,23 +60,25 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
     return (
         <div className="start-page_wrapper">
             {loading && <Loading className="loader" />}
-            {error && <Typography>Something get`s wrong</Typography>}
-            <Dialog fullScreen open={open} onClose={handleClose}>
+            {error && !!token && <Typography>Something get`s wrong</Typography>}
+            <Dialog open={open} onClose={handleClose}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
-                        <IconButton
+                        <Button
                             edge="start"
                             color="inherit"
                             onClick={handleClose}
                             aria-label="close"
-                        />
+                        >
+                            Close
+                        </Button>
                         <Typography align="center" variant="h6" className={classes.title}>
                             Rules
                         </Typography>
                     </Toolbar>
                 </AppBar>
                 <Box className="start-page_content">
-                    <h1 className="start-page_content__name">Sprint</h1>
+                    <h2 className="start-page_content__name">SPRINT</h2>
                     <p className="start-page_content__rules">
                         Determine if the word and translation match in 1 minute
                         <br />
@@ -85,6 +90,7 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                             color="primary"
                             variant="contained"
                             onClick={handleUserWords}
+                            disabled={!token}
                         >
                             My words
                         </Button>
@@ -97,20 +103,21 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                             Random words
                         </Button>
                     </Box>
+                    {show && (
+                        <Box>
+                            <Typography align="center" variant="h6">
+                                Word complexity
+                            </Typography>
+                            <ComplexityPoints
+                                wordsType=""
+                                currentComplexity={complexity}
+                                onComplexityChange={handleComplexityChange}
+                                complexityArray={[0, 1, 2, 3, 4, 5]}
+                            />
+                        </Box>
+                    )}
+                    <Typography className="message">{message}</Typography>
                 </Box>
-                {show && (
-                    <Box>
-                        <Typography align="center" variant="h6">
-                            Word complexity
-                        </Typography>
-                        <ComplexityPoints
-                            currentComplexity={complexity}
-                            onComplexityChange={handleComplexityChange}
-                            complexityArray={[0, 1, 2, 3, 4, 5]}
-                        />
-                    </Box>
-                )}
-                <Typography>{message}</Typography>
                 <Button
                     variant="contained"
                     color="primary"

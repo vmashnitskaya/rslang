@@ -182,7 +182,7 @@ WordsTable.propTypes = {
                 }),
             }),
         })
-    ).isRequired,
+    ),
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     setWords: PropTypes.func.isRequired,
@@ -194,6 +194,7 @@ WordsTable.propTypes = {
 
 WordsTable.defaultProps = {
     error: false,
+    aggregatedWords: [],
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WordsTable);

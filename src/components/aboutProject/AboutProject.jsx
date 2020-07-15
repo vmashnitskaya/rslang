@@ -1,7 +1,7 @@
 import React from 'react';
-import SettingsSection from './SettingsSection';
-import AboutUsSection from './AboutUsSection';
-import IntervalSection from './IntervalSection';
+import SettingsSection from '../loginPage/SettingsSection';
+import AboutUsSection from '../loginPage/AboutUsSection';
+import IntervalSection from '../loginPage/IntervalSection';
 import './AboutProject.scss';
 
 const AboutProject = () => {

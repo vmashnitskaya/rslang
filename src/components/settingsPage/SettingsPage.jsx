@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -7,6 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -33,13 +34,18 @@ const TooltipIcon = ({ title }) => {
     );
 };
 
-const SettingsPage = ({ settings, fetchSettings, saveWordsPerDay }) => {
+const SettingsPage = ({ settings, fetchSettingsSuccess, saveWordsPerDay }) => {
     const userId = useSelector(getUserId);
     const token = useSelector(getToken);
 
     const [isPopUpOpen, setIsPopUpOpen] = useState(false);
     const [popUpTitle, setPopUpTitle] = useState('');
     const [popUpText, setPopUpText] = useState('');
+    const popUpData = (title, text) => {
+        setPopUpTitle(title);
+        setPopUpText(text);
+        setIsPopUpOpen(true);
+    };
     const handleClosePopUp = () => {
         setIsPopUpOpen(false);
     };
@@ -47,6 +53,7 @@ const SettingsPage = ({ settings, fetchSettings, saveWordsPerDay }) => {
     const { optional, wordsPerDay } = settings;
     const [wordsNumber, setWordsNumber] = useState(wordsPerDay);
     const [settingsOptional, setSettingsOptional] = useState({ ...optional });
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
 
     const handleSetSettingsOptional = (obj) => {
         setSettingsOptional({ ...settingsOptional, ...obj });
@@ -64,20 +71,37 @@ const SettingsPage = ({ settings, fetchSettings, saveWordsPerDay }) => {
         },
     };
 
+    const error =
+        [
+            settingsOptional.isShowTranslate,
+            settingsOptional.isShowTextExample,
+            settingsOptional.isShowTextMeaning,
+        ].filter((el) => el).length === 0;
+
+    useEffect(() => {
+        if (error) {
+            setIsSaveButtonDisabled(true);
+            popUpData(
+                'Warning!!!',
+                'Please, enable one of the next items: Words Translate, Text Meaning or Text Example'
+            );
+        } else {
+            setIsSaveButtonDisabled(false);
+        }
+    }, [error]);
+
     const saveSettings = async () => {
-        saveWordsPerDay();
-        await userSettingsApi.putUserSettings(userId, token, newSettings);
-        await fetchSettings(userId, token);
-        setPopUpTitle('Updated');
-        setPopUpText('Settings updated successfully');
-        setIsPopUpOpen(true);
+        const putSettings = await userSettingsApi.putUserSettings(userId, token, newSettings);
+        if (putSettings) {
+            saveWordsPerDay();
+            popUpData('Updated', 'Settings updated successfully');
+            fetchSettingsSuccess(userId, token, newSettings);
+        }
     };
     const cancelSettings = () => {
         setWordsNumber(wordsPerDay);
         setSettingsOptional({ ...optional });
-        setPopUpTitle('Previous settings');
-        setPopUpText('Settings reset to previous');
-        setIsPopUpOpen(true);
+        popUpData('Previous settings', 'Settings reset to previous');
     };
 
     return (
@@ -105,7 +129,8 @@ const SettingsPage = ({ settings, fetchSettings, saveWordsPerDay }) => {
                     />
                 </div>
 
-                <FormControl component="fieldset">
+                <FormControl required error={error} component="fieldset">
+                    <FormLabel component="legend">One of these items should be enabled</FormLabel>
                     <FormGroup aria-label="position" column="true">
                         <div>
                             <FormControlLabel
@@ -241,7 +266,13 @@ const SettingsPage = ({ settings, fetchSettings, saveWordsPerDay }) => {
                 <Button variant="contained" color="primary" size="large" onClick={cancelSettings}>
                     Cancel
                 </Button>
-                <Button variant="contained" color="secondary" size="large" onClick={saveSettings}>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    size="large"
+                    onClick={saveSettings}
+                    disabled={isSaveButtonDisabled}
+                >
                     Save
                 </Button>
             </section>
@@ -259,8 +290,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchSettings: (userId, token) => {
-        dispatch(settingsActions.fetchSettings(userId, token));
+    fetchSettingsSuccess: (userId, token, settings) => {
+        dispatch(settingsActions.fetchSettingsSuccess(userId, token, settings));
     },
     saveWordsPerDay: () => dispatch(statisticsActions.saveWordsPerDay()),
 });
@@ -270,8 +301,8 @@ SettingsPage.propTypes = {
         wordsPerDay: PropTypes.number,
         optional: PropTypes.objectOf(PropTypes.bool),
     }).isRequired,
-    fetchSettings: PropTypes.func.isRequired,
     saveWordsPerDay: PropTypes.func.isRequired,
+    fetchSettingsSuccess: PropTypes.func.isRequired,
 };
 TooltipIcon.propTypes = {
     title: PropTypes.string.isRequired,
