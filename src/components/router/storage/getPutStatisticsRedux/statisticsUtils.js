@@ -22,9 +22,37 @@ const getDate = () => convertDate(new Date());
 
 const getDateAndTime = () => `${new Date().toISOString().slice(0, 16).replace(/-|T|:/g, '')}`;
 
+const miniGames = {
+    savannah: {
+        name: 'Savannah',
+        alias: 'sav',
+    },
+    sprint: {
+        name: 'Sprint',
+        alias: 'spr',
+    },
+    speakIt: {
+        name: 'SpeakIt',
+        alias: 'spk',
+    },
+    englishPuzzle: {
+        name: 'English Puzzle',
+        alias: 'enp',
+    },
+    anagramm: {
+        name: 'Anagramm',
+        alias: 'ang',
+    },
+    audition: {
+        name: 'Audition',
+        alias: 'aud',
+    },
+};
+
 export default {
     getInitialDateStaticstics,
     convertDate,
     getDate,
     getDateAndTime,
+    miniGames,
 };

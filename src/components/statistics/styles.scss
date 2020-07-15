@@ -1,4 +1,14 @@
 .statistics_page{
     margin-top: 70px;
     background-color: red;
+
+    canvas{
+        max-height: 70vh;
+        max-width: 80vw;
+        margin: 10px auto;
+    }
+
+    p{
+        text-align: center;
+    }
 }
