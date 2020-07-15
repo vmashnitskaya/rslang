@@ -1,10 +1,18 @@
+.speakit-wrapper {
+    height: 100%;
+    width: 100%;
+    padding: 80px 0 10px 0;
+    background-image: url("/assets/images/speakit.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .game-page {
     display: flex;
     flex-direction: column;
     max-width: 1020px;
     height: 100%;
-    margin: 100px auto 10px auto;
-
+    margin: 0 auto;
     .buttons {
         display: flex;
         justify-content: space-evenly;

@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
     },
     label: {
-        color: theme.palette.primary.main,
+        color: theme.palette.darken.main,
     },
 }));
 
@@ -103,12 +103,17 @@ const SpeakItGame = ({
     errorAggr,
     fetchAggregatedWords,
     setStatistics,
+    setInitialState,
 }) => {
     const speechRecognitionRef = useRef();
     const [wordsType, setWordsType] = useState('new');
     const [alertShown, setAlertShown] = useState(false);
 
     const classes = useStyles();
+
+    useEffect(() => {
+        setInitialState();
+    }, []);
 
     useEffect(() => {
         if (userId && token && wordsType === 'repeat') {
@@ -127,7 +132,7 @@ const SpeakItGame = ({
     useEffect(() => {
         setSelectedCard(null);
         setGuessedWords([]);
-        if (wordsType === 'repeat' && aggregatedWords.length && aggregatedWords.length > 10) {
+        if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length > 10) {
             setCards(
                 aggregatedWords
                     .slice(0, 10)
@@ -141,11 +146,7 @@ const SpeakItGame = ({
                     .sort(() => Math.random() - 0.5)
             );
             setSelectedCard(null);
-        } else if (
-            wordsType === 'repeat' &&
-            aggregatedWords.length &&
-            aggregatedWords.length < 10
-        ) {
+        } else if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length < 10) {
             setWordsType('new');
             setAlertShown(true);
         } else if (words) {
@@ -316,68 +317,73 @@ const SpeakItGame = ({
                 <Translation translation={selectedCard ? selectedCard.translation : undefined} />
             )}
 
-            {loading || error || loadingAggr || errorAggr ? (
-                <Loading error={error} errorAggr={errorAggr} />
-            ) : (
-                <CardsList
-                    cards={cards}
-                    selectedCard={selectedCard}
-                    gameStarted={gameStarted}
-                    guessedWords={guessedWords}
-                    onCardSelected={handleCardSelected}
-                />
-            )}
-
-            <div className="buttons">
-                {gameStarted ? (
-                    <Button
-                        className="stop"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleGamePause}
-                        size="small"
-                    >
-                        Pause game
-                    </Button>
+                {loading || error || loadingAggr || errorAggr ? (
+                    <Loading error={error} errorAggr={errorAggr} />
                 ) : (
-                    <Button
-                        className="speak"
-                        color="primary"
-                        variant="contained"
-                        onClick={handleStartGame}
-                        size="small"
-                    >
-                        Speak it
-                    </Button>
+                    <CardsList
+                        cards={cards}
+                        selectedCard={selectedCard}
+                        gameStarted={gameStarted}
+                        guessedWords={guessedWords}
+                        onCardSelected={handleCardSelected}
+                    />
                 )}
 
-                <Button
-                    className="finish"
-                    variant="contained"
+
+                <div className="buttons">
+                    {gameStarted ? (
+                        <Button
+                            className="stop"
+                            variant="contained"
+                            color="primary"
+                            onClick={handleGamePause}
+                            size="small"
+                        >
+                            Pause game
+                        </Button>
+                    ) : (
+                        <Button
+                            className="speak"
+                            color="primary"
+                            variant="contained"
+                            onClick={handleStartGame}
+                            size="small"
+                        >
+                            Speak it
+                        </Button>
+                    )}
+
+                    <Button
+                        className="finish"
+                        variant="contained"
+                        color="primary"
+                        onClick={handlePopUpOpened}
+                        size="small"
+                    >
+                        Results
+                    </Button>
+                </div>
+                <ResultsPopUp
+                    open={isPopUpOpened}
+                    cards={cards}
+                    guessedWords={guessedWords}
+                    onClose={handlePopUpClose}
+                    onNewGame={handleNewGame}
+                />
+                <Snackbar
+                    open={Boolean(alertShown)}
+                    autoHideDuration={3000}
+                    onClose={handleAlertClose}
                     color="primary"
-                    onClick={handlePopUpOpened}
-                    size="small"
                 >
-                    Results
-                </Button>
+                    <Alert
+                        onClose={handleAlertClose}
+                        alertShown={
+                            alertShown ? "No words to repeat. Let's continue with new ones." : ''
+                        }
+                    />
+                </Snackbar>
             </div>
-            <ResultsPopUp
-                open={isPopUpOpened}
-                cards={cards}
-                guessedWords={guessedWords}
-                onClose={handlePopUpClose}
-                onNewGame={handleNewGame}
-            />
-            <Snackbar
-                open={Boolean(alertShown)}
-                autoHideDuration={3000}
-                onClose={handleAlertClose}
-                color="primary"
-            >
-                <Alert onClose={handleAlertClose}>
-                    {alertShown && "No words to repeat. Let's continue with new ones."}
-                </Alert>
-            </Snackbar>
         </div>
     );
 };
@@ -416,8 +422,12 @@ const mapDispatchToProps = (dispatch) => ({
     fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
         dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
     },
-    setStatistics: (correct) =>
-        dispatch(statisticsActions.updateStaticsMiniGame('speakit', 10, correct)),
+    setStatistics: (correct) => {
+        dispatch(statisticsActions.updateStaticsMiniGame('speakit', 10, correct));
+    },
+    setInitialState: () => {
+        dispatch(speakItActions.setInitialState());
+    },
 });
 
 const mapStateToProps = (state) => ({
@@ -494,9 +504,10 @@ SpeakItGame.propTypes = {
         })
     ).isRequired,
     loadingAggr: PropTypes.bool.isRequired,
-    errorAggr: PropTypes.bool.isRequired,
+    errorAggr: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
     setStatistics: PropTypes.func.isRequired,
+    setInitialState: PropTypes.func.isRequired,
 };
 
 SpeakItGame.defaultProps = {
@@ -505,6 +516,7 @@ SpeakItGame.defaultProps = {
     selectedCard: {},
     speechText: '',
     cards: [],
+    errorAggr: false,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpeakItGame);

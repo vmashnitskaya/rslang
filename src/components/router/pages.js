@@ -5,11 +5,13 @@ import AboutTeam from '../aboutTeam/index';
 import Sprint from '../sprint/Sprint';
 import SpeakItGame from '../speakIt/index';
 import Vocabulary from '../vocabulary';
+import Audition from '../audition';
 import SavannahGame from '../savannah';
 import MainGame from '../mainGame/index';
 import EnglishPuzzle from '../english-puzzle';
 import SettingsPage from '../settingsPage';
 import AnagrammGame from '../anagrammGame';
+import LevelTest from '../LevelTest/LevelTest';
 
 const pages = [
     {
@@ -18,6 +20,10 @@ const pages = [
         url: '/',
         exact: true,
         img: '',
+        userMenuPage: false,
+        auth: true,
+        minigame: false,
+        description: '',
     },
     {
         component: MainGame,
@@ -25,20 +31,10 @@ const pages = [
         url: '/learn',
         exact: false,
         img: '/assets/images/learn.jpg',
-    },
-    {
-        component: AboutProject,
-        title: 'About Project',
-        url: '/aboutproject',
-        exact: true,
-        img: '/assets/images/angry.jpg',
-    },
-    {
-        component: AboutTeam,
-        title: 'About Team',
-        url: '/aboutteam',
-        img: '/assets/images/happy.jpg',
-        exact: true,
+        userMenuPage: false,
+        auth: true,
+        minigame: false,
+        description: '',
     },
     {
         component: Vocabulary,
@@ -46,20 +42,49 @@ const pages = [
         url: '/vocabulary',
         exact: false,
         img: '/assets/images/scared.jpg',
+        userMenuPage: true,
+        auth: true,
+        minigame: false,
+        description: '',
     },
     {
         component: Sprint,
         title: 'Sprint',
         url: '/sprint',
-        img: '/assets/images/sprint.png',
+        img: '/assets/images/sprint.jpg',
         exact: false,
+        userMenuPage: false,
+        auth: false,
+        minigame: true,
+        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
     },
     {
         component: SpeakItGame,
         title: 'SpeakIt',
         url: '/speakit',
-        img: '/assets/images/start-image.jpg',
+        img: '/assets/images/speakit.jpg',
         exact: true,
+        userMenuPage: false,
+        auth: false,
+        minigame: true,
+        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+    },
+    {
+        component: EnglishPuzzle,
+        title: 'English-Puzzle',
+        url: '/englishpuzzle',
+        exact: true,
+        userMenuPage: false,
+        auth: false,
+        minigame: true,
+        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        img: '/assets/images/puzzle.jpg',
+    },
+    {
+        component: Audition,
+        title: 'Audition',
+        url: '/audition',
+        img: '',
     },
     {
         component: EnglishPuzzle,
@@ -71,8 +96,12 @@ const pages = [
         component: SavannahGame,
         title: 'Savannah',
         url: '/Savannah',
-        img: '/assets/images/draw.jpg',
+        img: '/assets/images/savannah.jpg',
         exact: true,
+        userMenuPage: false,
+        auth: false,
+        minigame: true,
+        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
     },
     {
         component: SettingsPage,
@@ -80,6 +109,10 @@ const pages = [
         url: '/settings',
         img: '/assets/images/angry.jpg',
         exact: true,
+        userMenuPage: true,
+        auth: true,
+        minigame: false,
+        description: '',
     },
     {
         component: AnagrammGame,
@@ -87,6 +120,43 @@ const pages = [
         url: '/anagramm',
         exact: true,
         img: '/assets/images/angry.jpg',
+        userMenuPage: false,
+        auth: false,
+        minigame: true,
+        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+    },
+    {
+        component: AboutProject,
+        title: 'About Project',
+        url: '/aboutproject',
+        exact: true,
+        img: '/assets/images/angry.jpg',
+        userMenuPage: false,
+        auth: true,
+        minigame: false,
+        description: '',
+    },
+    {
+        component: AboutTeam,
+        title: 'About Team',
+        url: '/aboutteam',
+        img: '/assets/images/happy.jpg',
+        exact: true,
+        userMenuPage: false,
+        auth: false,
+        minigame: false,
+        description: '',
+    },
+    {
+        component: LevelTest,
+        title: 'Level Test',
+        url: '/levelTest',
+        img: '/assets/images/happy.jpg',
+        exact: true,
+        userMenuPage: false,
+        auth: false,
+        minigame: false,
+        description: '',
     },
 ];
 
@@ -96,6 +166,10 @@ export const pagePropType = PropTypes.exact({
     url: PropTypes.string.isRequired,
     exact: PropTypes.bool.isRequired,
     img: PropTypes.string.isRequired,
+    userMenuPage: PropTypes.bool.isRequired,
+    auth: PropTypes.bool.isRequired,
+    minigame: PropTypes.bool.isRequired,
+    description: PropTypes.string.isRequired,
 });
 
 export default pages;

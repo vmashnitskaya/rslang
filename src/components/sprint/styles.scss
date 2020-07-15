@@ -6,7 +6,9 @@ main {
         margin: 0 auto;
         height: 100%;
         width: 100%;
-        background-image: url(../../../public/assets/images/sprint-bg.jpg);
+        background-image: url("/assets/images/sprint.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
         .sprint-game {
             height: 100vh;
             display: flex;
@@ -14,63 +16,69 @@ main {
             justify-content: center;
             align-items: center;
             width: 95%;
+
+            .closeButton {
+                left: 48%;
+                margin-top: 70px;
+            }
+
             .score_container {
                 margin: 0 auto;
                 display: flex;
                 justify-content: space-between;
                 width: 60%;
 
-                    .countdown {
-                        position: relative;
-                    
-                        &__visual {
-                            stroke-dasharray: 151px;
-                            stroke-dashoffset: 151px;
-                            stroke-linecap: butt;
-                            stroke-width: 4px;
-                            stroke: green;
-                            fill: none;
-                    
-                            svg {
-                                width: 52px;
-                                height: 52px;
-                                transform: rotateZ(-90deg);
-                            }
-                        }
-                    
-                        &__text {
-                            position: absolute;
-                            top: 18px;
+                .countdown {
+                    position: relative;
+
+                    &__visual {
+                        stroke-dasharray: 151px;
+                        stroke-dashoffset: 151px;
+                        stroke-linecap: butt;
+                        stroke-width: 4px;
+                        stroke: green;
+                        fill: none;
+
+                        svg {
                             width: 52px;
-                            color: green;  
-                            font-size: 16px;
-                            font-weight: 600;
-                            text-align: center;
+                            height: 52px;
+                            transform: rotateZ(-90deg);
                         }
-                    
-                        @keyframes countdown-animation {
-                            0% {
-                                stroke-dashoffset: 0px;
-                            }
-                            100% {
-                                stroke-dashoffset: 151px;
-                            }
-                        }
-                    }
-                    
-                    .score {
-                        font-size: 30px;
-                        font-family: "Roboto", "Helvetica", "Arial", sans-serif;
                     }
 
-                    .star {
-                        width: 40px;
-                        height: 40px;
-                        
-                        &_full {
-                            color: rgb(248, 183, 3);
+                    &__text {
+                        position: absolute;
+                        top: 18px;
+                        width: 52px;
+                        color: green;
+                        font-size: 16px;
+                        font-weight: 600;
+                        text-align: center;
+                    }
+
+                    @keyframes countdown-animation {
+                        0% {
+                            stroke-dashoffset: 0px;
+                        }
+                        100% {
+                            stroke-dashoffset: 151px;
                         }
                     }
+                }
+
+                .score {
+                    font-size: 30px;
+                    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+                }
+
+                .star {
+                    width: 40px;
+                    height: 40px;
+
+                    &_full {
+                        color: rgb(248, 183, 3);
+                    }
+                }
             }
 
             .card {
@@ -82,12 +90,13 @@ main {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    
-                    .word, .translate {
+
+                    .word,
+                    .translate {
                         margin-top: 40px;
                         font-size: 30px;
                         font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-                        color: rgba($color: #645a5a, $alpha: 1.0);
+                        color: rgba($color: #645a5a, $alpha: 1);
                     }
 
                     .sound {
@@ -96,7 +105,6 @@ main {
                 }
 
                 .button {
-
                     &_container {
                         display: flex;
                         justify-content: space-between;
