@@ -77,7 +77,7 @@ const pages = [
         userMenuPage: false,
         auth: false,
         minigame: true,
-        description: 'Create sentences with words. Additional hints can be used for help.',
+        description: 'Create sentences from words. Additional hints can be used for help.',
         img: '/assets/images/puzzle.jpg',
     },
     {
@@ -91,12 +91,6 @@ const pages = [
         minigame: true,
         description:
             'During the game, the word in English will be pronounced, you need to select its translation.',
-    },
-    {
-        component: EnglishPuzzle,
-        title: 'English-Puzzle',
-        url: '/englishpuzzle',
-        img: '/assets/images/start-image.jpg',
     },
     {
         component: SavannahGame,
@@ -130,7 +124,7 @@ const pages = [
         userMenuPage: false,
         auth: false,
         minigame: true,
-        description: 'Make words from letters.',
+        description: 'Make words from letters. Images and examples are provided.',
     },
     {
         component: AboutProject,
