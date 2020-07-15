@@ -15,7 +15,6 @@ import AnagrammGame from '../anagrammGame';
 const pages = [
     {
         component: MainPage,
-        title: 'Main Page',
         url: '/',
         exact: true,
         img: '',
@@ -26,10 +25,9 @@ const pages = [
     },
     {
         component: MainGame,
-        title: 'Words learning',
         url: '/learn',
         exact: false,
-        img: '/assets/images/learn.jpg',
+        img: '/assets/images/maingame-card.jpg',
         userMenuPage: false,
         auth: true,
         minigame: false,
@@ -37,7 +35,6 @@ const pages = [
     },
     {
         component: Vocabulary,
-        title: 'Vocabulary',
         url: '/vocabulary',
         exact: false,
         img: '/assets/images/scared.jpg',
@@ -48,9 +45,8 @@ const pages = [
     },
     {
         component: Sprint,
-        title: 'Sprint',
         url: '/sprint',
-        img: '/assets/images/sprint.jpg',
+        img: '/assets/images/sprint-card.jpg',
         exact: false,
         userMenuPage: false,
         auth: false,
@@ -59,9 +55,8 @@ const pages = [
     },
     {
         component: SpeakItGame,
-        title: 'SpeakIt',
         url: '/speakit',
-        img: '/assets/images/speakit.jpg',
+        img: '/assets/images/speakit-card.jpg',
         exact: true,
         userMenuPage: false,
         auth: false,
@@ -70,26 +65,23 @@ const pages = [
     },
     {
         component: EnglishPuzzle,
-        title: 'English-Puzzle',
         url: '/englishpuzzle',
         exact: true,
         userMenuPage: false,
         auth: false,
         minigame: true,
         description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
-        img: '/assets/images/puzzle.jpg',
+        img: '/assets/images/puzzle-card.jpg',
     },
     {
         component: Audition,
-        title: 'Audition',
         url: '/audition',
-        img: '',
+        img: '/assets/images/audition-card.jpg',
     },
     {
         component: SavannahGame,
-        title: 'Savannah',
         url: '/Savannah',
-        img: '/assets/images/savannah.jpg',
+        img: '/assets/images/savannah-card.jpg',
         exact: true,
         userMenuPage: false,
         auth: false,
@@ -98,7 +90,6 @@ const pages = [
     },
     {
         component: SettingsPage,
-        title: 'Settings',
         url: '/settings',
         img: '/assets/images/angry.jpg',
         exact: true,
@@ -109,10 +100,9 @@ const pages = [
     },
     {
         component: AnagrammGame,
-        title: 'Anagramm Game',
         url: '/anagramm',
         exact: true,
-        img: '/assets/images/angry.jpg',
+        img: '/assets/images/anagramm-card.jpg',
         userMenuPage: false,
         auth: false,
         minigame: true,
@@ -120,7 +110,6 @@ const pages = [
     },
     {
         component: AboutProject,
-        title: 'About Project',
         url: '/aboutproject',
         exact: true,
         img: '/assets/images/angry.jpg',
@@ -131,7 +120,6 @@ const pages = [
     },
     {
         component: AboutTeam,
-        title: 'About Team',
         url: '/aboutteam',
         img: '/assets/images/happy.jpg',
         exact: true,
@@ -144,7 +132,6 @@ const pages = [
 
 export const pagePropType = PropTypes.exact({
     component: PropTypes.elementType.isRequired,
-    title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     exact: PropTypes.bool.isRequired,
     img: PropTypes.string.isRequired,
