@@ -20,6 +20,7 @@ import { getToken, getUserId } from '../router/storage/selectors';
 import settingsSelectors from '../router/storage/getSettingsRedux/settingsSelectors';
 import userSettingsApi from '../router/storage/getSettingsRedux/settingsApi';
 import settingsActions from '../router/storage/getSettingsRedux/settingsActions';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 import './SettingsPage.scss';
 import PopUp from './PopUp';
 
@@ -33,7 +34,7 @@ const TooltipIcon = ({ title }) => {
     );
 };
 
-const SettingsPage = ({ settings, fetchSettingsSuccess }) => {
+const SettingsPage = ({ settings, fetchSettingsSuccess, saveWordsPerDay }) => {
     const userId = useSelector(getUserId);
     const token = useSelector(getToken);
 
@@ -92,6 +93,7 @@ const SettingsPage = ({ settings, fetchSettingsSuccess }) => {
     const saveSettings = async () => {
         const putSettings = await userSettingsApi.putUserSettings(userId, token, newSettings);
         if (putSettings) {
+            saveWordsPerDay();
             popUpData('Updated', 'Settings updated successfully');
             fetchSettingsSuccess(userId, token, newSettings);
         }
@@ -291,6 +293,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchSettingsSuccess: (userId, token, settings) => {
         dispatch(settingsActions.fetchSettingsSuccess(userId, token, settings));
     },
+    saveWordsPerDay: () => dispatch(statisticsActions.saveWordsPerDay()),
 });
 
 SettingsPage.propTypes = {
@@ -298,6 +301,7 @@ SettingsPage.propTypes = {
         wordsPerDay: PropTypes.number,
         optional: PropTypes.objectOf(PropTypes.bool),
     }).isRequired,
+    saveWordsPerDay: PropTypes.func.isRequired,
     fetchSettingsSuccess: PropTypes.func.isRequired,
 };
 TooltipIcon.propTypes = {
