@@ -109,29 +109,15 @@ export default function StartGame({ onClose, onComplexityChange, onChooseUserWor
                                 Word complexity
                             </Typography>
                             <ComplexityPoints
+                                wordsType=""
                                 currentComplexity={complexity}
                                 onComplexityChange={handleComplexityChange}
                                 complexityArray={[0, 1, 2, 3, 4, 5]}
                             />
                         </Box>
                     )}
-                    <Typography>{message}</Typography>
+                    <Typography className="message">{message}</Typography>
                 </Box>
-                {show && (
-                    <Box>
-                        <Typography align="center" variant="h6">
-                            Word complexity
-                        </Typography>
-                        <ComplexityPoints
-                            wordsType="words"
-                            currentComplexity={complexity}
-                            onComplexityChange={handleComplexityChange}
-                            complexityArray={[0, 1, 2, 3, 4, 5]}
-                            wordsType=""
-                        />
-                    </Box>
-                )}
-                <Typography>{message}</Typography>
                 <Button
                     variant="contained"
                     color="primary"
