@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import wordsActions from '../router/storage/getWordsRedux/wordsActions';
 import wordsSelectors from '../router/storage/getWordsRedux/wordsSelectors';
@@ -33,7 +38,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
         numberOfChosenWrongWords: 0,
     };
     const [gameStats, setGameStats] = useState(newGameStats);
-    const [backgroundClass, setBackgroundClass] = useState('1');
+    const [backgroundClass, setBackgroundClass] = useState('');
     let gameData = {};
     let chosenRightWord = false;
     let skipButton = {};
@@ -48,6 +53,13 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
         playAudio(audio);
     };
 
+    const generateNewWords = () => {
+        setGameStats(newGameStats);
+        const findGroup = generateRandomNumber(0, numberWordGroups);
+        const findPage = generateRandomNumber(0, numberPagesInGroup);
+        fetchWords(findPage, findGroup);
+    };
+
     const showStatistics = () => {
         const numberLearnedWords = Object.keys(gameStats).reduce(
             (acc, key) => acc + gameStats[key],
@@ -55,10 +67,23 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
         );
         setStatistics(numberLearnedWords, gameStats.numberOfChosenRightWords);
         return (
-            <div className="stats">
-                <h2>Game over</h2>
-                <p>Chosen right words: {gameStats.numberOfChosenRightWords}</p>
-                <p>Chosen right words: {gameStats.numberOfChosenWrongWords}</p>
+            <div className="popup__wrapper">
+                <Dialog open="true">
+                    <DialogTitle>Game over</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Chosen right words: {gameStats.numberOfChosenRightWords}
+                        </DialogContentText>
+                        <DialogContentText>
+                            Chosen right words: {gameStats.numberOfChosenWrongWords}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={generateNewWords} color="primary" autoFocus>
+                            New game
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     };
@@ -195,9 +220,7 @@ const Audition = ({ words, fetchWords, setStatistics }) => {
     };
 
     useEffect(() => {
-        const findGroup = generateRandomNumber(0, numberWordGroups);
-        const findPage = generateRandomNumber(0, numberPagesInGroup);
-        fetchWords(findPage, findGroup);
+        generateNewWords();
     }, []);
 
     useEffect(() => {
