@@ -29,6 +29,7 @@ import speakItSelectors from './redux/speakItSelectors';
 import Alert from './Alert';
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
 
 const filterForRepeatWords = {
     $or: [
@@ -101,6 +102,7 @@ const SpeakItGame = ({
     loadingAggr,
     errorAggr,
     fetchAggregatedWords,
+    setStatistics,
     setInitialState,
 }) => {
     const speechRecognitionRef = useRef();
@@ -249,6 +251,7 @@ const SpeakItGame = ({
 
     useEffect(() => {
         if (guessedWords.length === 10) {
+            setStatistics(10);
             handlePopUpOpened();
         }
     }, [guessedWords, handlePopUpOpened]);
@@ -270,8 +273,8 @@ const SpeakItGame = ({
     return !isGameStarted ? (
         <StartPage onStart={gandleGameStarted} />
     ) : (
-        <div className="speakit-wrapper">
-            <div className="game-page">
+        <div className="game-page">
+            {token && userId && (
                 <FormControl component="fieldset">
                     <RadioGroup
                         aria-label="words"
@@ -285,35 +288,34 @@ const SpeakItGame = ({
                             control={<Radio className={classes.rootRadioOption} />}
                             label="New"
                             labelPlacement="top"
-                            className={wordsType === 'new' ? classes.label : undefined}
+                            className={wordsType === 'new' && classes.label}
                         />
                         <FormControlLabel
                             value="repeat"
                             control={<Radio className={classes.rootRadioOption} />}
                             label="Repeat words"
                             labelPlacement="top"
-                            className={wordsType === 'repeat' ? classes.label : undefined}
+                            className={wordsType === 'repeat' && classes.label}
                         />
                     </RadioGroup>
                 </FormControl>
-                <ComplexityPoints
-                    currentComplexity={complexity}
-                    onComplexityChange={handleComplexityChange}
-                    complexityArray={[0, 1, 2, 3, 4, 5]}
-                    wordsType={wordsType}
-                />
-                {selectedCard ? (
-                    <Image image={selectedCard.image} word={selectedCard.word} />
-                ) : (
-                    <Image image={startImage} />
-                )}
-                {gameStarted ? (
-                    <SpeechRecognitionText text={speechText} />
-                ) : (
-                    <Translation
-                        translation={selectedCard ? selectedCard.translation : undefined}
-                    />
-                )}
+            )}
+            <ComplexityPoints
+                currentComplexity={complexity}
+                onComplexityChange={handleComplexityChange}
+                complexityArray={[0, 1, 2, 3, 4, 5]}
+                wordsType={wordsType}
+            />
+            {selectedCard ? (
+                <Image image={selectedCard.image} word={selectedCard.word} />
+            ) : (
+                <Image image={startImage} />
+            )}
+            {gameStarted ? (
+                <SpeechRecognitionText text={speechText} />
+            ) : (
+                <Translation translation={selectedCard ? selectedCard.translation : undefined} />
+            )}
 
                 {loading || error || loadingAggr || errorAggr ? (
                     <Loading error={error} errorAggr={errorAggr} />
@@ -326,6 +328,7 @@ const SpeakItGame = ({
                         onCardSelected={handleCardSelected}
                     />
                 )}
+
 
                 <div className="buttons">
                     {gameStarted ? (
@@ -419,6 +422,9 @@ const mapDispatchToProps = (dispatch) => ({
     fetchAggregatedWords: (userId, token, wordsPerDay, filter) => {
         dispatch(aggregatedWordsActions.fetchAggregatedWords(userId, token, wordsPerDay, filter));
     },
+    setStatistics: (correct) => {
+        dispatch(statisticsActions.updateStaticsMiniGame('speakit', 10, correct));
+    },
     setInitialState: () => {
         dispatch(speakItActions.setInitialState());
     },
@@ -500,6 +506,7 @@ SpeakItGame.propTypes = {
     loadingAggr: PropTypes.bool.isRequired,
     errorAggr: PropTypes.bool,
     fetchAggregatedWords: PropTypes.func.isRequired,
+    setStatistics: PropTypes.func.isRequired,
     setInitialState: PropTypes.func.isRequired,
 };
 
