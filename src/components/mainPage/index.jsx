@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { Card, CardActionArea, CardMedia } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
 
@@ -39,13 +39,8 @@ const MainPage = ({ routes }) => {
                                         <CardMedia
                                             className={classes.media}
                                             image={e.img}
-                                            title="Contemplative Reptile"
+                                            title={e.title}
                                         />
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {e.title}
-                                            </Typography>
-                                        </CardContent>
                                     </CardActionArea>
                                 </Card>
                             </Link>

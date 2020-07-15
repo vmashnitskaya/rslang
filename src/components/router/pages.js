@@ -17,7 +17,6 @@ import LevelTest from '../LevelTest/LevelTest';
 const pages = [
     {
         component: MainPage,
-        title: 'Main Page',
         url: '/',
         exact: true,
         img: '',
@@ -29,10 +28,9 @@ const pages = [
     },
     {
         component: MainGame,
-        title: 'Words learning',
         url: '/learn',
         exact: false,
-        img: '/assets/images/main.jpg',
+        img: '/assets/images/maingame-card.jpg',
         userMenuPage: false,
         mainPage: true,
         auth: true,
@@ -41,7 +39,6 @@ const pages = [
     },
     {
         component: Vocabulary,
-        title: 'Vocabulary',
         url: '/vocabulary',
         exact: false,
         img: '/assets/images/vocabulary.png',
@@ -53,9 +50,8 @@ const pages = [
     },
     {
         component: Sprint,
-        title: 'Sprint',
         url: '/sprint',
-        img: '/assets/images/sprint.jpg',
+        img: '/assets/images/sprint-card.jpg',
         exact: false,
         userMenuPage: false,
         mainPage: true,
@@ -65,9 +61,8 @@ const pages = [
     },
     {
         component: SpeakItGame,
-        title: 'SpeakIt',
         url: '/speakit',
-        img: '/assets/images/speakit.jpg',
+        img: '/assets/images/speakit-card.jpg',
         exact: true,
         userMenuPage: false,
         mainPage: true,
@@ -86,20 +81,18 @@ const pages = [
 
     {
         component: EnglishPuzzle,
-        title: 'English-Puzzle',
         url: '/englishpuzzle',
         exact: true,
         userMenuPage: false,
         auth: false,
         minigame: true,
+        img: '/assets/images/puzzle-card.jpg',
         description: 'Create sentences with words. Additional hints can be used for help.',
-        img: '/assets/images/puzzle.jpg',
     },
     {
         component: Audition,
-        title: 'Audition',
         url: '/audition',
-        img: '/assets/images/audition.jpg',
+        img: '/assets/images/audition-card.jpg',
         exact: true,
         userMenuPage: false,
         mainPage: true,
@@ -108,16 +101,9 @@ const pages = [
         description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
     },
     {
-        component: EnglishPuzzle,
-        title: 'English-Puzzle',
-        url: '/englishpuzzle',
-        img: '/assets/images/start-image.jpg',
-    },
-    {
         component: SavannahGame,
-        title: 'Savannah',
         url: '/Savannah',
-        img: '/assets/images/savannah.jpg',
+        img: '/assets/images/savannah-card.jpg',
         exact: true,
         userMenuPage: false,
         mainPage: true,
@@ -127,7 +113,6 @@ const pages = [
     },
     {
         component: SettingsPage,
-        title: 'Settings',
         url: '/settings',
         img: '/assets/images/settings.png',
         exact: true,
@@ -139,10 +124,9 @@ const pages = [
     },
     {
         component: AnagrammGame,
-        title: 'Anagramm Game',
         url: '/anagramm',
         exact: true,
-        img: '/assets/images/angry.jpg',
+        img: '/assets/images/anagramm-card.jpg',
         userMenuPage: false,
         mainPage: true,
         auth: false,
@@ -151,7 +135,6 @@ const pages = [
     },
     {
         component: AboutProject,
-        title: 'About Project',
         url: '/aboutproject',
         exact: true,
         img: '/assets/images/angry.jpg',
@@ -163,7 +146,6 @@ const pages = [
     },
     {
         component: AboutTeam,
-        title: 'About Team',
         url: '/aboutteam',
         img: '/assets/images/happy.jpg',
         exact: true,
@@ -201,7 +183,6 @@ const pages = [
 
 export const pagePropType = PropTypes.exact({
     component: PropTypes.elementType.isRequired,
-    title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     exact: PropTypes.bool.isRequired,
     img: PropTypes.string.isRequired,
