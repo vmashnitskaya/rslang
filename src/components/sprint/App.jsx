@@ -12,7 +12,10 @@ import ResultGame from './ResultGame';
 import Loading from './Loading';
 import { POINT_FOR_RIGHT_ANSWER, BONUS_POINTS, MAX_STRICK } from './constants';
 
-const shuffle = (array) => array.sort(() => Math.random() - 0.5);
+const shuffle = (array) => {
+    const arr = [...array];
+    return arr.sort(() => Math.random() - 0.5);
+};
 
 export default function App({ userWordsOnly, complexity }) {
     const [page, setPage] = useState(0);
