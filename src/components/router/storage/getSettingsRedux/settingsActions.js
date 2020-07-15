@@ -35,4 +35,4 @@ const fetchSettings = (userId, token) => async (dispatch) => {
     }
 };
 
-export default { fetchSettings, setDafaultSettings };
+export default { fetchSettings, setDafaultSettings, fetchSettingsSuccess };
