@@ -55,7 +55,10 @@ const ShuffleLettersBox = () => {
     const globalStore = store.getState();
     const { userId, token } = globalStore.navigation.auth;
 
-    const _urlNotAuth = `https://afternoon-falls-25894.herokuapp.com/words?page=2&group=${levelDifficult}`;
+    const _urlNotAuth = `https://afternoon-falls-25894.herokuapp.com/words?page=2&group=${
+        levelDifficult - 1
+    }`;
+
     const _url = `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?id=${userId}&group=${
         levelDifficult - 1
     }&wordsPerPage=${wordsPerPage}`;
@@ -79,10 +82,12 @@ const ShuffleLettersBox = () => {
     const startGame = async () => {
         setDefaultGameState();
         setResultVisible(false);
+
         let response;
         let responseCollection;
         let responseJson;
-        let arrayLength;
+        let arrayLenght;
+
         if (userId && token) {
             response = await fetch(_url, {
                 method: 'GET',
@@ -94,17 +99,18 @@ const ShuffleLettersBox = () => {
             });
             responseJson = await response.json();
             responseCollection = responseJson[0].paginatedResults;
-            arrayLength = responseCollection[0].length;
-        } else if (!userId && !token) {
+            arrayLenght = responseCollection.length;
+        }
+
+        if (!userId && !token) {
             response = await fetch(_urlNotAuth);
             responseJson = await response.json();
             responseCollection = responseJson;
-            arrayLength = responseJson.length;
+            arrayLenght = responseCollection.length;
         }
-
         const wordsCollection = [];
 
-        for (let i = 0; i < arrayLength; i += 1) {
+        for (let i = 0; i < arrayLenght; i += 1) {
             const { image } = responseCollection[i];
             const collectionWords = {
                 id: responseCollection[i].id,
@@ -129,7 +135,7 @@ const ShuffleLettersBox = () => {
                 {!isStarted && !resultVisible && (
                     <StartGameNode
                         funcStartGame={() => {
-                            startGame(_url);
+                            startGame();
                         }}
                         level={levelDifficult}
                         funcSetLevel={setLevel}
