@@ -32,6 +32,17 @@ const setMinigameStatistics = (game, totalWords, correctAnswers) => ({
     payload: { game, totalWords, correctAnswers },
 });
 
+const incSuccess = () => ({
+    type: statisticsTypes.INC_SUCCESS,
+});
+
+const incErrors = () => ({
+    type: statisticsTypes.INC_ERRORS,
+});
+const incNewWords = () => ({
+    type: statisticsTypes.INC_NEW_WORD,
+});
+
 const fetchStatistics = (userId, token) => async (dispatch) => {
     try {
         dispatch(fetchStatisticsPending());
@@ -67,12 +78,13 @@ const saveWordsPerDay = () => async (dispatch, getState) => {
 };
 
 const updateStaticsMiniGame = (game, totalWords, correctAnswers) => async (dispatch, getState) => {
-    dispatch(setMinigameStatistics(game, totalWords, correctAnswers));
-    await saveStatistics(getState);
+    const userId = getUserId(getState());
+    const token = getToken(getState());
+    if (userId && token) {
+        dispatch(setMinigameStatistics(game, totalWords, correctAnswers));
+        await saveStatistics(getState);
+    }
 };
-
-const getDate = () => `${new Date().toISOString().slice(0, 10).replace(/-/g, '')}`;
-const getDateAndTime = () => `${new Date().toISOString().slice(0, 16).replace(/-|T|:/g, '')}`;
 
 export default {
     fetchStatistics,
@@ -80,6 +92,7 @@ export default {
     saveWordsPerDay,
     updateStaticsMiniGame,
     setDafaultStatistics,
-    getDate,
-    getDateAndTime,
+    incSuccess,
+    incErrors,
+    incNewWords,
 };

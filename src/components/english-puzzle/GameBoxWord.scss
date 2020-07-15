@@ -1,6 +1,6 @@
 $base-color: #eceff1;
 .game__box-word {
-    background-color: darken($color: $base-color, $amount: 10);
+    background-color: darken($color: $base-color, $amount: 5);
     border: 1px solid black;
     padding-top: 8px;
     text-align: center;
@@ -10,7 +10,7 @@ $base-color: #eceff1;
     position: relative;
     outline: none;
     span {
-        background-color: darken($color: $base-color, $amount: 10);
+        background-color: darken($color: $base-color, $amount: 5);
     }
     .text {
         display: block;
@@ -29,7 +29,7 @@ $base-color: #eceff1;
         -moz-border-radius: 4em;
         border-radius: 4em;
         border: none;
-        background-color: darken($color: $base-color, $amount: 10);
+        background-color: darken($color: $base-color, $amount: 5);
         border-right: 1px solid black;
     }
     .l {
@@ -43,7 +43,7 @@ $base-color: #eceff1;
         border-radius: 4em;
         border-bottom-left-radius: 0;
         border-top-left-radius: 0;
-        background-color: darken($color: $base-color, $amount: 10);
+        background-color: darken($color: $base-color, $amount: 5);
         border: none;
         border-right: 1px solid black;
     }

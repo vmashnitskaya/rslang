@@ -1,5 +1,13 @@
 import React, { useMemo, useEffect, useState, useRef, useCallback } from 'react';
-import { Button, FormControl, Paper, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
+import {
+    Button,
+    FormControl,
+    Paper,
+    FormControlLabel,
+    Radio,
+    RadioGroup,
+    Snackbar,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -18,7 +26,10 @@ import puzzleSelectors from './redux/puzzleSelectors';
 import aggregatedWordsActions from '../router/storage/getAggregatedWordsRedux/aggregatedWordsActions';
 import aggregatedWordsSelectors from '../router/storage/getAggregatedWordsRedux/aggregatedWordsSelectors';
 import { getToken, getUserId } from '../router/storage/selectors';
+import statisticsActions from '../router/storage/getPutStatisticsRedux/statisticsActions';
+import statisticsUtils from '../router/storage/getPutStatisticsRedux/statisticsUtils';
 import ResultsPopUp from './ResultsPopUp';
+import Alert from './Alert';
 import './EnglishPuzzleGame.scss';
 
 const maxLevel = 5;
@@ -128,14 +139,15 @@ const EnglishPuzzleGame = ({
     errorAggr,
     fetchAggregatedWords,
     setDefaultState,
+    setStatistics,
 }) => {
     const { level, option } = pagination;
     const [wordsType, setWordsType] = useState('new');
     const classes = useStyles();
-    const [isDropdownDisabled, setIsDropdownDisabled] = useState(false);
     const [isPopUpOpened, setIsPopUpOpened] = useState(false);
     const [minWindow, setMinWindow] = useState(false);
     const container = useRef();
+    const [alertShown, setAlertShown] = useState(false);
 
     const levelOptions = useMemo(
         () =>
@@ -188,7 +200,7 @@ const EnglishPuzzleGame = ({
     useEffect(() => {
         setCurrentLine(0);
         setGuessedArrays([]);
-        if (wordsType === 'repeat' && aggregatedWords.length && aggregatedWords.length > 10) {
+        if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length > 10) {
             setData(
                 aggregatedWords
                     .map(
@@ -218,12 +230,9 @@ const EnglishPuzzleGame = ({
                     )
                     .sort(() => Math.random() - 0.5)
             );
-        } else if (
-            wordsType === 'repeat' &&
-            aggregatedWords.length &&
-            aggregatedWords.length < 10
-        ) {
+        } else if (wordsType === 'repeat' && aggregatedWords && aggregatedWords.length < 10) {
             setWordsType('new');
+            setAlertShown(true);
         } else if (words) {
             if (words.length) {
                 let currentArray = null;
@@ -347,6 +356,7 @@ const EnglishPuzzleGame = ({
     };
 
     const startNewLevel = () => {
+        setStatistics(10);
         if (option < maxOption) {
             setPagination({ ...pagination, option: pagination.option + 1 });
         } else if (level < maxLevel) {
@@ -402,7 +412,6 @@ const EnglishPuzzleGame = ({
     const handleRadioChange = (event) => {
         if (wordsType && wordsType !== event.target.value) {
             setWordsType(event.target.value);
-            setIsDropdownDisabled(!isDropdownDisabled);
         }
     };
 
@@ -410,12 +419,16 @@ const EnglishPuzzleGame = ({
         setIsPopUpOpened(false);
     };
 
+    const handleAlertClose = () => {
+        setAlertShown(false);
+    };
+
     return isStartPage ? (
         <div ref={container}>
             <StartPage onClick={handleStartPageClose} minWindow={minWindow} />
         </div>
     ) : (
-        <>
+        <div className="puzzle-wrapper">
             <div className="ep-page">
                 <div className="header">
                     <div className="header__drop-downs">
@@ -426,7 +439,7 @@ const EnglishPuzzleGame = ({
                             value={level}
                             options={levelOptions}
                             onChange={handleLevelChange}
-                            isDropdownDisabled={isDropdownDisabled}
+                            isDropdownDisabled={wordsType === 'repeat'}
                         />
                         <DropDown
                             className="page"
@@ -435,33 +448,35 @@ const EnglishPuzzleGame = ({
                             value={option}
                             options={optionOptions}
                             onChange={handleOptionChange}
-                            isDropdownDisabled={isDropdownDisabled}
+                            isDropdownDisabled={wordsType === 'repeat'}
                         />
                     </div>
-                    <FormControl component="fieldset">
-                        <RadioGroup
-                            aria-label="words"
-                            name="words"
-                            value={wordsType}
-                            onChange={handleRadioChange}
-                            className={classes.rootRadio}
-                        >
-                            <FormControlLabel
-                                value="new"
-                                control={<Radio className={classes.rootRadioOption} />}
-                                label="New"
-                                labelPlacement="top"
-                                className={wordsType === 'new' ? classes.label : undefined}
-                            />
-                            <FormControlLabel
-                                value="repeat"
-                                control={<Radio className={classes.rootRadioOption} />}
-                                label="Repeat words"
-                                labelPlacement="top"
-                                className={wordsType === 'repeat' ? classes.label : undefined}
-                            />
-                        </RadioGroup>
-                    </FormControl>
+                    {token && userId && (
+                        <FormControl component="fieldset">
+                            <RadioGroup
+                                aria-label="words"
+                                name="words"
+                                value={wordsType}
+                                onChange={handleRadioChange}
+                                className={classes.rootRadio}
+                            >
+                                <FormControlLabel
+                                    value="new"
+                                    control={<Radio className={classes.rootRadioOption} />}
+                                    label="New"
+                                    labelPlacement="top"
+                                    className={wordsType === 'new' && classes.label}
+                                />
+                                <FormControlLabel
+                                    value="repeat"
+                                    control={<Radio className={classes.rootRadioOption} />}
+                                    label="Repeat words"
+                                    labelPlacement="top"
+                                    className={wordsType === 'repeat' && classes.label}
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    )}
                     <Hints
                         handleAutoEnabledChecked={enableAutoPronunciation}
                         handlePronunciationHintChecked={enablePronunciation}
@@ -552,7 +567,20 @@ const EnglishPuzzleGame = ({
                 onClose={onPopupClosed}
                 onNewGame={handleContinueGame}
             />
-        </>
+            <Snackbar
+                open={Boolean(alertShown)}
+                autoHideDuration={3000}
+                onClose={handleAlertClose}
+                color="primary"
+            >
+                <Alert
+                    onClose={handleAlertClose}
+                    alertShown={
+                        alertShown ? "No words to repeat. Let's continue with new ones." : ''
+                    }
+                />
+            </Snackbar>
+        </div>
     );
 };
 
@@ -620,6 +648,14 @@ const mapDispatchToProps = (dispatch) => ({
     setDefaultState: () => {
         dispatch(puzzleActions.setDefaultState());
     },
+    setStatistics: (correct) =>
+        dispatch(
+            statisticsActions.updateStaticsMiniGame(
+                statisticsUtils.miniGames.englishPuzzle.alias,
+                10,
+                correct
+            )
+        ),
 });
 
 const mapStateToProps = (state) => ({
@@ -738,6 +774,7 @@ EnglishPuzzleGame.propTypes = {
     userId: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     setDefaultState: PropTypes.func.isRequired,
+    setStatistics: PropTypes.func.isRequired,
 };
 
 EnglishPuzzleGame.defaultProps = {

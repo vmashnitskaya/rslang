@@ -20,7 +20,7 @@ const StartPage = ({ onClick, minWindow }) => {
         </div>
     ) : (
         <div className="start-page">
-            <h1>English-Puzzle</h1>
+            <h2>ENGLISH-PUZZLE</h2>
             <p>Click on words, collect phrases.</p>
             <p>Select hints in menu.</p>
             <Button

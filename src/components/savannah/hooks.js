@@ -11,26 +11,35 @@ function useUserWords() {
     const token = useSelector(getToken);
     const dispatch = useDispatch();
     useEffect(() => {
-        const filterForDifficultWords = { 'userWord.optional.learned': true };
-        dispatch(
-            aggregatedWordsActions.fetchAggregatedWords(userId, token, 500, filterForDifficultWords)
-        );
+        if (token && userId) {
+            const filterForDifficultWords = { 'userWord.optional.learned': true };
+            dispatch(
+                aggregatedWordsActions.fetchAggregatedWords(
+                    userId,
+                    token,
+                    500,
+                    filterForDifficultWords
+                )
+            );
+        }
     }, []);
     const isLoading = useSelector(aggregatedWordsSelectors.getLoading);
-    const HasError = useSelector(aggregatedWordsSelectors.getError);
+    const hasError = useSelector(aggregatedWordsSelectors.getError);
     useEffect(() => {
-        if (isLoading) {
-            dispatch(actions.gameState.set(utils.gameState.LOADING_DATA));
-        } else {
-            dispatch(actions.gameState.set(utils.gameState.NOT_STARTED));
+        if (token && userId) {
+            if (isLoading) {
+                dispatch(actions.gameState.set(utils.gameState.LOADING_DATA));
+            } else {
+                dispatch(actions.gameState.set(utils.gameState.NOT_STARTED));
+            }
         }
     }, [isLoading]);
 
     useEffect(() => {
-        if (HasError) {
+        if (hasError && token && userId) {
             dispatch(actions.message.set('Something went wrong. Try again later'));
         }
-    }, [HasError]);
+    }, [hasError]);
 }
 
 export default {
