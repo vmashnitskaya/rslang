@@ -16,7 +16,7 @@ const membersData = {
         position: 'Team lead',
         location: 'Minsk',
         image: '/assets/images/aboutTeam/mashnitskaya.jpg',
-        tasks: ['Speak it', 'Main game', 'About project', 'English puzzle'],
+        tasks: ['Speak it', 'Main game', 'About project', 'English puzzle', 'Vocabulary'],
         links: {
             email: 'volha.mashnitskaya@gmail.com',
             git: 'https://github.com/vmashnitskaya',
