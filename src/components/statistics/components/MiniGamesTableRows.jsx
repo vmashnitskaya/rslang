@@ -55,11 +55,9 @@ function MiniGamesTableRows({ row }) {
                 <TableCell align="right">{row.correct}</TableCell>
                 <TableCell align="right">{row.wrong}</TableCell>
                 <TableCell align="right">{`${
-                    Number.IsNum(
-                        Math.round(row.correct / row.totalWords)
-                            ? Math.round(row.correct / row.totalWords)
-                            : 0
-                    ) * 100
+                    !Number.isNaN(Math.round(row.correct / row.totalWords))
+                        ? Math.round((row.correct / row.totalWords) * 100)
+                        : 0
                 }%`}</TableCell>
             </TableRow>
             <TableRow>

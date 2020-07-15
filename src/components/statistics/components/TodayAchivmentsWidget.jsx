@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Paper } from '@material-ui/core';
 import statisticsSelectors from '../../router/storage/getPutStatisticsRedux/statisticsSelectors';
-import settingsSelectors from '../../router/storage/getSettingsRedux/settingsSelectors';
 
-const TodayAchivmentsWidget = ({ statistics, wordsPerDay }) => {
+const TodayAchivmentsWidget = ({ statistics }) => {
     return (
         <Paper elevation={3} className="today">
             <h3>Today</h3>
@@ -16,7 +15,7 @@ const TodayAchivmentsWidget = ({ statistics, wordsPerDay }) => {
                 </Paper>
                 <Paper elevation={3}>
                     <h5>Sucessfull answers</h5>
-                    <p>{(statistics.s * 100) / wordsPerDay}%</p>
+                    <p>{Math.round((statistics.s / (statistics.s + statistics.e)) * 100)}%</p>
                 </Paper>
                 <Paper elevation={3}>
                     <h5>Best sequence</h5>
@@ -29,7 +28,6 @@ const TodayAchivmentsWidget = ({ statistics, wordsPerDay }) => {
 
 const mapStateToProps = (state) => ({
     statistics: statisticsSelectors.getTodayMainGameStatistics(state),
-    wordsPerDay: settingsSelectors.getWordsPerDay(state),
 });
 
 TodayAchivmentsWidget.propTypes = {
@@ -42,7 +40,6 @@ TodayAchivmentsWidget.propTypes = {
         msq: PropTypes.number.isRequired,
         n: PropTypes.number.isRequired,
     }).isRequired,
-    wordsPerDay: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(TodayAchivmentsWidget);
