@@ -124,7 +124,7 @@ const pages = [
         userMenuPage: false,
         auth: false,
         minigame: true,
-        description: 'Make words from letters. Images and examples are provided.',
+        description: 'Choose the difficulty level of the game and make words from mixed letters.',
     },
     {
         component: AboutProject,
