@@ -36,7 +36,7 @@ const ResultsPopUp = ({ open, data, onClose, onNewGame }) => {
                     <TableBody>
                         {data.map(({ text, translation, pronunciation }) => (
                             <ResultCard
-                                key={{ text } - { translation }}
+                                key={`${text}_${translation}`}
                                 text={text}
                                 pronunciation={pronunciation}
                                 translation={translation}
@@ -60,7 +60,9 @@ const ResultsPopUp = ({ open, data, onClose, onNewGame }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableCell align="left" colSpan={6} />
+                        <TableRow>
+                            <TableCell align="left" colSpan={6} />
+                        </TableRow>
                     </TableBody>
                 </Table>
             </DialogContent>

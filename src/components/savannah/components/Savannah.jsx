@@ -23,6 +23,10 @@ function Savannah({ gameState, clear, error }) {
         };
     }, []);
 
+    const moveBackground = (value) => {
+        setrightAnswers(value);
+    };
+
     useEffect(() => {
         if (gameState === utils.gameState.NOT_STARTED && rightAnswers !== 0) {
             setrightAnswers(0);
@@ -43,7 +47,7 @@ function Savannah({ gameState, clear, error }) {
                 );
                 break;
             case utils.gameState.IN_PROGRESS:
-                content = <GamePage rightAnswersCallback={setrightAnswers} />;
+                content = <GamePage rightAnswersCallback={moveBackground} />;
                 break;
             case utils.gameState.FINISHED:
                 content = <StatisticsWindow />;
