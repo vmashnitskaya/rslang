@@ -89,7 +89,8 @@ const pages = [
         userMenuPage: false,
         auth: false,
         minigame: true,
-        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description:
+            'During the game, the word in English will be pronounced, you need to select its translation.',
     },
     {
         component: EnglishPuzzle,
@@ -106,7 +107,8 @@ const pages = [
         userMenuPage: false,
         auth: false,
         minigame: true,
-        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description:
+            'This is a simulator for translating your passive learned dictionary into the active stage.',
     },
     {
         component: SettingsPage,
@@ -128,7 +130,7 @@ const pages = [
         userMenuPage: false,
         auth: false,
         minigame: true,
-        description: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+        description: 'Make words from letters.',
     },
     {
         component: AboutProject,
