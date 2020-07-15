@@ -317,73 +317,71 @@ const SpeakItGame = ({
                 <Translation translation={selectedCard ? selectedCard.translation : undefined} />
             )}
 
-                {loading || error || loadingAggr || errorAggr ? (
-                    <Loading error={error} errorAggr={errorAggr} />
-                ) : (
-                    <CardsList
-                        cards={cards}
-                        selectedCard={selectedCard}
-                        gameStarted={gameStarted}
-                        guessedWords={guessedWords}
-                        onCardSelected={handleCardSelected}
-                    />
-                )}
+            {loading || error || loadingAggr || errorAggr ? (
+                <Loading error={error} errorAggr={errorAggr} />
+            ) : (
+                <CardsList
+                    cards={cards}
+                    selectedCard={selectedCard}
+                    gameStarted={gameStarted}
+                    guessedWords={guessedWords}
+                    onCardSelected={handleCardSelected}
+                />
+            )}
 
-
-                <div className="buttons">
-                    {gameStarted ? (
-                        <Button
-                            className="stop"
-                            variant="contained"
-                            color="primary"
-                            onClick={handleGamePause}
-                            size="small"
-                        >
-                            Pause game
-                        </Button>
-                    ) : (
-                        <Button
-                            className="speak"
-                            color="primary"
-                            variant="contained"
-                            onClick={handleStartGame}
-                            size="small"
-                        >
-                            Speak it
-                        </Button>
-                    )}
-
+            <div className="buttons">
+                {gameStarted ? (
                     <Button
-                        className="finish"
+                        className="stop"
                         variant="contained"
                         color="primary"
-                        onClick={handlePopUpOpened}
+                        onClick={handleGamePause}
                         size="small"
                     >
-                        Results
+                        Pause game
                     </Button>
-                </div>
-                <ResultsPopUp
-                    open={isPopUpOpened}
-                    cards={cards}
-                    guessedWords={guessedWords}
-                    onClose={handlePopUpClose}
-                    onNewGame={handleNewGame}
-                />
-                <Snackbar
-                    open={Boolean(alertShown)}
-                    autoHideDuration={3000}
-                    onClose={handleAlertClose}
+                ) : (
+                    <Button
+                        className="speak"
+                        color="primary"
+                        variant="contained"
+                        onClick={handleStartGame}
+                        size="small"
+                    >
+                        Speak it
+                    </Button>
+                )}
+
+                <Button
+                    className="finish"
+                    variant="contained"
                     color="primary"
+                    onClick={handlePopUpOpened}
+                    size="small"
                 >
-                    <Alert
-                        onClose={handleAlertClose}
-                        alertShown={
-                            alertShown ? "No words to repeat. Let's continue with new ones." : ''
-                        }
-                    />
-                </Snackbar>
+                    Results
+                </Button>
             </div>
+            <ResultsPopUp
+                open={isPopUpOpened}
+                cards={cards}
+                guessedWords={guessedWords}
+                onClose={handlePopUpClose}
+                onNewGame={handleNewGame}
+            />
+            <Snackbar
+                open={Boolean(alertShown)}
+                autoHideDuration={3000}
+                onClose={handleAlertClose}
+                color="primary"
+            >
+                <Alert
+                    onClose={handleAlertClose}
+                    alertShown={
+                        alertShown ? "No words to repeat. Let's continue with new ones." : ''
+                    }
+                />
+            </Snackbar>
         </div>
     );
 };
