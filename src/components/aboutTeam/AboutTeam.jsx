@@ -3,14 +3,15 @@ import { Container } from '@material-ui/core';
 import Carousel from 'nuka-carousel';
 import Member from './Member/Member';
 import MembersData from './Member/MembersData';
+import './aboutTeam.scss';
 
 const membersArray = Object.keys(MembersData);
 
 const AboutTeam = () => (
-    <Container maxWidth="md">
-        <Carousel slidesToShow={1}>
+    <Container className="aboutTeamContainer" maxWidth="md">
+        <Carousel slidesToShow={1} enableKeyboardControls wrapAround heightMode="max">
             {membersArray.map((el) => (
-                <Member member={MembersData[el]} />
+                <Member key={MembersData[el]} member={MembersData[el]} />
             ))}
         </Carousel>
     </Container>

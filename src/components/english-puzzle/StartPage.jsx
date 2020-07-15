@@ -8,14 +8,15 @@ const StartPage = ({ onClick, minWindow }) => {
     return minWindow ? (
         <div className="start-page">
             <p>Sorry, game is not supported on small screens.</p>
-            <Link
-                to="/"
-                component={Button}
-                color="primary"
-                variant="contained"
-                className="start-page__button"
-            >
-                Main page
+            <Link to="/">
+                <Button
+                    variant="contained"
+                    className="start-page__button"
+                    onClick={onClick}
+                    color="primary"
+                >
+                    Main page
+                </Button>
             </Link>
         </div>
     ) : (

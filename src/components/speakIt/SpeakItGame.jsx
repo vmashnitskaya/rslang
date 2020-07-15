@@ -479,7 +479,7 @@ SpeakItGame.propTypes = {
     selectedCard: PropTypes.objectOf(PropTypes.string),
     gameStarted: PropTypes.bool.isRequired,
     speechText: PropTypes.string,
-    guessedWords: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+    guessedWords: PropTypes.arrayOf(PropTypes.string),
     isPopUpOpened: PropTypes.bool.isRequired,
     setCards: PropTypes.func.isRequired,
     setComplexity: PropTypes.func.isRequired,

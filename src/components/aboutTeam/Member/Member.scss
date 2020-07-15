@@ -21,7 +21,7 @@
         display: flex;
         justify-content: center;
         margin-bottom: 1rem;
-        color: #2196f3;
+        color: #0288d1;
         &:not(:last-child) {
             margin-right: 3rem;
         }
@@ -29,7 +29,18 @@
             text-decoration: none;
         }
         &:visited {
-            color: #2196f3
+            color: #0288d1;
+        }
+    }
+}
+
+@media (max-width: 599px) {
+    .memberLinks {
+        a {
+            width: 100%;
+            &:not(:last-child) {
+                margin-right: 0;
+            }
         }
     }
 }

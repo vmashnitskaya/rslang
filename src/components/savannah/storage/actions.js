@@ -32,7 +32,6 @@ const words = {
                 }
                 dispatch(gamePlan.set(plan));
             }
-
             let correctWords = [];
             if (!userWords) {
                 correctWords = await wordsApi.fetchWords(page, group);
@@ -78,7 +77,7 @@ const words = {
                     });
                 }
                 return {
-                    id: e.id ? e.id : 'no_id',
+                    id: e.id ? e.id : e._id,
                     word: e.word,
                     audio: e.audio,
                     wordTranslate: e.wordTranslate,

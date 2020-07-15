@@ -1,0 +1,10 @@
+.aboutTeamContainer {
+    margin-top: 4rem;
+    height: 550px;
+}
+
+@media (max-width: 599px) {
+    .aboutTeamContainer {
+        height: 640px;
+    }
+}
