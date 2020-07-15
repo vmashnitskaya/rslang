@@ -72,6 +72,7 @@ const pages = [
     },
     {
         component: EnglishPuzzle,
+        title: 'English Puzzle',
         url: '/englishpuzzle',
         exact: true,
         userMenuPage: false,
@@ -124,7 +125,7 @@ const pages = [
         mainPage: true,
         auth: false,
         minigame: true,
-        description: 'Make words from letters. Images and examples are provided.',
+        description: 'Choose the difficulty level of the game and make words from mixed letters.',
     },
     {
         component: AboutProject,
