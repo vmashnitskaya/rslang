@@ -93,9 +93,9 @@ const SettingsPage = ({ settings, fetchSettingsSuccess, saveWordsPerDay }) => {
     const saveSettings = async () => {
         const putSettings = await userSettingsApi.putUserSettings(userId, token, newSettings);
         if (putSettings) {
-            saveWordsPerDay();
             popUpData('Updated', 'Settings updated successfully');
             fetchSettingsSuccess(userId, token, newSettings);
+            saveWordsPerDay();
         }
     };
     const cancelSettings = () => {
