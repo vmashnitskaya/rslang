@@ -83,7 +83,7 @@ const AboutUsSection = () => {
                         Have not decided yet? Check the training process in video
                     </Typography>
                     <ReactPlayer
-                        url="https://www.youtube.com/embed/5woDAZ9Pjw8"
+                        url="https://www.youtube.com/watch?v=O33tSc8FZUg&"
                         controls
                         width="100%"
                     />
