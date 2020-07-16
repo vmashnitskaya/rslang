@@ -8,37 +8,37 @@
 ## Technologies used
 ### React
 - Advantages
--- Easy to learn
--- Convenient component approach
+1. Easy to learn
+2. Convenient component approach
 - Limitations
--- Disordered documentation.
+1. Disordered documentation.
 
 ### Nuka carousel
 - Advantages
--- Easy to create slider
--- Many functions
+1. Easy to create slider
+2. Many functions
 
 ### Sass
 - Advantages
--- Allows you to write styles faster
--- Many functions
+1. Allows you to write styles faster
+2. Many functions
 
 ### Webpack
 - Advantages
--- Dynamically updating code while it is running
--- Lots of plugins for code processing
+1. Dynamically updating code while it is running
+2. Lots of plugins for code processing
 - Limitations
--- Boring documentation
--- It takes a long time to create a configuration
+1. Boring documentation
+2. It takes a long time to create a configuration
 
 ### ESLint
 - Advantages
--- Flexibility: any rule can be switched
--- Many plugins
+1. Flexibility: any rule can be switched
+2. Many plugins
 - Limitations
--- It takes a long time to create a configuration
+1. It takes a long time to create a configuration
 
 ### Babel
 - Advantages
--- Rewrites code according to modern standard to older
+1. Rewrites code according to modern standard to older
 
