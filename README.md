@@ -2,7 +2,9 @@
 
 ## Links
 [Link to Trello board](https://trello.com/b/W8YkVoes)
+
 [Link to task description](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rslang/rslang.md)
+
 [Link to game](https://rslang-team37-vmashnitskaya.netlify.app/)
 
 ## Technologies used
