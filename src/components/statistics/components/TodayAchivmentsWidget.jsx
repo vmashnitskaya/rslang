@@ -15,7 +15,12 @@ const TodayAchivmentsWidget = ({ statistics }) => {
                 </Paper>
                 <Paper elevation={3}>
                     <h5>Sucessfull answers</h5>
-                    <p>{Math.round((statistics.s / (statistics.s + statistics.e)) * 100)}%</p>
+                    <p>
+                        {statistics.s > 0
+                            ? Math.round((statistics.s / (statistics.s + statistics.e)) * 100)
+                            : 0}
+                        %
+                    </p>
                 </Paper>
                 <Paper elevation={3}>
                     <h5>Best sequence</h5>
