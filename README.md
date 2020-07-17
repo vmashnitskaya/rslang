@@ -15,6 +15,11 @@
 - Limitations
 1. Disordered documentation.
 
+### Redux
+- Advantages
+1. Easy to work
+2. Easy to test
+
 ### Nuka carousel
 - Advantages
 1. Easy to create slider
